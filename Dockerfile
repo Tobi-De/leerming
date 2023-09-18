@@ -2,12 +2,13 @@
 # Base/builder layer
 # ------------------------------------------------------------
 
-FROM python:3.10-slim-buster AS builder
+FROM python:3.11-slim-buster AS builder
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-COPY requirements/requirements.txt /tmp/requirements.txt
+COPY requirements.lock /tmp/requirements.txt
+RUN sed '/-e/d' /tmp/requirements.txt > /tmp/requirements.txt
 
 # add ",sharing=locked" if release should block until builder is complete
 RUN --mount=type=cache,target=/root/.cache,sharing=locked,id=pip \
