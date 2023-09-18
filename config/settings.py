@@ -1,5 +1,5 @@
 from pathlib import Path
-
+import django
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -128,15 +128,15 @@ STORAGES = {
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR.joinpath("media"))
 
-if DEBUG:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-else:
-    email = env.email_url("EMAIL_URL", default="smtp://maildev")
-    EMAIL_HOST = email["EMAIL_HOST"]
-    EMAIL_HOST_PASSWORD = email["EMAIL_HOST_PASSWORD"]
-    EMAIL_HOST_USER = email["EMAIL_HOST_USER"]
-    EMAIL_PORT = email["EMAIL_PORT"]
-    EMAIL_USE_TLS = email["EMAIL_USE_TLS"]
+# if DEBUG:
+#     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# else:
+#     email = env.email_url("EMAIL_URL", default="smtp://maildev")
+#     EMAIL_HOST = email["EMAIL_HOST"]
+#     EMAIL_HOST_PASSWORD = email["EMAIL_HOST_PASSWORD"]
+#     EMAIL_HOST_USER = email["EMAIL_HOST_USER"]
+#     EMAIL_PORT = email["EMAIL_PORT"]
+#     EMAIL_USE_TLS = email["EMAIL_USE_TLS"]
 
 
 CACHES = {"default": env.cache_url("CACHE_URL", default="locmemcache://")}
