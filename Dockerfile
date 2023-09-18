@@ -8,7 +8,10 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 COPY requirements.lock /tmp/requirements.txt
-RUN sed '/-e/d' /tmp/requirements.txt > /tmp/requirements.txt
+
+# Modify requirements.txt file in a single RUN command
+RUN { sed '/-e file/d' /tmp/requirements.txt > /tmp/requirements-modified.txt; mv /tmp/requirements-modified.txt /tmp/requirements.txt; }
+
 
 # add ",sharing=locked" if release should block until builder is complete
 RUN --mount=type=cache,target=/root/.cache,sharing=locked,id=pip \
