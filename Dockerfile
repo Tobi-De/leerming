@@ -7,6 +7,10 @@ FROM python:3.11-slim-buster AS builder
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y build-essential
+
 COPY requirements.lock /tmp/requirements.txt
 
 # Modify requirements.txt file in a single RUN command
@@ -19,7 +23,7 @@ RUN --mount=type=cache,target=/root/.cache,sharing=locked,id=pip \
     pip install -r /tmp/requirements.txt
 
 # ------------------------------------------------------------
-# Dev/testing layer
+# Production layer
 # ------------------------------------------------------------
 
 FROM builder AS release
@@ -31,8 +35,6 @@ COPY . /src/
 
 WORKDIR /src/
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+EXPOSE 8000
 
-# ------------------------------------------------------------
-# TODO: Add Production notes
-# ------------------------------------------------------------
+CMD ["sh", "/src/runserver.sh"]
