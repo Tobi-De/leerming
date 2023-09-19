@@ -1,5 +1,5 @@
 from pathlib import Path
-import django
+
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -36,11 +36,22 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-# Third-party apps
 
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = [
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "schema_viewer",
+    "django_q",
+]
 
-LOCAL_APPS = ["leerming.core"]
+LOCAL_APPS = [
+    "leerming.core",
+    "leerming.users",
+    "leerming.profiles",
+    "leerming.cards",
+    "leerming.reviews",
+]
 
 INSTALLED_APPS = LOCAL_APPS + THIRD_PARTY_APPS + DJANGO_APPS
 
@@ -53,6 +64,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -90,6 +102,7 @@ DATABASES = {"default": env.db_url("DATABASE_URL", default="sqlite:///db.sqlite3
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "OPTIONS": {"user_attributes": ("email", "full_name", "short_name")},
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -105,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "fr-bj"
 
 TIME_ZONE = "UTC"
 
@@ -141,8 +154,44 @@ MEDIA_ROOT = str(BASE_DIR.joinpath("media"))
 
 CACHES = {"default": env.cache_url("CACHE_URL", default="locmemcache://")}
 
+
+# Django-Q settings
+Q_CLUSTER = {
+    "name": "DjangORM",
+    "workers": 4,
+    "timeout": 90,
+    "retry": 120,
+    "queue_limit": 50,
+    "bulk": 10,
+    "orm": "default",
+}
+
+# Schema Viewer settings
+
+SCHEMA_VIEWER = {"apps": LOCAL_APPS}
+
+# Django-allauth settings
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+ACCOUNT_FORMS = {
+    "signup": "leerming.users.forms.SignupForm",
+}
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "optional"  # TODO: change to mandatory in prod
+
 # Our settings
 
 ADMIN_URL = env("ADMIN_URL", default="admin/")
 
 SITE_ID = 1
+
+LOGIN_REDIRECT_URL = "/"
+
+AUTH_USER_MODEL = "users.User"
