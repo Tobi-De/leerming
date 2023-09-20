@@ -35,11 +35,29 @@ class BaseCard(TimeStampedModel):
         self.save()
 
 
+# The size limits one these fields is to avoid users wasting to much time on creating cards or
+# cards too big that they are not really practical.
 class FillInTheGapCard(BaseCard):
-    text_with_gap = models.TextField(verbose_name="Texte à remplir")
-    answer = models.TextField(verbose_name="Réponse", max_length=100)
+    text_with_gap = models.CharField(verbose_name="Texte à remplir", max_length=200)
+    answer = models.CharField(verbose_name="Réponse", max_length=50)
+
+    @property
+    def text_with_gap_soft_size_limit(self):
+        return 150
+
+    @property
+    def answer_soft_size_limit(self):
+        return 30
 
 
 class FrontBackCard(BaseCard):
-    question = models.TextField(verbose_name="Question")
-    answer = models.TextField(verbose_name="Réponse")
+    question = models.CharField(verbose_name="Question", max_length=250)
+    answer = models.CharField(verbose_name="Réponse", max_length=300)
+
+    @property
+    def question_soft_size_limit(self):
+        return 150
+
+    @property
+    def answer_soft_size_limit(self):
+        return 200

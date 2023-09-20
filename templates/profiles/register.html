@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>Enregister vos preferences</h1>
+<form method="post">
+    {{ form|crispy }}
+    <input type="submit" />
+</form>
+{% endblock %}

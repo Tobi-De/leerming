@@ -2,9 +2,7 @@
 name = "learming"
 version = "0.1.0"
 description = "Add your description here"
-authors = [
-    { name = "Tobi DEGNON", email = "tobidegnon@proton.me" }
-]
+authors = [{ name = "Tobi DEGNON", email = "tobidegnon@proton.me" }]
 dependencies = [
     "Django",
     "django-click",
@@ -26,6 +24,9 @@ dependencies = [
     "django-htmx>=1.16.0",
     "django-pydantic-field>=0.2.10",
     "django-lifecycle>=1.0.2",
+    "django-crispy-forms>=2.0",
+    "crispy-tailwind>=0.5.0",
+    "django-browser-reload>=1.11.0",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"

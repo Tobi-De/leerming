@@ -43,6 +43,9 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "schema_viewer",
     "django_q",
+    "crispy_forms",
+    "crispy_tailwind",
+    "django_browser_reload",
 ]
 
 LOCAL_APPS = [
@@ -65,7 +68,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
-    "leerming.profiles.middleware.create_user_profile",
+    "leerming.profiles.middleware.register_profile_middleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -186,6 +190,11 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "optional"  # TODO: change to mandatory in prod
+
+# Crispy forms settings
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
 
 # Our settings
 
