@@ -43,9 +43,9 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "schema_viewer",
     "django_q",
-    "crispy_forms",
-    "crispy_tailwind",
+    "django_extensions",
     "django_browser_reload",
+    "compressor",
 ]
 
 LOCAL_APPS = [
@@ -68,7 +68,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
-    "leerming.profiles.middleware.register_profile_middleware",
+    "leerming.profiles.middleware.check_user_registration",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
@@ -134,20 +134,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = str(BASE_DIR.joinpath("static"))
+STATIC_ROOT = BASE_DIR / "static"
 STATIC_URL = "/static/"
-STATICFILES_DIRS = (str(BASE_DIR.joinpath("frontend")),)
+STATICFILES_DIRS = (BASE_DIR / "frontend",)
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
+)
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR.joinpath("media"))
 
-# if DEBUG:
-#     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # else:
 #     email = env.email_url("EMAIL_URL", default="smtp://maildev")
 #     EMAIL_HOST = email["EMAIL_HOST"]
@@ -191,17 +196,9 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "optional"  # TODO: change to mandatory in prod
 
-# Crispy forms settings
-
-CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
-CRISPY_TEMPLATE_PACK = "tailwind"
-
 # Our settings
-
 ADMIN_URL = env("ADMIN_URL", default="admin/")
-
 SITE_ID = 1
-
 LOGIN_REDIRECT_URL = "/"
-
 AUTH_USER_MODEL = "users.User"
+# FORM_RENDERER = "leerming.core.forms.FormRenderer"

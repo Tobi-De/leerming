@@ -1,0 +1,29 @@
+{% load widget_tweaks %}
+
+<!-- The wrapper id is used a lot with htmx, don't change it !!!-->
+<div class="mb-4" id="{{ field.auto_id }}_wrapper">
+  <label for="{{ field.id_for_label }}"
+         class="mb-2 label {% if field.field.required %}font-bold{% endif %}">{{ field.label }}</label>
+
+  {% if field.field.widget.input_type == "checkbox" %}
+    {{ field }}
+  {% else %}
+    {% if field.errors %}
+      {{ field|add_class:"form-control error bg-red-50 border text-red-900 border-red-500" }}
+    {% else %}
+      {{ field|add_class:"form-control" }}
+    {% endif %}
+  {% endif %}
+
+  {% if field.help_text %}
+    {% if help_text_inline %}
+      <p id="hint_{{ field.auto_id }}" class="text-gray-600 dark:text-white">{{ field.help_text|safe }}</p>x
+    {% else %}
+      <small id="hint_{{ field.auto_id }}" class="text-gray-600 dark:text-white">{{ field.help_text|safe }}</small>
+    {% endif %}
+  {% endif %}
+
+  {% for error in field.errors %}
+    <p class="text-sm error text-red-600 dark:text-red-500 mt-1">{{ error }}</p>
+  {% endfor %}
+</div>

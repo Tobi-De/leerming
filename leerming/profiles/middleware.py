@@ -4,11 +4,12 @@ from django.urls import reverse
 from .models import Profile
 
 
-def register_profile_middleware(get_response):
+def check_user_registration(get_response):
     def middleware(request):
         register_url = reverse("profiles:register")
-        on_register_view = request.path == register_url
-        if request.user.is_authenticated and not on_register_view:
+        views_to_exclude = [register_url, reverse("django_browser_reload:events")]
+        exempt_from_check = request.path not in views_to_exclude
+        if request.user.is_authenticated and exempt_from_check:
             try:
                 request.user.profile
             except Profile.DoesNotExist:

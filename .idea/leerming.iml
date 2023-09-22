@@ -5,23 +5,35 @@
       <configuration>
         <option name="rootFolder" value="$MODULE_DIR$" />
         <option name="settingsModule" value="config/settings.py" />
-        <option name="manageScript" value="$MODULE_DIR$/manage.py" />
+        <option name="manageScript" value="manage.py" />
         <option name="environment" value="&lt;map/&gt;" />
         <option name="doNotUseTestRunner" value="false" />
-        <option name="trackFilePattern" value="migrations" />
+        <option name="trackFilePattern" value="" />
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="Python 3.11 (leerming)" jdkType="Python SDK" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/.venv" />
+    </content>
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="braininbox" />
+    <orderEntry type="library" name="flowbite" level="application" />
+    <orderEntry type="library" name="tom-select" level="application" />
   </component>
-  <component name="SonarLintModuleSettings">
-    <option name="uniqueId" value="19cd72d1-aa69-4c2f-becd-65900c19c5c7" />
+  <component name="PyDocumentationSettings">
+    <option name="format" value="PLAIN" />
+    <option name="myDocStringFormat" value="Plain" />
   </component>
   <component name="TemplatesService">
-    <option name="TEMPLATE_CONFIGURATION" value="Django" />
+    <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />
+    <option name="TEMPLATE_FOLDERS">
+      <list>
+        <option value="$MODULE_DIR$/templates" />
+      </list>
+    </option>
+  </component>
+  <component name="TestRunnerService">
+    <option name="PROJECT_TEST_RUNNER" value="py.test" />
   </component>
 </module>

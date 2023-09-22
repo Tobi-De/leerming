@@ -1,10 +1,28 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
+{% load i18n %}
 
 {% block content %}
-<h1>Enregister vos preferences</h1>
-<form method="post">
-    {{ form|crispy }}
-    <input type="submit" />
-</form>
-{% endblock %}
+  <h1>Enregister vos preferences</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="{% translate "Soumettre" %}"
+           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none text-sm w-full sm:w-auto px-5 py-2.5">
+  </form>
+{% endblock content %}
+
+{% block javascript %}
+  <script>
+    new TomSelect("#id_review_days", {
+      plugins: {
+        remove_button: {
+          title: 'Remove this item',
+        }
+      },
+      persist: false,
+      createOnBlur: true,
+      create: true
+    });
+  </script>
+{% endblock javascript %}

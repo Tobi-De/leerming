@@ -24,9 +24,10 @@ dependencies = [
     "django-htmx>=1.16.0",
     "django-pydantic-field>=0.2.10",
     "django-lifecycle>=1.0.2",
-    "django-crispy-forms>=2.0",
-    "crispy-tailwind>=0.5.0",
     "django-browser-reload>=1.11.0",
+    "django-extensions>=3.2.3",
+    "django-decorator-include>=3.0",
+    "django-compressor>=4.4",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
@@ -39,6 +40,9 @@ build-backend = "hatchling.build"
 [tool.rye]
 managed = true
 dev-dependencies = []
+
+[tool.rye.scripts]
+tailwind = "npx tailwindcss -i frontend/css/input.css -o frontend/css/tailwind.css --watch"
 
 [tool.hatch.metadata]
 allow-direct-references = true
@@ -91,7 +95,7 @@ exclude = [
     "static",
 ]
 
-per-file-ignores = {}
+per-file-ignores = { }
 
 # Same as Black.
 line-length = 120

@@ -1,0 +1,9 @@
+{% load widget_tweaks %}
+
+{% include "forms/non_field_errors.html" with form=form %}
+
+{% include "forms/hidden_fields.html" with form=form %}
+
+{% for field in form %}
+  {% include "forms/field.html" with field=field %}
+{% endfor %}
