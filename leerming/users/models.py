@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 
 class User(AbstractUser):
-    profile: Profile
+    profile: "Profile"
 
     def __str__(self):
         return self.short_name or self.full_name or self.email

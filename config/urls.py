@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import path, include, reverse
 
+from leerming.profiles.decorators import profile_required
 
 urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
@@ -13,11 +14,17 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("profiles/", include("leerming.profiles.urls", namespace="profiles")),
     path(
-        "cards/",
-        decorator_include(login_required, "leerming.cards.urls", namespace="cards"),
+        "flashcards/",
+        decorator_include(
+            (login_required, profile_required),
+            "leerming.flashcards.urls",
+            namespace="flashcards",
+        ),
     ),
     path(
-        "", lambda request: HttpResponseRedirect(reverse("cards:index")), name="home"
+        "",
+        lambda request: HttpResponseRedirect(reverse("flashcards:index")),
+        name="home",
     ),  # TODO: replace by a landing page at some point
 ]
 

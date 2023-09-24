@@ -1,16 +1,18 @@
-from django.db import models
 import datetime as dt
-from django.utils.functional import cached_property
 
-from leerming.cards.models import FillInTheGapCard, FrontBackCard
+from django.db import models
+from django.utils.functional import cached_property
+from django.utils.translation import gettext_lazy as _
+
+from leerming.flashcards.models import FlashCard
+from leerming.users.models import User
 
 
 class Review(models.Model):
-    fill_in_cards = models.ManyToManyField(FillInTheGapCard)
-    front_back_cards = models.ManyToManyField(FrontBackCard)
+    flashcards = models.ManyToManyField(FlashCard)
     user = models.ForeignKey("users.User", on_delete=models.CASCADE)
-    creation_date = models.DateField()
-    score = models.IntegerField(default=0)
+    creation_date = models.DateField(verbose_name=_("Date de création"))
+    score = models.IntegerField(default=0, verbose_name=_("Score"))
 
     def increment_score(self):
         self.score += 1
@@ -18,20 +20,17 @@ class Review(models.Model):
 
     @cached_property
     def score_percentage(self) -> int:
-        total_cards = self.fill_in_cards.count() + self.front_back_cards.count()
-        if total_cards == 0:
-            return 0
-        return round((self.score / total_cards) * 100)
+        total_cards = self.flashcards.count()
+        return 0 if total_cards == 0 else round((self.score / total_cards) * 100)
 
     @classmethod
-    def create(cls, for_date: dt.date) -> "Review":
-        filter = models.Q(
-            mastered_date__isnull=True,
-            last_reviewed_date__lt=for_date - dt.timedelta(days=7 ** models.F("level")),
-        )
-
+    def create(cls, for_date: dt.date, user: User) -> "Review":
         return cls(
-            fill_in_cards=FillInTheGapCard.objects.filter(filter),
-            front_back_cards=FrontBackCard.objects.filter(filter),
+            flashcards=FlashCard.objects.filter(
+                mastered_date__isnull=True,
+                last_review_date__lt=for_date
+                - dt.timedelta(days=7 ** models.F("level")),
+            ),
+            user=user,
             creation_date=for_date,
         )

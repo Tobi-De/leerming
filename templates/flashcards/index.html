@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    {% trans "liste de carte" %}
+
+
+    <a href="{% url 'flashcards:create' %}">{% translate "Nouvelle carte" %}</a>
+    <ul>
+        {% for flashcard in flashcards %}
+            {% block flashcard %}
+                <li
+                    class="max-w-sm p-6 my-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                    <a href="#" hx-get="{% url 'flashcards:show_answer' flashcard.pk %}" hx-target="this" hx-swap="outerHTML">
+                        <h3 class="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">{{ flashcard }}</h3>
+                    </a>
+                    <a href="{% url 'flashcards:edit' flashcard.pk %}"
+                       class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        {% heroicon_mini "pencil" %}{% trans "Édité" %}
+                    </a>
+                </li>
+            {% endblock flashcard %}
+        {% endfor %}
+    </ul>
+{% endblock content %}

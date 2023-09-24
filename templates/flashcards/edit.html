@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <a href="{% url "flashcards:index" %}">{% trans "Cartes" %}</a>
+    {% block form %}
+        <form hx-post="."
+              hx-target="this"
+              hx-swap="outerHTML"
+              method="post" id="edit-form">
+            {{ form }}
+        </form>
+    {% endblock form %}
+    <button form="edit-form" type="submit"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+        {% trans "Modifier" %}
+    </button>
+
+    <button
+        class="text-white bg-red-700 focus:ring-4 focus:ring-red-300 font-medium text-sm px-5 py-2.5 mb-2 rounded-lg focus:outline-none"
+        hx-confirm="{% trans "Êtes vous sure de vouloir supprimer cette carte ?" %}"
+        hx-post="{% url "flashcards:delete" flashcard.pk %}">{% trans "Supprimer cette carte" %}</button>
+{% endblock content %}

@@ -46,13 +46,15 @@ THIRD_PARTY_APPS = [
     "django_extensions",
     "django_browser_reload",
     "compressor",
+    "django_htmx",
+    "heroicons",
 ]
 
 LOCAL_APPS = [
     "leerming.core",
     "leerming.users",
     "leerming.profiles",
-    "leerming.cards",
+    "leerming.flashcards",
     "leerming.reviews",
 ]
 
@@ -68,12 +70,11 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
-    "leerming.profiles.middleware.check_user_registration",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -89,6 +90,10 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
             ],
             "debug": DEBUG,
+            "builtins": [
+                "heroicons.templatetags.heroicons",
+                "django.templatetags.i18n",
+            ],
         },
     },
 ]
@@ -98,7 +103,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {"default": env.db_url("DATABASE_URL", default="sqlite:///db.sqlite3")}
+DATABASES = {"default": env.db_url("DATABASE_URL")}
 
 
 # Password validation

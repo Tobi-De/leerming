@@ -33,12 +33,14 @@ django-model-utils==4.3.1
 django-picklefield==3.1
 django-pydantic-field==0.2.10
 django-q2==1.5.5
+django-render-block==0.9.2
 django-schema-viewer==0.3.0
 django-test-plus==2.2.3
 factory-boy==3.3.0
 faker==19.6.1
 filelock==3.12.4
 gunicorn==21.2.0
+heroicons==2.4.0
 identify==2.5.29
 idna==3.4
 iniconfig==2.0.0
