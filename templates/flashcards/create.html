@@ -2,6 +2,9 @@
 
 {% block content %}
     <h1>{% translate "Cree une nouvelle carte" %}</h1>
+    <p>{% blocktrans %} Éviter des cartes trop complexe avec des réponses longues, ça vous facilitera la tache et vous permettra d'etre plus consistant. 
+    Essayer de faires des cartes qui ne vous prendrons que quelques minutes a compléter
+    {% endblocktrans %}</p>
 
     <a href="{% url "flashcards:index" %}">{% translate "Cartes" %}</a>
     {% block form %}
