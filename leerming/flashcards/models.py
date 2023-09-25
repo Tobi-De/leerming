@@ -38,7 +38,7 @@ class FlashCard(TimeStampedModel):
         verbose_name=_("Niveau"),
         default=1,
         help_text=_(
-            "Indique la difficulté de la carte, de 1 à 7, 7 étant la plus difficile"
+            "Indique la difficulté de la carte, de 1 à 7 (le niveau le plus difficile)."
         ),
         validators=[MinValueValidator(1), MaxValueValidator(7)],
     )

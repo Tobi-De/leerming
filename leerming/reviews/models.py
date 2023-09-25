@@ -9,10 +9,23 @@ from leerming.users.models import User
 
 
 class Review(models.Model):
+    class Status(models.TextChoices):
+        CREATED = "CREATED", _("Créé")
+        ON_GOING = "ON_GOING", _("En cours")
+        DONE = "DONE", _("Terminé")
+
     flashcards = models.ManyToManyField(FlashCard)
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    reviewer = models.ForeignKey(
+        "users.User", on_delete=models.CASCADE, related_name="reviews"
+    )
     creation_date = models.DateField(verbose_name=_("Date de création"))
     score = models.IntegerField(default=0, verbose_name=_("Score"))
+
+    class Meta:
+        ordering = ("-creation_date",)
+
+    def __str__(self):
+        return _(f"Revu du {self.creation_date} - score: {self.score_percentage}%")
 
     def increment_score(self):
         self.score += 1
