@@ -1,48 +1,96 @@
-from django.http import HttpRequest
-from django.template.response import TemplateResponse
+import datetime as dt
 
-from .models import Review
-from .errors import ReviewCardNotFoundError, NoCardsToReviewError, NoMoreCardToReviewError
 from django.contrib import messages
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.template.response import TemplateResponse
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.views.decorators.http import require_http_methods
+from django_htmx.http import HttpResponseClientRedirect
 
-# start (check if review for today exists, if yes, show page "keep it one review a day"),
-# if no create check if there is a current review if yes return to it else create a new one
+from leerming.core.utils import render_block_to_string
+from leerming.flashcards.models import FlashCard
+from .models import Review, NoCardsToReviewError, SessionEndedError
+
 
 def index(request: HttpRequest):
-    return TemplateResponse(request, "reviews/index.html", {"reviews": request.user.reviews.all()})
+    go_review = ""
+    if request.user.reviews.count() == 0 and request.user.profile.is_in_review_days(
+        dt.date.today().weekday()
+    ):
+        go_review = _("Démarrez votre première révision!")
+    if Review.get_current_review(reviewer=request.user, request=request):
+        go_review = _("Continuez votre révision!")
+    return TemplateResponse(
+        request,
+        "reviews/index.html",
+        {"reviews": request.user.reviews.all(), "go_review": go_review},
+    )
+
 
 def details(request: HttpRequest, review_id: int):
     review = get_object_or_404(request.user.reviews.all(), pk=review_id)
     return TemplateResponse(request, "reviews/details.html", {"review": review})
 
+
+def no_cards_to_review(request: HttpRequest):
+    return TemplateResponse(request, "reviews/no_cards_to_review.html")
+
+
+@require_http_methods(["POST"])
 def start(request: HttpRequest):
     try:
-        Review.start(user=request.user, request=request)
-    except NoCardsToReviewError as e:
+        Review.start(reviewer=request.user, request=request)
+    except NoCardsToReviewError:
+        return HttpResponseClientRedirect(reverse("reviews:no_cards_to_review"))
+    return HttpResponseClientRedirect(reverse("reviews:show_current_card"))
+
+
+def show_current_card(request: HttpRequest):
+    current_review = Review.get_current_review(reviewer=request.user, request=request)
+    if not current_review:
+        messages.info(request, _("Pas de revision en cours"))
         return redirect("reviews:index")
-    return TemplateResponse(request, "reviews/start.html", {"review": review})
 
-
-def show_card(request: HttpRequest):
     try:
         current_card = Review.get_current_card(request)
-    except NoCardsToReviewError as e:
-        return TemplateResponse(request, "reviews/no_cards_to_review.html")
-    return TemplateResponse(request, "reviews/show_card.html", {"card": current_card})
+    except FlashCard.DoesNotExist:
+        return redirect("reviews:move_to_next_card")
+
+    return TemplateResponse(
+        request, "reviews/show_current_card.html", {"card": current_card}
+    )
+
+
+def reveal_answer(request: HttpRequest):
+    return HttpResponse(
+        render_block_to_string(
+            "reviews/show_current_card.html",
+            "answer-revealed",
+            context={Review.get_current_card(request)},
+        )
+    )
+
 
 @require_http_methods(["POST"])
 def answer_card(request: HttpRequest):
     current_card = Review.get_current_card(request)
-    current_card.review(correct_answer=request.POST.get("correct_answer"))
-    return redirect("reviews:next_card")
+    Review.add_answer(
+        card_id=current_card.id, answer=request.POST.get("answer"), request=request
+    )
+    return redirect("reviews:move_to_next_card")
 
 
-def next_card(request: HttpRequest):
+def move_to_next_card(request: HttpRequest):
     try:
-        current_card = Review.next_card(request)
-    except NoMoreCardToReviewError as e:
-        review = Review.end(request)
-        return redirect(reverse("reviews:details", args=[review.id])))
-        
-    return redirect("reviews:show_card")
+        Review.move_to_next_card(request)
+    except SessionEndedError:
+        return redirect("reviews:session_end")
+    return redirect("reviews:show_current_card")
+
+
+def end(request: HttpRequest):
+    Review.end(request)
+    last_review = get_object_or_404(Review.get_last_review(reviewer=request.user))
+    return TemplateResponse(request, "reviews/end.html", {"review": last_review})

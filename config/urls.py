@@ -12,7 +12,12 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     path("schema-viewer/", include("schema_viewer.urls")),
     path("accounts/", include("allauth.urls")),
-    path("profiles/", include("leerming.profiles.urls", namespace="profiles")),
+    path(
+        "profiles/",
+        decorator_include(
+            login_required, "leerming.profiles.urls", namespace="profiles"
+        ),
+    ),
     path(
         "flashcards/",
         decorator_include(
@@ -20,6 +25,10 @@ urlpatterns = [
             "leerming.flashcards.urls",
             namespace="flashcards",
         ),
+    ),
+    path(
+        "reviews/",
+        decorator_include(login_required, "leerming.reviews.urls", namespace="reviews"),
     ),
     path(
         "",

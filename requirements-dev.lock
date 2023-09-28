@@ -36,7 +36,6 @@ django-improved-user==2.0a2
 django-lifecycle==1.0.2
 django-model-utils==4.3.1
 django-picklefield==3.1
-django-pydantic-field==0.2.10
 django-q2==1.5.5
 django-render-block==0.9.2
 django-schema-viewer==0.3.0
@@ -76,7 +75,6 @@ psycopg2-binary==2.9.7
 ptyprocess==0.7.0
 pure-eval==0.2.2
 pycparser==2.21
-pydantic==1.10.12
 pygments==2.16.1
 pyjwt==2.8.0
 pytest==7.4.2
@@ -99,7 +97,6 @@ stack-data==0.6.2
 tomli-w==1.0.0
 traitlets==5.10.0
 typer==0.7.0
-typing-extensions==4.8.0
 urllib3==2.0.4
 urlman==2.0.1
 virtualenv==20.24.5

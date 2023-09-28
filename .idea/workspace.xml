@@ -5,12 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41c5c547-a60c-425a-b8f5-133a48ac7fe3" name="Changes" comment="feat: add profile register and setup flowbite">
-      <change afterPath="$PROJECT_DIR$/leerming/reviews/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/reviews/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/reviews/details.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/reviews/end.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/reviews/no_cards_to_review.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/reviews/show_current_card.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/flashcards/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/flashcards/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/flashcards/migrations/0002_flashcard_owner.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/flashcards/migrations/0003_alter_flashcard_options_alter_flashcard_level.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/profiles/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/profiles/migrations/0002_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/migrations/0002_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/profiles/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/profiles/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/reviews/errors.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/reviews/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/reviews/migrations/0002_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/migrations/0002_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/reviews/migrations/0003_alter_review_options_remove_review_user_and_more.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/leerming/reviews/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/reviews/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/tasks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/reviews/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/leerming/reviews/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/users/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/users/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements-dev.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements-dev.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/reviews/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/reviews/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,14 +76,14 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;codespace-reimagined-space-zebra-vqxg7q6g7p26xr9&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/tobi/Builds/leerming/config/settings.py&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.general&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -89,7 +109,10 @@
       <workItem from="1695361757101" duration="1137000" />
       <workItem from="1695368567716" duration="293000" />
       <workItem from="1695368935840" duration="30007000" />
-      <workItem from="1695455557825" duration="22337000" />
+      <workItem from="1695455557825" duration="24216000" />
+      <workItem from="1695752290543" duration="1601000" />
+      <workItem from="1695813009032" duration="11801000" />
+      <workItem from="1695826160183" duration="7208000" />
     </task>
     <task id="LOCAL-00001" summary="feat: add profile register and setup flowbite">
       <option name="closed" value="true" />

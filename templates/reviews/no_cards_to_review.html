@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <h1>{% trans "Vous n'avez pas encore de cartes" %}</h1>
+  <a href="{% url "flashcards:create" %}">{% trans "Ajouter une carte" %}</a>
+{% endblock content %}
