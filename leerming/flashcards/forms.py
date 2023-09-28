@@ -5,6 +5,17 @@ from .models import FlashCard
 
 
 class FlashCardForm(forms.ModelForm):
+    template_name = "forms/flashcard.html"
+
+    class Meta:
+        model = FlashCard
+        fields = ("card_type", "question", "answer", "level")
+        widgets = {
+            "question": forms.Textarea(attrs={"rows": 2}),
+            "answer": forms.Textarea(attrs={"rows": 2})
+        }
+
+
     def clean(self):
         cleaned_data = self.cleaned_data
         if (
@@ -26,12 +37,21 @@ class FlashCardCreateForm(FlashCardForm):
         label=_("Après ajout, revenir et ajouter une nouvelle carte"),
     )
 
-    class Meta:
-        model = FlashCard
+    class Meta(FlashCardForm.Meta):
+        # model = FlashCard
         fields = ("card_type", "question", "answer", "return_to_add_new")
+        # widgets = {
+        #     "question": forms.Textarea(attrs={"rows": 2}),
+        #     "answer": forms.Textarea(attrs={"rows": 2})
+        # }
 
 
 class FlashCardEditForm(FlashCardForm):
-    class Meta:
-        model = FlashCard
-        fields = ("card_type", "question", "answer", "level")
+    pass
+    # class Meta:
+    #     model = FlashCard
+    #     fields = ("card_type", "question", "answer", "level")
+    #     widgets = {
+    #         "question": forms.Textarea(attrs={"rows": 2}),
+    #         "answer": forms.Textarea(attrs={"rows": 2})
+    #     }
