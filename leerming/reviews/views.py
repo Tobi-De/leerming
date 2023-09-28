@@ -1,7 +1,7 @@
 import datetime as dt
-
+from django import forms
 from django.contrib import messages
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, Http404
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
@@ -68,16 +68,18 @@ def reveal_answer(request: HttpRequest):
         render_block_to_string(
             "reviews/show_current_card.html",
             "answer-revealed",
-            context={Review.get_current_card(request)},
+            context={"card": Review.get_current_card(request)},
         )
     )
 
+
+answer_field = forms.BooleanField(required=False)
 
 @require_http_methods(["POST"])
 def answer_card(request: HttpRequest):
     current_card = Review.get_current_card(request)
     Review.add_answer(
-        card_id=current_card.id, answer=request.POST.get("answer"), request=request
+        card_id=current_card.id, answer=answer_field.clean(request.POST.get("answer")), request=request
     )
     return redirect("reviews:move_to_next_card")
 
@@ -86,11 +88,14 @@ def move_to_next_card(request: HttpRequest):
     try:
         Review.move_to_next_card(request)
     except SessionEndedError:
-        return redirect("reviews:session_end")
-    return redirect("reviews:show_current_card")
+        return HttpResponseClientRedirect(reverse("reviews:end"))
+    return HttpResponseClientRedirect(reverse("reviews:show_current_card"))
 
 
 def end(request: HttpRequest):
-    Review.end(request)
-    last_review = get_object_or_404(Review.get_last_review(reviewer=request.user))
+    try:
+        Review.end(request)
+        last_review = Review.get_last_review(reviewer=request.user)
+    except Review.DoesNotExist as e:
+        raise Http404 from e
     return TemplateResponse(request, "reviews/end.html", {"review": last_review})

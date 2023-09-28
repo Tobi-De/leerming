@@ -60,38 +60,37 @@ class Review(models.Model):
         return 0 if nbr_of_cards == 0 else round((score / nbr_of_cards) * 100)
 
     @classmethod
-    def _get_or_create(cls, reviewer: User) -> "Review":
+    def _get_or_create(cls, reviewer: User, date:dt.date) -> "Review":
         if not reviewer.flashcards.filter(mastered_at__isnull=True).filter():
             raise NoCardsToReviewError("No cards to review")
-
-        today = dt.date.today()
-        instance, created = cls.objects.get_or_create(
-            reviewer=reviewer, creation_date=today
+        
+        with suppress(cls.DoesNotExist):
+            return cls.objects.get(
+            reviewer=reviewer, creation_date=date
         )
-        if not created:
-            return instance
-
+       
         cards = []
         for card in reviewer.flashcards.filter(mastered_at__isnull=True):
             if not card.last_review_date:
                 cards.append(card)
-            elif card.last_review_date < today - dt.timedelta(days=7**card.level):
+            elif card.last_review_date < date - dt.timedelta(days=7**card.level):
                 cards.append(card)
         if not cards:
             raise NoCardsToReviewError("No cards to review")
-        instance.flashcards.add(*cards)
+        instance = cls.objects.create(reviewer=reviewer, creation_date=date)
+        instance.flashcards.set(cards)
         return instance
 
     @classmethod
     def start(cls, reviewer: User, request: HttpRequest) -> "Review":
-        review = cls._get_or_create(reviewer)
+        review = cls._get_or_create(reviewer, date=dt.date.today())
 
         # if the review is already in the user session then there is nothing to do
         if request.session.get(review_id_session_key):
             # already started
             return review
 
-        cards = review.flashcards.values_list("id", flat=True)
+        cards = list(review.flashcards.values_list("id", flat=True))
         random.shuffle(cards)
         request.session[review_id_session_key] = review.id
         request.session[cards_session_key] = list(cards)
@@ -182,7 +181,7 @@ class Review(models.Model):
             return cls.objects.get(reviewer=reviewer, completed_at__isnull=True)
 
     @classmethod
-    def get_last_review_datetime(cls, reviewer: User) -> dt.datetime | None:
+    def get_last_review_date(cls, reviewer: User) -> dt.date| None:
         with suppress(AttributeError):
             return (
                 cls.objects.filter(reviewer=reviewer, completed_at__isnull=False)
@@ -197,7 +196,7 @@ class Review(models.Model):
 
     @classmethod
     def get_next_review_datetime(
-        cls, reviewer: User, last_review: dt.datetime | None = None
+        cls, reviewer: User, last_review_date: dt.date | None = None
     ) -> dt.datetime:
         review_days = reviewer.profile.review_days
         review_time = reviewer.profile.review_time
@@ -210,8 +209,8 @@ class Review(models.Model):
         )
 
         # if the user already a review for today, use tomorrow as the starting point
-        if last_review and last_review.date() == today:
-            next_review_date = last_review + dt.timedelta(days=1)
+        if last_review_date and last_review_date == today:
+            next_review_date = last_review_date + dt.timedelta(days=1)
         else:
             next_review_date = today
 
@@ -220,4 +219,4 @@ class Review(models.Model):
             next_review_date += dt.timedelta(days=1)
 
         next_run = dt.datetime.combine(next_review_date, review_time)
-        return timezone.get_current_timezone().localize(next_run)
+        return timezone.make_aware(next_run, timezone.get_current_timezone())

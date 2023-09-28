@@ -2,4 +2,6 @@
 
 {% block content %}
   {% trans "Bon travail, la révision est terminée" %}
+
+  <a href="{% url "reviews:index" %}" >{% trans "Liste des révisions" %}</<a>
 {% endblock content %}

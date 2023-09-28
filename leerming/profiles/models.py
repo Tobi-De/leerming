@@ -40,9 +40,9 @@ class Profile(TimeStampedModel, LifecycleModelMixin):
     def create_next_review_session_schedule(self):
         next_run = Review.get_next_review_datetime(
             reviewer=self.user,
-            last_review=Review.get_last_review_datetime(reviewer=self.user),
+            last_review_date=Review.get_last_review_date(reviewer=self.user),
         )
-        schedule, _ = Schedule.objects.get_or_create(
+        Schedule.objects.get_or_create(
             name=self.review_scheduler_name,
             func="leerming.reviews.tasks.send_review_notification",
             kwargs={"user_id": self.user.id},

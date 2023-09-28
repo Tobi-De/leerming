@@ -2,15 +2,16 @@
 
 
 {% block answer-revealed %}
-  {{ card.answer }}
-  {% trans "Avez vous une réponse correcte?" %}
-  <a href="">{% trans "Non" %}</a>
-  <a href="">{% trans "Oui" %}</a>
+  <p id="card-text" hx-swap-oob="true">{{ card.answer_display }}</p>
 
+  {% trans "Avez vous une réponse correcte?" %}
+  <a hx-post="{% url 'reviews:answer_card' %}" hx-vals='{"answer": false}'>{% trans "Non" %}</a>
+  <a hx-post="{% url 'reviews:answer_card' %}" hx-vals='{"answer": true}'>{% trans "Oui" %}</a>
+  
 {% endblock answer-revealed %}
 
 {% block content %}
-  <a hx-get="{% url "reviews:reveal_answer" %}" hx-target="#answer-revealed">{{ card }}</a>
+  <a id="card-text" hx-get="{% url "reviews:reveal_answer" %}" hx-target="#answer-revealed">{{ card }}</a>
   <div id="answer-revealed">
 
   </div>
