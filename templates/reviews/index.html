@@ -3,8 +3,8 @@
 {% block content %}
   {% trans "Vos révisions passées" %}
 
-  {% if go_review %}
-    <a hx-post="{% url "reviews:start" %}">{{ go_review }}</a>
+  {% if start_review_message %}
+    <a hx-post="{% url "reviews:start" %}">{{ start_review_message }}</a>
   {% endif %}
 
 

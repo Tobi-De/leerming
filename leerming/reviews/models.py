@@ -56,6 +56,24 @@ class Review(TimeStampedModel):
         return f"Revu du {self.creation_date} - score: {self.score_percentage}%"
 
     @classmethod
+    def get_review_start_message(
+        cls, request: HttpRequest, reviewer: User
+    ) -> str | None:
+        if not reviewer.profile.is_in_review_days(dt.date.today().weekday()):
+            return
+        if reviewer.reviews.count():
+            return _("Démarrez votre première révision!")
+        if cls.get_current_review(reviewer=reviewer, request=request):
+            return _("Continuez votre révision!")
+        now = timezone.now()
+        reviewer_time = reviewer.profile.review_time
+        review_date = now.replace(hour=reviewer_time.hour, minute=reviewer_time.minute)
+        # the user can start the review in a two hours range before the review time
+        two_hours_before_review_time = review_date - dt.timedelta(hours=2)
+        if now > two_hours_before_review_time:
+            return _("Démarrer votre révision d'aujourd'hui")
+
+    @classmethod
     def compute_score_percentage(cls, score: int, nbr_of_cards: int) -> int:
         return 0 if nbr_of_cards == 0 else round((score / nbr_of_cards) * 100)
 

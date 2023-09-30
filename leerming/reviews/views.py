@@ -1,4 +1,3 @@
-import datetime as dt
 from django import forms
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse, Http404
@@ -15,17 +14,15 @@ from .models import Review, NoCardsToReviewError, SessionEndedError
 
 
 def index(request: HttpRequest):
-    go_review = ""
-    if request.user.reviews.count() == 0 and request.user.profile.is_in_review_days(
-        dt.date.today().weekday()
-    ):
-        go_review = _("Démarrez votre première révision!")
-    if Review.get_current_review(reviewer=request.user, request=request):
-        go_review = _("Continuez votre révision!")
     return TemplateResponse(
         request,
         "reviews/index.html",
-        {"reviews": request.user.reviews.all(), "go_review": go_review},
+        {
+            "reviews": request.user.reviews.all(),
+            "start_review_message": Review.get_review_start_message(
+                request=request, reviewer=request.user
+            ),
+        },
     )
 
 
