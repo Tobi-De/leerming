@@ -32,7 +32,7 @@ class SessionEndedError(ReviewError):
     pass
 
 
-class Review(models.Model):
+class Review(TimeStampedModel):
     """Reviews are made daily, there is only one review per day per user. This constraints
     are made for the sake of simplicity and to help the user being consistent in his learning.
     """
@@ -60,15 +60,13 @@ class Review(models.Model):
         return 0 if nbr_of_cards == 0 else round((score / nbr_of_cards) * 100)
 
     @classmethod
-    def _get_or_create(cls, reviewer: User, date:dt.date) -> "Review":
+    def _get_or_create(cls, reviewer: User, date: dt.date) -> "Review":
         if not reviewer.flashcards.filter(mastered_at__isnull=True).filter():
             raise NoCardsToReviewError("No cards to review")
-        
+
         with suppress(cls.DoesNotExist):
-            return cls.objects.get(
-            reviewer=reviewer, creation_date=date
-        )
-       
+            return cls.objects.get(reviewer=reviewer, creation_date=date)
+
         cards = []
         for card in reviewer.flashcards.filter(mastered_at__isnull=True):
             if not card.last_review_date:
@@ -181,7 +179,7 @@ class Review(models.Model):
             return cls.objects.get(reviewer=reviewer, completed_at__isnull=True)
 
     @classmethod
-    def get_last_review_date(cls, reviewer: User) -> dt.date| None:
+    def get_last_review_date(cls, reviewer: User) -> dt.date | None:
         with suppress(AttributeError):
             return (
                 cls.objects.filter(reviewer=reviewer, completed_at__isnull=False)

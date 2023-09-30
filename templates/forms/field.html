@@ -1,29 +1,42 @@
 {% load widget_tweaks %}
 
-<!-- The wrapper id is used a lot with htmx, don't change it !!!-->
-<div class="mb-4" id="{{ field.auto_id }}_wrapper">
-  <label for="{{ field.id_for_label }}"
-         class="mb-2 label {% if field.field.required %}font-bold{% endif %}">{{ field.label }}</label>
+<div class="mb-4 sm:mb-8" id="{{ field.auto_id }}_wrapper">
 
+  <!-- checkbox input -->
   {% if field.field.widget.input_type == "checkbox" %}
-    {{ field }}
+    <div class="flex">
+      {{ field|add_class:"shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" }}
+      <label for="{{ field.id_for_label }}"
+             class="text-sm text-gray-500 ml-3 dark:text-gray-400">{{ field.label }}</label>
+    </div>
+  {% elif field.field.widget.input_type == "file" %}
+    <!-- file input -->
+    <label for="{{ field.id_for_label }}" class="sr-only">{{ field.label }}</label>
+    {{ field|add_class:"block w-full border border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400" }}
   {% else %}
+    <!-- default text input -->
+    <label for="{{ field.id_for_label }}"
+           class="block text-sm font-medium mb-2 dark:text-white">{{ field.label }}</label>
     {% if field.errors %}
-      {{ field|add_class:"form-control error bg-red-50 border text-red-900 border-red-500" }}
+      <div class="relative">
+        {{ field|add_class:"py-3 px-4 block w-full border-red-500 rounded-md text-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" }}
+        <div class="absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
+          {% heroicon_solid "exclamation-circle" class="text-red-500" %}
+        </div>
+      </div>
     {% else %}
-      {{ field|add_class:"form-control" }}
+      {{ field|add_class:"py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400" }}
     {% endif %}
   {% endif %}
 
+  <!-- common to all fields -->
   {% if field.help_text %}
-    {% if help_text_inline %}
-      <p id="hint_{{ field.auto_id }}" class="text-gray-600 dark:text-white">{{ field.help_text|safe }}</p>x
-    {% else %}
-      <small id="hint_{{ field.auto_id }}" class="text-gray-600 dark:text-white">{{ field.help_text|safe }}</small>
-    {% endif %}
+    <p id="hint_{{ field.auto_id }}" class="text-sm text-gray-500 mt-2">{{ field.help_text|safe }}</p>
   {% endif %}
-
   {% for error in field.errors %}
-    <p class="text-sm error text-red-600 dark:text-red-500 mt-1">{{ error }}</p>
+    <p class="text-sm text-red-600 mt-2">{{ error }}</p>
   {% endfor %}
 </div>
+
+
+

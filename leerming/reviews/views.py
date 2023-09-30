@@ -75,11 +75,14 @@ def reveal_answer(request: HttpRequest):
 
 answer_field = forms.BooleanField(required=False)
 
+
 @require_http_methods(["POST"])
 def answer_card(request: HttpRequest):
     current_card = Review.get_current_card(request)
     Review.add_answer(
-        card_id=current_card.id, answer=answer_field.clean(request.POST.get("answer")), request=request
+        card_id=current_card.id,
+        answer=answer_field.clean(request.POST.get("answer")),
+        request=request,
     )
     return redirect("reviews:move_to_next_card")
 

@@ -2,40 +2,40 @@
 
 <!-- The wrapper id is used a lot with htmx, don't change it !!!-->
 <div class="mb-4" id="{{ field.auto_id }}_wrapper">
-  <label for="{{ field.id_for_label }}"
-         class="mb-2 label {% if field.field.required %}font-bold{% endif %}">{{ field.label }}</label>
+    <label for="{{ field.id_for_label }}"
+           class="mb-2 label {% if field.field.required %}font-bold{% endif %}">{{ field.label }}</label>
 
-  {% if field.errors %}
-    {{ field|add_class:"error bg-red-50 border text-red-900 border-red-500" }}
-  {% else %}
-    {{ field }}
-  {% endif %}
-
-  {% if field.help_text %}
-    {% if help_text_inline %}
-      <p id="hint_{{ field.auto_id }}" class="text-gray-600 dark:text-white">{{ field.help_text|safe }}</p>x
+    {% if field.errors %}
+        {{ field|add_class:"error bg-red-50 border text-red-900 border-red-500" }}
     {% else %}
-      <small id="hint_{{ field.auto_id }}" class="text-gray-600 dark:text-white">{{ field.help_text|safe }}</small>
+        {{ field }}
     {% endif %}
-  {% endif %}
 
-  {% for error in field.errors %}
-    <p class="text-sm error text-red-600 dark:text-red-500 mt-1">{{ error }}</p>
-  {% endfor %}
+    {% if field.help_text %}
+        {% if help_text_inline %}
+            <p id="hint_{{ field.auto_id }}" class="text-gray-600 dark:text-white">{{ field.help_text|safe }}</p>x
+        {% else %}
+            <small id="hint_{{ field.auto_id }}" class="text-gray-600 dark:text-white">{{ field.help_text|safe }}</small>
+        {% endif %}
+    {% endif %}
+
+    {% for error in field.errors %}
+        <p class="text-sm error text-red-600 dark:text-red-500 mt-1">{{ error }}</p>
+    {% endfor %}
 </div>
 
 <script>
 
-  function initTomSelect() {
-    try {
-      new TomSelect("#{{ field.auto_id }}", {})
-    } catch (error) {
+    function initTomSelect() {
+        try {
+            new TomSelect("#{{ field.auto_id }}", {})
+        } catch (error) {
+        }
     }
-  }
 
-  <!-- fixme this is probably wrong -->
+    <!-- fixme this is probably wrong -->
   //document.addEventListener("DOMContentLoaded", initTomSelect)
-  document.addEventListener("htmx:load", initTomSelect)
+    document.addEventListener("htmx:load", initTomSelect)
   //document.addEventListener("htmx:afterSwap", initTomSelect)
 
 </script>
