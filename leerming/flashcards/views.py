@@ -45,17 +45,16 @@ def edit(request: HttpRequest, pk: int):
 
 def show_question(request: HttpRequest, pk: int):
     flashcard = get_object_or_404(FlashCard.objects.filter(owner=request.user), pk=pk)
-    html = f""" <a href="#"  hx-swap="outerHTML" hx-get="{reverse('flashcards:show_answer', args=[pk])}" hx-target="this">
-              <h3 class="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">{flashcard}</h3>
-            </a>"""
+    html = f"""<p hx-get="{reverse('flashcards:show_answer', args=[pk])}"
+             hx-target="this" hx-swap="outerHTML" class="mt-2 text-gray-800 dark:text-gray-400 cursor-pointer">{flashcard}</p>"""
     return HttpResponse(html)
 
 
 def show_answer(request: HttpRequest, pk: int):
     flashcard = get_object_or_404(FlashCard.objects.filter(owner=request.user), pk=pk)
-    html = f"""<a href="#"  hx-swap="outerHTML" hx-get="{reverse('flashcards:show_question', args=[pk])}" hx-target="this">
-                <h3 class="mb-2 text-sm font-bold tracking-tight text-green-400">{flashcard.answer_display}</h3>
-              </a>"""
+    html = f"""<p hx-get="{reverse('flashcards:show_question', args=[pk])}"hx-target="this" hx-swap="outerHTML"
+    class="mt-2 text-green-800 dark:text-green-400 cursor-pointer">{flashcard.answer_display}</p>
+              """
     return HttpResponse(html)
 
 

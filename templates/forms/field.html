@@ -5,7 +5,7 @@
   <!-- checkbox input -->
   {% if field.field.widget.input_type == "checkbox" %}
     <div class="flex">
-      {{ field|add_class:"shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" }}
+      {{ field|add_class:"shrink-0 mt-0.5 border-gray-200 rounded text-blue-600  focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" }}
       <label for="{{ field.id_for_label }}"
              class="text-sm text-gray-500 ml-3 dark:text-gray-400">{{ field.label }}</label>
     </div>

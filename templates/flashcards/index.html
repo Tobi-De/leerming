@@ -1,31 +1,63 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block breadcrumb %}
-{% trans "Cartes" as menu %}
-{% include "partials/breadcrumb.html" with menu=menu %}
+  {% trans "Cartes" as menu %}
+  {% include "partials/breadcrumb.html" with menu=menu %}
 {% endblock breadcrumb %}
 
 {% block content %}
-    {% trans "liste de carte" %}
+ <header class="mb-4">
+
+      <h1 class="block text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white">{% trans "Vos Cartes" %}</h1>
+      <p class="mt-2 text-lg text-gray-800 dark:text-gray-400">This is a simple application layout with sidebar and header examples using Tailwind CSS.</p>
+      <div class="mt-5 flex flex-col items-center gap-2 sm:flex-row sm:gap-3">
+        <a href="{% url 'flashcards:create' %}" class="w-full sm:w-auto inline-flex justify-center items-center gap-x-3 text-center bg-blue-600 hover:bg-blue-700 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-white transition py-3 px-4 dark:focus:ring-offset-gray-800">
+          {% heroicon_outline "plus" width="16" height="16" %}
+         {% translate "Nouvelle carte" %}
+        </a>
+      </div>
+    </header>
 
 
+  {#<div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">#}
+  <!-- Grid -->
+  <div class="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+    {% for flashcard in flashcards %}
+      <div class="max-w-2xl px-8 py-4 bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-light text-gray-600 dark:text-gray-400">
+            {% if flashcard.next_review_date %}
+            {{ flashcard.last_review_date|naturalday }}
+            {% else %}
+              {% trans "Jamais" %}
+            {% endif %}
+          </span>
 
-    <a href="{% url 'flashcards:create' %}">{% translate "Nouvelle carte" %}</a>
-    <ul>
-        {% for flashcard in flashcards %}
-            {% block flashcard %}
-                <li
-                    class="max-w-sm p-6 my-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                    <a href="#" hx-get="{% url 'flashcards:show_answer' flashcard.pk %}" hx-target="this" hx-swap="outerHTML">
-                        <h3 class="mb-2 text-sm font-bold tracking-tight text-gray-900 dark:text-white">{{ flashcard }}</h3>
-                    </a>
-                    {{ flashcard.level }}
-                    <a href="{% url 'flashcards:edit' flashcard.pk %}"
-                       class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        {% heroicon_mini "pencil" %}{% trans "Édité" %}
-                    </a>
-                </li>
-            {% endblock flashcard %}
-        {% endfor %}
-    </ul>
+          <a
+            class="px-3 py-1 text-sm font-bold bg-gray-500 text-white rounded"
+            tabindex="0" role="button">{{ flashcard.level }}</a>
+        </div>
+
+        <div class="mt-2">
+          <p hx-get="{% url 'flashcards:show_answer' flashcard.pk %}"
+             hx-target="this" hx-swap="outerHTML" class="mt-2 text-gray-800 dark:text-gray-400 cursor-pointer">{{ flashcard }}</p>
+        </div>
+
+        <div class="flex items-center justify-end mt-4">
+          <a  href="{% url 'flashcards:edit' flashcard.pk %}"
+                  class="py-[.688rem] px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-gray-200 font-semibold text-blue-500 hover:text-white hover:bg-blue-500 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:border-gray-700 dark:hover:border-blue-500">
+            {% trans "Édité" %}
+            {% heroicon_outline "pencil" width="15" height="15"  %}
+          </a>
+        </div>
+      </div>
+
+    {% endfor %}
+
+  </div>
+  <!-- End Grid -->
+  {#</div>#}
+
+
 {% endblock content %}

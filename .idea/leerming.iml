@@ -18,6 +18,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="alpinejs" level="application" />
     <orderEntry type="library" name="flowbite" level="application" />
     <orderEntry type="library" name="tom-select" level="application" />
   </component>
