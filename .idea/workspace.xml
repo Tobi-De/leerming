@@ -5,32 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41c5c547-a60c-425a-b8f5-133a48ac7fe3" name="Changes" comment="feat: add profile register and setup flowbite">
-      <change afterPath="$PROJECT_DIR$/templates/reviews/details.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/reviews/end.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/reviews/no_cards_to_review.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/reviews/show_current_card.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/flashcards/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/flashcards/migrations/0002_flashcard_owner.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/flashcards/migrations/0003_alter_flashcard_options_alter_flashcard_level.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/profiles/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/profiles/migrations/0002_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/migrations/0002_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/profiles/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/profiles/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/reviews/errors.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/reviews/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/reviews/migrations/0002_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/migrations/0002_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/reviews/migrations/0003_alter_review_options_remove_review_user_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/reviews/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/reviews/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/tasks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/reviews/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/reviews/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/users/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/users/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/css/tailwind.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/css/tailwind.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/flashcards/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements-dev.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements-dev.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/reviews/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/reviews/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/forms/field.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/forms/field.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +59,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;codespace-reimagined-space-zebra-vqxg7q6g7p26xr9&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/tobi/Builds/leerming/config/settings.py&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/tobi/Builds/leerming/leerming/flashcards&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -88,8 +70,17 @@
   }
 }</component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/leerming/flashcards" />
+      <recent name="$PROJECT_DIR$/templates/flashcards/templates/flashcards" />
       <recent name="$PROJECT_DIR$/templates/flashcards" />
+      <recent name="$PROJECT_DIR$/templates" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/leerming/flashcards/templates/flashcards" />
+      <recent name="$PROJECT_DIR$/leerming/flashcards/templates" />
+      <recent name="$PROJECT_DIR$/templates/flashcards" />
+      <recent name="$PROJECT_DIR$/templates/flashcards/templates/flashcards" />
       <recent name="$PROJECT_DIR$/templates/forms" />
     </key>
   </component>
@@ -112,7 +103,9 @@
       <workItem from="1695455557825" duration="24216000" />
       <workItem from="1695752290543" duration="1601000" />
       <workItem from="1695813009032" duration="11801000" />
-      <workItem from="1695826160183" duration="7208000" />
+      <workItem from="1695826160183" duration="9935000" />
+      <workItem from="1695963950338" duration="2592000" />
+      <workItem from="1696017003385" duration="601000" />
     </task>
     <task id="LOCAL-00001" summary="feat: add profile register and setup flowbite">
       <option name="closed" value="true" />
@@ -128,8 +121,20 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: add profile register and setup flowbite" />
     <option name="LAST_COMMIT_MESSAGE" value="feat: add profile register and setup flowbite" />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
   </component>
 </project>

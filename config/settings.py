@@ -34,6 +34,7 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.sites",
     "django.contrib.staticfiles",
+    "django.forms",
 ]
 
 
@@ -48,6 +49,7 @@ THIRD_PARTY_APPS = [
     "compressor",
     "django_htmx",
     "heroicons",
+    "widget_tweaks",
 ]
 
 LOCAL_APPS = [
@@ -206,4 +208,4 @@ ADMIN_URL = env("ADMIN_URL", default="admin/")
 SITE_ID = 1
 LOGIN_REDIRECT_URL = "/"
 AUTH_USER_MODEL = "users.User"
-# FORM_RENDERER = "leerming.core.forms.FormRenderer"
+FORM_RENDERER = "leerming.core.forms.FormRenderer"
