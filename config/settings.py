@@ -49,7 +49,6 @@ THIRD_PARTY_APPS = [
     "django_q",
     "django_extensions",
     "django_browser_reload",
-    "compressor",
     "django_htmx",
     "heroicons",
     "widget_tweaks",
@@ -152,11 +151,6 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
-STATICFILES_FINDERS = (
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "compressor.finders.CompressorFinder",
-)
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR.joinpath("media"))

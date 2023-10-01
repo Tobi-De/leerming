@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="41c5c547-a60c-425a-b8f5-133a48ac7fe3" name="Changes" comment="feat: add profile register and setup flowbite">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/users/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/users/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +105,7 @@
       <workItem from="1695826160183" duration="9935000" />
       <workItem from="1695963950338" duration="2592000" />
       <workItem from="1696017003385" duration="29059000" />
-      <workItem from="1696153189556" duration="11931000" />
+      <workItem from="1696153189556" duration="14507000" />
     </task>
     <task id="LOCAL-00001" summary="feat: add profile register and setup flowbite">
       <option name="closed" value="true" />
