@@ -5,42 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41c5c547-a60c-425a-b8f5-133a48ac7fe3" name="Changes" comment="feat: add profile register and setup flowbite">
-      <change afterPath="$PROJECT_DIR$/templates/account/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/account/email_confirm.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/account/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/account/logout.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/account/password_change.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/account/password_reset.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/account/password_reset_done.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/account/signup.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/account/verification_sent.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/leerming.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/leerming.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/css/tailwind.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/css/tailwind.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/flashcards/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/flashcards/migrations/0002_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/migrations/0002_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/profiles/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/profiles/migrations/0002_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/migrations/0002_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/profiles/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/profiles/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/reviews/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/reviews/migrations/0002_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/migrations/0002_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/reviews/migrations/0003_review_created_review_modified.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/leerming/users/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/users/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/users/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/users/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/flashcards/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/flashcards/create.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/flashcards/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/flashcards/edit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/flashcards/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/flashcards/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/forms/field.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/forms/field.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/forms/non_field_errors.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/forms/non_field_errors.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/partials/breadcrumb.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/partials/breadcrumb.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/profiles/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profiles/register.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/reviews/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/reviews/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,7 +103,7 @@
       <workItem from="1695826160183" duration="9935000" />
       <workItem from="1695963950338" duration="2592000" />
       <workItem from="1696017003385" duration="29059000" />
-      <workItem from="1696153189556" duration="11681000" />
+      <workItem from="1696153189556" duration="11931000" />
     </task>
     <task id="LOCAL-00001" summary="feat: add profile register and setup flowbite">
       <option name="closed" value="true" />
