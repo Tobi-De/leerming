@@ -1,0 +1,33 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+
+    <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-4 sm:p-7">
+            <div class="text-center">
+                <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">{% trans "Sign Up" %}</h1>
+
+                <p class="mt-2 mb-4 text-sm text-gray-600 dark:text-gray-400">{% blocktrans %}Already have an account? Then
+                    please <a class="text-blue-600 decoration-2 hover:underline font-medium" href="{{ login_url }}">sign in</a>
+                    .{% endblocktrans %}
+                </p>
+            </div>
+            <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+                {{ form }}
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                {% endif %}
+                <button
+                    class="py-3 px-4  w-full rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
+                    type="submit">{% trans "Sign Up" %} &raquo;
+                </button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

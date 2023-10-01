@@ -12,12 +12,14 @@ class SignupForm(AllauthSignupForm):
     full_name = forms.CharField(
         label="Nom complet",
         widget=forms.TextInput(attrs={"placeholder": "Entrez votre nom complet"}),
+        required=False,
     )
     short_name = forms.CharField(
         label="Nom court",
         widget=forms.TextInput(
             attrs={"placeholder": "Entrez votre petit nom ou un prénom"}
         ),
+        required=False,
     )
 
     def save(self, request: HttpRequest):

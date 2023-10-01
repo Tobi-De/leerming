@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import environ
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -43,6 +44,7 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
     "schema_viewer",
     "django_q",
     "django_extensions",
@@ -203,10 +205,24 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "optional"  # TODO: change to mandatory in prod
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+        "OAUTH_PKCE_ENABLED": True,
+        "EMAIL_AUTHENTICATION": True,
+    }
+}
 
 # Our settings
 ADMIN_URL = env("ADMIN_URL", default="admin/")
 SITE_ID = 1
+LOGIN_URL = reverse_lazy("account_login")
 LOGIN_REDIRECT_URL = "/"
 AUTH_USER_MODEL = "users.User"
 FORM_RENDERER = "leerming.core.forms.FormRenderer"

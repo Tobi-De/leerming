@@ -11,7 +11,7 @@ from leerming.profiles.decorators import profile_required
 urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     path("schema-viewer/", include("schema_viewer.urls")),
-    path("accounts/", include("allauth.urls")),
+    path("account/", include("allauth.urls")),
     path(
         "profiles/",
         decorator_include(

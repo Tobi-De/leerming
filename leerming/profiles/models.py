@@ -1,8 +1,17 @@
+from contextlib import suppress
+
 from django.contrib.postgres.fields import ArrayField
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-from django_lifecycle import LifecycleModelMixin, hook, AFTER_CREATE, BEFORE_SAVE
+from django_lifecycle import (
+    LifecycleModelMixin,
+    hook,
+    AFTER_CREATE,
+    BEFORE_SAVE,
+    AFTER_UPDATE,
+)
 from django_q.models import Schedule
 from model_utils.models import TimeStampedModel
 
@@ -22,8 +31,11 @@ class Profile(TimeStampedModel, LifecycleModelMixin):
     user = models.OneToOneField(
         "users.User", related_name="profile", on_delete=models.CASCADE
     )
-    review_days = ArrayField(models.PositiveSmallIntegerField(choices=Weekday.choices))
-    review_time = models.TimeField()
+    review_days = ArrayField(
+        models.PositiveSmallIntegerField(choices=Weekday.choices),
+        verbose_name=_("Jours de révision"),
+    )
+    review_time = models.TimeField(verbose_name=_("Heure de révision"))
 
     @cached_property
     def review_scheduler_name(self) -> str:
@@ -35,6 +47,19 @@ class Profile(TimeStampedModel, LifecycleModelMixin):
     @hook(BEFORE_SAVE)
     def sort_review_days(self):
         self.review_days = sorted(self.review_days)
+
+    @hook(
+        AFTER_UPDATE,
+        when_any=["review_days", "review_time"],
+        has_changed=True,
+    )
+    def update_scheduler(self):
+        with suppress(ObjectDoesNotExist):
+            Schedule.objects.get(
+                name=self.review_scheduler_name,
+                func="leerming.reviews.tasks.send_review_notification",
+            ).delete()
+        self.create_next_review_session_schedule()
 
     @hook(AFTER_CREATE)
     def create_next_review_session_schedule(self):
