@@ -59,13 +59,17 @@ class Review(TimeStampedModel):
     def get_review_start_message(
         cls, request: HttpRequest, reviewer: User
     ) -> str | None:
+        now = timezone.now()
         if not reviewer.profile.is_in_review_days(dt.date.today().weekday()):
             return
-        if reviewer.reviews.count():
+        if reviewer.reviews.filter(
+            creation_date=now.date(), completed_at__isnull=False
+        ).exists():
+            return
+        if reviewer.reviews.count() == 0:
             return _("Démarrez votre première révision!")
         if cls.get_current_review(reviewer=reviewer, request=request):
             return _("Continuez votre révision!")
-        now = timezone.now()
         reviewer_time = reviewer.profile.review_time
         review_date = now.replace(hour=reviewer_time.hour, minute=reviewer_time.minute)
         # the user can start the review in a two hours range before the review time
