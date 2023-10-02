@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 from django.urls import include
 from django.urls import path
 from django.urls import reverse
+from django.views import defaults as default_views
 
 from leerming.profiles.decorators import profile_required
 
@@ -44,4 +45,22 @@ if settings.DEBUG:
     urlpatterns += [
         path("__reload__/", include("django_browser_reload.urls")),
         path("__debug__/", include("debug_toolbar.urls")),
+    ]
+    urlpatterns += [
+        path(
+            "400/",
+            default_views.bad_request,
+            kwargs={"exception": Exception("Bad Request!")},
+        ),
+        path(
+            "403/",
+            default_views.permission_denied,
+            kwargs={"exception": Exception("Permission Denied")},
+        ),
+        path(
+            "404/",
+            default_views.page_not_found,
+            kwargs={"exception": Exception("Page not Found")},
+        ),
+        path("500/", default_views.server_error),
     ]
