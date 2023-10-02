@@ -119,12 +119,15 @@ class Review(TimeStampedModel):
         return review
 
     @classmethod
-    def end(cls, request: HttpRequest) -> "Review":
+    def end(cls, request: HttpRequest) -> None:
         current_review_id = request.session.get(review_id_session_key)
-        current_review = cls.objects.get(pk=current_review_id)
+        try:
+            current_review = cls.objects.get(pk=current_review_id)
+        except cls.DoesNotExist:
+            return
         if current_review.completed_at:
             # the review has already been end, nothing to do
-            return current_review
+            return
 
         answers = request.session.get(answers_session_key)
 
@@ -155,7 +158,6 @@ class Review(TimeStampedModel):
 
         # create reminder for next review
         current_review.reviewer.profile.create_next_review_session_schedule()
-        return current_review
 
     @classmethod
     def move_to_next_card(cls, request: HttpRequest) -> FlashCard:

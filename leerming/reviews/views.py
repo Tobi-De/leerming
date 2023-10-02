@@ -64,7 +64,7 @@ def reveal_answer(request: HttpRequest):
     return HttpResponse(
         render_block_to_string(
             "reviews/show_current_card.html",
-            "answer-revealed",
+            "answer_revealed",
             context={"card": Review.get_current_card(request)},
         )
     )
@@ -93,9 +93,5 @@ def move_to_next_card(request: HttpRequest):
 
 
 def end(request: HttpRequest):
-    try:
-        Review.end(request)
-        last_review = Review.get_last_review(reviewer=request.user)
-    except Review.DoesNotExist as e:
-        raise Http404 from e
-    return TemplateResponse(request, "reviews/end.html", {"review": last_review})
+    Review.end(request)
+    return TemplateResponse(request, "reviews/end.html")
