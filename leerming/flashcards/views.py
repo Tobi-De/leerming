@@ -4,6 +4,7 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django_htmx.http import HttpResponseClientRedirect
+from render_block import render_block_to_string
 
 from leerming.core.utils import for_htmx
 from .forms import FlashCard, FlashCardCreateForm, FlashCardEditForm
@@ -45,17 +46,12 @@ def edit(request: HttpRequest, pk: int):
 
 def show_question(request: HttpRequest, pk: int):
     flashcard = get_object_or_404(FlashCard.objects.filter(owner=request.user), pk=pk)
-    html = f"""<p hx-get="{reverse('flashcards:show_answer', args=[pk])}"
-             hx-target="this" hx-swap="outerHTML" class="mt-2 text-gray-800 dark:text-gray-400 cursor-pointer">{flashcard}</p>"""
-    return HttpResponse(html)
+    return HttpResponse(render_block_to_string("flashcards/index.html","card_question", {"flashcard": flashcard}))
 
 
 def show_answer(request: HttpRequest, pk: int):
     flashcard = get_object_or_404(FlashCard.objects.filter(owner=request.user), pk=pk)
-    html = f"""<p hx-get="{reverse('flashcards:show_question', args=[pk])}"hx-target="this" hx-swap="outerHTML"
-    class="mt-2 text-green-800 dark:text-green-400 cursor-pointer">{flashcard.answer_display}</p>
-              """
-    return HttpResponse(html)
+    return HttpResponse(render_block_to_string("flashcards/index.html","card_answer", {"flashcard": flashcard}))
 
 
 @require_http_methods(["POST"])
