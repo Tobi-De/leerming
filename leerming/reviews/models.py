@@ -80,6 +80,17 @@ class Review(TimeStampedModel):
     @classmethod
     def compute_score_percentage(cls, score: int, nbr_of_cards: int) -> int:
         return 0 if nbr_of_cards == 0 else round((score / nbr_of_cards) * 100)
+    
+    @classmethod
+    def get_cards_to_review_for(cls, reviewer:User,date:dt.date)->list[FlashCard]:
+        cards = []
+        for card in reviewer.flashcards.filter(mastered_at__isnull=True):
+            if not card.last_review_date:
+                cards.append(card)
+            elif card.last_review_date < date - dt.timedelta(days=7**card.level):
+                cards.append(card)
+        return cards
+
 
     @classmethod
     def _get_or_create(cls, reviewer: User, date: dt.date) -> "Review":
@@ -89,12 +100,7 @@ class Review(TimeStampedModel):
         with suppress(cls.DoesNotExist):
             return cls.objects.get(reviewer=reviewer, creation_date=date)
 
-        cards = []
-        for card in reviewer.flashcards.filter(mastered_at__isnull=True):
-            if not card.last_review_date:
-                cards.append(card)
-            elif card.last_review_date < date - dt.timedelta(days=7**card.level):
-                cards.append(card)
+        cards = cls.get_cards_to_review_for(reviewer,date)
         if not cards:
             raise NoCardsToReviewError("No cards to review")
         instance = cls.objects.create(reviewer=reviewer, creation_date=date)

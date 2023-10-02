@@ -32,7 +32,7 @@ def details(request: HttpRequest, review_id: int):
 
 
 def no_cards_to_review(request: HttpRequest):
-    return TemplateResponse(request, "reviews/no_cards_to_review.html")
+    return TemplateResponse(request, "reviews/no_cards_to_review.html", {'no_cards': not request.user.flashcards.exists()})
 
 
 @require_http_methods(["POST"])
