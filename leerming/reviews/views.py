@@ -47,25 +47,25 @@ def start(request: HttpRequest):
 def show_current_card(request: HttpRequest):
     current_review = Review.get_current_review(reviewer=request.user, request=request)
     if not current_review:
-        messages.info(request, _("Pas de revision en cours"))
-        return redirect("reviews:index")
+        raise Http404(_("No review in progress"))
 
     try:
-        current_card = Review.get_current_card(request)
+        current_card, step = Review.get_current_card(request)
     except FlashCard.DoesNotExist:
         return redirect("reviews:move_to_next_card")
 
     return TemplateResponse(
-        request, "reviews/show_current_card.html", {"card": current_card}
+        request, "reviews/show_current_card.html", {"card": current_card, "step": step}
     )
 
 
 def reveal_answer(request: HttpRequest):
+    current_card, _ = Review.get_current_card(request)
     return HttpResponse(
         render_block_to_string(
             "reviews/show_current_card.html",
             "answer_revealed",
-            context={"card": Review.get_current_card(request)},
+            context={"card":current_card},
         )
     )
 
@@ -75,7 +75,7 @@ answer_field = forms.BooleanField(required=False)
 
 @require_http_methods(["POST"])
 def answer_card(request: HttpRequest):
-    current_card = Review.get_current_card(request)
+    current_card, _ = Review.get_current_card(request)
     Review.add_answer(
         card_id=current_card.id,
         answer=answer_field.clean(request.POST.get("answer")),

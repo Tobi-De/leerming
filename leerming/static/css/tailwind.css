@@ -906,6 +906,14 @@ select {
   margin-top: 0.75rem;
 }
 
+.mb-auto {
+  margin-bottom: auto;
+}
+
+.mt-auto {
+  margin-top: auto;
+}
+
 .block {
   display: block;
 }
@@ -1056,6 +1064,14 @@ select {
 
 .max-w-xl {
   max-width: 36rem;
+}
+
+.max-w-7xl {
+  max-width: 80rem;
+}
+
+.max-w-\[50rem\] {
+  max-width: 50rem;
 }
 
 .flex-none {
@@ -1473,6 +1489,11 @@ select {
   padding-bottom: .688rem;
 }
 
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
 .pb-10 {
   padding-bottom: 2.5rem;
 }
@@ -1561,6 +1582,11 @@ select {
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
+}
+
+.text-7xl {
+  font-size: 4.5rem;
+  line-height: 1;
 }
 
 .font-bold {
@@ -1691,6 +1717,10 @@ select {
 .ring-white {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(255 255 255 / var(--tw-ring-opacity));
+}
+
+.ring-offset-white {
+  --tw-ring-offset-color: #fff;
 }
 
 .blur {
@@ -2145,6 +2175,10 @@ select {
   --tw-ring-color: rgb(31 41 55 / var(--tw-ring-opacity));
 }
 
+:is(.dark .dark\:ring-offset-slate-900) {
+  --tw-ring-offset-color: #0f172a;
+}
+
 :is(.dark .dark\:before\:border-gray-600)::before {
   content: var(--tw-content);
   --tw-border-opacity: 1;
@@ -2322,6 +2356,11 @@ select {
   .sm\:text-3xl {
     font-size: 1.875rem;
     line-height: 2.25rem;
+  }
+
+  .sm\:text-9xl {
+    font-size: 8rem;
+    line-height: 1;
   }
 }
 

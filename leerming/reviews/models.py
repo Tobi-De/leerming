@@ -189,9 +189,14 @@ class Review(TimeStampedModel):
         request.session[answers_session_key] = answers
 
     @classmethod
-    def get_current_card(cls, request: HttpRequest) -> FlashCard:
+    def get_current_card(cls, request: HttpRequest) -> tuple[FlashCard, "str"]:
         current_card_id = request.session.get(current_card_session_key)
-        return FlashCard.objects.get(pk=current_card_id)
+        current_card_index = request.session.get(cards_session_key).index(
+            current_card_id
+        )
+        nbr_of_cards = len(request.session.get(cards_session_key))
+        step = f"{current_card_index + 1}/{nbr_of_cards}"
+        return FlashCard.objects.get(pk=current_card_id), step
 
     @classmethod
     def get_current_review(
