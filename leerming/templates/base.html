@@ -1,12 +1,12 @@
 {% load static %}
 {% load django_htmx %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block head_title %}leerming{% endblock %}</title>
-        <link rel="stylesheet" href="{% static "css/tailwind.css" %}">
+        <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
         <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
         <script defer src="{% static 'vendors/htmx/htmx.min.js' %}"></script>
         {% django_htmx_script %}
@@ -20,7 +20,7 @@
     </head>
 
 
-    <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="bg-gray-50 dark:bg-slate-900">
+    <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="bg-gray-50 dark:bg-slate-900 h-full">
 
         {% block body %}
   <!-- ========== HEADER ========== -->

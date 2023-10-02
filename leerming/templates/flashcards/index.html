@@ -6,6 +6,11 @@
     {% include "partials/breadcrumb.html" with menu=menu %}
 {% endblock breadcrumb %}
 
+{% block card_answer %}
+<p hx-get="{% url 'flashcards:show_question' flashcard.pk %}" hx-target="this" hx-swap="outerHTML"
+    class="mt-2 text-green-800 dark:text-green-400 cursor-pointer">{{flashcard.answer_display}}</p>
+{% endblock card_answer %}
+
 {% block content %}
     <header class="mb-4">
 
@@ -40,9 +45,11 @@
                 </div>
 
                 <div class="mt-2">
+                    {% block card_question %}
                     <p hx-get="{% url 'flashcards:show_answer' flashcard.pk %}"
                        hx-target="this" hx-swap="outerHTML" class="mt-2 text-gray-800 dark:text-gray-400 cursor-pointer">{{ flashcard }}</p>
-                </div>
+                    {% endblock card_question %}
+                    </div>
 
                 <div class="flex items-center justify-end mt-4">
                     <a  href="{% url 'flashcards:edit' flashcard.pk %}"
