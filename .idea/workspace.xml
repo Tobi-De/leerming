@@ -5,10 +5,78 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41c5c547-a60c-425a-b8f5-133a48ac7fe3" name="Changes" comment="feat: add profile register and setup flowbite">
+      <change afterPath="$PROJECT_DIR$/.env.template" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.watchmanconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/asgi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker/entrypoint.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker/gunicorn.conf.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leerming/core/management/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leerming/core/management/commands/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leerming/core/management/commands/makesuperuser.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leerming/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dockerignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.pre-commit-config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/.pre-commit-config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.python-version" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/tests/test_file.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conftest.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/android-chrome-192x192.png" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/android-chrome-192x192.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/android-chrome-512x512.png" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/android-chrome-512x512.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/apple-touch-icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/apple-touch-icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/css/input.css" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/css/input.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/css/tailwind.css" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/css/tailwind.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/favicon-16x16.png" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/favicon-16x16.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/favicon-32x32.png" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/favicon-32x32.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/javascript/theme-switcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/javascript/theme-switcher.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/site.webmanifest" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/site.webmanifest" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/vendors/htmx/htmx.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/vendors/htmx/htmx.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/vendors/preline/preline.js" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/vendors/preline/preline.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/profiles/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements-dev.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements-dev.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/runserver.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/account/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/email_confirm.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/account/email_confirm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/account/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/logout.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/account/logout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/password_change.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/account/password_change.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/password_reset.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/account/password_reset.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/password_reset_done.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/account/password_reset_done.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/account/signup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/account/verification_sent.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/account/verification_sent.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/flashcards/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/flashcards/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/flashcards/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/flashcards/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/flashcards/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/flashcards/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/forms/field.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/forms/field.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/forms/flashcard.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/forms/flashcard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/forms/form.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/forms/form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/forms/hidden_fields.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/forms/hidden_fields.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/forms/non_field_errors.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/forms/non_field_errors.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/forms/tom_select_field.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/forms/tom_select_field.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/partials/breadcrumb.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/partials/breadcrumb.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/profiles/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/profiles/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/reviews/details.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/reviews/details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/reviews/end.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/reviews/end.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/reviews/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/reviews/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/reviews/no_cards_to_review.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/reviews/no_cards_to_review.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/reviews/show_current_card.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/reviews/show_current_card.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +123,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/tobi/Builds/leerming/templates/account&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/tobi/Builds/leerming/new_leerming/leerming&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -69,18 +137,18 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/new_leerming/leerming" />
+      <recent name="$PROJECT_DIR$/new_leerming/leerming/leerming" />
+      <recent name="$PROJECT_DIR$/new_leerming/leerming/leerming/templates" />
+      <recent name="$PROJECT_DIR$/new_leerming" />
       <recent name="$PROJECT_DIR$/templates/account" />
-      <recent name="$PROJECT_DIR$/templates/accounts" />
-      <recent name="$PROJECT_DIR$/frontend/vendors/preline" />
-      <recent name="$PROJECT_DIR$/leerming/flashcards" />
-      <recent name="$PROJECT_DIR$/templates/flashcards/templates/flashcards" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/new_leerming/leerming/leerming" />
+      <recent name="$PROJECT_DIR$/new_leerming/leerming" />
       <recent name="$PROJECT_DIR$/leerming/flashcards/templates/flashcards" />
       <recent name="$PROJECT_DIR$/leerming/flashcards/templates" />
-      <recent name="$PROJECT_DIR$/templates/flashcards" />
-      <recent name="$PROJECT_DIR$/templates/flashcards/templates/flashcards" />
-      <recent name="$PROJECT_DIR$/templates/forms" />
     </key>
   </component>
   <component name="RunAnythingCache">

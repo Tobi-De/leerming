@@ -1,8 +1,0 @@
-**/__pycache__
-*.pyc
-.*
-docker-compose.yml
-Dockerfile
-justfile
-LICENSE
-README.md

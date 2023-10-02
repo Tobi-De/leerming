@@ -2,57 +2,58 @@
 name = "learming"
 version = "0.1.0"
 description = "Add your description here"
-authors = [{ name = "Tobi DEGNON", email = "tobidegnon@proton.me" }]
-dependencies = [
-    "Django",
-    "django-click",
-    "django-test-plus",
-    "model-bakery",
-    "pre-commit",
-    "psycopg2-binary",
-    "pytest",
-    "pytest-cov",
-    "pytest-django",
-    "whitenoise",
-    "django-environ>=0.11.2",
-    "gunicorn>=21.2.0",
-    "django-q2>=1.5.5",
-    "django-schema-viewer>=0.1.0",
-    "django-allauth>=0.56.1",
-    "django-model-utils>=4.3.1",
-    "django-improved-user[factory]>=2.0a2",
-    "django-htmx>=1.16.0",
-    "django-lifecycle>=1.0.2",
-    "django-browser-reload>=1.11.0",
-    "django-extensions>=3.2.3",
-    "django-decorator-include>=3.0",
-    "django-render-block>=0.9.2",
-    "heroicons[django]>=2.4.0",
-    "django-widget-tweaks>=1.5.0",
-]
 readme = "README.md"
-requires-python = ">= 3.8"
 license = { text = "MIT" }
+authors = [{ name = "Tobi DEGNON", email = "tobidegnon@proton.me" }]
+requires-python = ">= 3.8"
+dependencies = [
+  "Django",
+  "django-allauth>=0.56.1",
+  "django-anymail[ses]>=10.1",
+  "django-browser-reload>=1.11",
+  "django-click",
+  "django-debug-toolbar>=4.2",
+  "django-decorator-include>=3",
+  "django-environ>=0.11.2",
+  "django-extensions>=3.2.3",
+  "django-htmx>=1.16",
+  "django-improved-user[factory]>=2.0a2",
+  "django-lifecycle>=1.0.2",
+  "django-model-utils>=4.3.1",
+  "django-q2>=1.5.5",
+  "django-render-block>=0.9.2",
+  "django-schema-viewer>=0.1",
+  "django-test-plus",
+  "django-widget-tweaks>=1.5",
+  "gunicorn>=21.2",
+  "heroicons[django]>=2.4",
+  "model-bakery",
+  "pre-commit",
+  "psycopg2",
+  "pytest",
+  "pytest-cov",
+  "pytest-django",
+  "sentry-sdk>=1.31",
+  "whitenoise",
+]
 
 [build-system]
-requires = ["hatchling"]
 build-backend = "hatchling.build"
-
-[tool.rye]
-managed = true
-dev-dependencies = [
-    "fuzzy-couscous>=3.1.1",
-    "ipython>=8.12.2",
+requires = [
+  "hatchling",
 ]
-
-[tool.rye.scripts]
-tailwind = "npx tailwindcss -i frontend/css/input.css -o frontend/css/tailwind.css --watch"
 
 [tool.hatch.metadata]
 allow-direct-references = true
 
 [tool.black]
 target-version = ["py310"]
+
+[tool.pytest.ini_options]
+addopts = "--cov --nomigrations --reuse-db"
+DJANGO_SETTINGS_MODULE = "config.settings"
+norecursedirs = ".git* frontend requirements templates"
+python_files = "test_*.py"
 
 [tool.coverage.run]
 omit = [
@@ -63,15 +64,43 @@ omit = [
     "conftest.py",
 ]
 
-[tool.pytest.ini_options]
-addopts = "--cov --nomigrations --reuse-db"
-DJANGO_SETTINGS_MODULE = "config.settings"
-norecursedirs = ".git* frontend requirements templates"
-python_files = "test_*.py"
+[tool.mypy]
+python_version = "3.10"
+check_untyped_defs = true
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+plugins = ["mypy_django_plugin.main"]
+exclude = ["/migrations/"]
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "fuzzy-couscous>=3.1.1",
+    "ipython>=8.12.2",
+]
+
+[tool.rye.scripts]
+server = "python manage.py runserver"
+tailwind = "npx tailwindcss -i leerming/static/css/input.css -o leerming/static/css/tailwind.css --watch"
+tailwind-prod = "npx tailwindcss -i leerming/static/css/input.css -o leerming/static/css/tailwind.css --minify"
 
 [tool.ruff]
 # Enable Pyflakes `E` and `F` codes by default.
-select = ["E", "F"]
+select = [
+    "E", # https://github.com/charliermarsh/ruff#pycodestylet
+    "F", # https://github.com/charliermarsh/ruff#pyflakes
+    "UP", # https://github.com/charliermarsh/ruff#pyupgrade
+    "N", # https://github.com/charliermarsh/ruff#pep8-naming
+    "S", # https://github.com/charliermarsh/ruff#flake8-bandit
+    "C", # https://github.com/charliermarsh/ruff#flake8-comprehensions
+    "B", # https://github.com/charliermarsh/ruff#flake8-bugbear
+    "T" # https://github.com/charliermarsh/ruff#flake8-print
+]
+extend-exclude = [
+    "*/migrations/*"
+]
 ignore = ["E501", "E741"] # temporary
 
 # Allow autofix for all enabled rules (when `--fix`) is provided.
@@ -109,3 +138,6 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 # Assume Python 3.11.
 target-version = "py311"
+
+[tool.django-stubs]
+django_settings_module = "config.settings"

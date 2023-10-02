@@ -1,47 +1,72 @@
-default_language_version:
-  python: python3.11
-
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
-      - id: check-added-large-files
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
       - id: check-case-conflict
       - id: check-json
       - id: check-merge-conflict
       - id: check-symlinks
       - id: check-toml
       - id: check-yaml
-      - id: end-of-file-fixer
-      - id: trailing-whitespace
+      - id: check-added-large-files
+        args: [ '--maxkb=1000' ]
+
+  - repo: https://github.com/myint/autoflake
+    rev: v1.4
+    hooks:
+      - id: autoflake
+        exclude: .*/__init__.py
+        args:
+          - --in-place
+          - --remove-all-unused-imports
+          - --expand-star-imports
+          - --remove-duplicate-keys
+          - --remove-unused-variables
+
+  - repo: https://github.com/psf/black
+    rev: 23.1.0
+    hooks:
+      - id: black
+        alias: autoformat
+
+  - repo: https://github.com/asottile/reorder_python_imports
+    rev: v3.9.0
+    hooks:
+      - id: reorder-python-imports
+        alias: autoformat
+
   - repo: https://github.com/rtts/djhtml
     rev: '3.0.6'
     hooks:
       - id: djhtml
         entry: djhtml --tabwidth 4
-        alias: autoformat
-      # - id: djcss
-      #   alias: autoformat
-      # - id: djjs
-      #   alias: autoformat
-  - repo: https://github.com/adamchainz/django-upgrade
-    rev: 1.13.0
-    hooks:
-      - id: django-upgrade
-        args: [--target-version, "4.2"]
-        alias: autoformat
-  - repo: https://github.com/psf/black
-    rev: 23.3.0
-    hooks:
-      - id: black
-        alias: autoformat
+        alias: autoforma
+
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.261
+    rev: v0.0.246
     hooks:
       - id: ruff
         alias: autoformat
+
+  - repo: https://github.com/tox-dev/pyproject-fmt
+    rev: "0.9.0"
+    hooks:
+      - id: pyproject-fmt
+        alias: autoformat
+
   - repo: https://github.com/asottile/blacken-docs
     rev: 1.13.0
     hooks:
       - id: blacken-docs
+        alias: autoformat
+
+  - repo: https://github.com/adamchainz/django-upgrade
+    rev: 1.13.0
+    hooks:
+      - id: django-upgrade
+        args: [ --target-version, "4.2" ]
         alias: autoformat
