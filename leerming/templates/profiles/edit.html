@@ -2,16 +2,15 @@
 
 {% block content %}
 
+
     <div
         class="bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
         <h1 class="mb-2 text-xl font-bold text-gray-800 dark:text-white">
-            {% trans "Modifier une Carte" %}
+            {% trans "Modifier votre profile" %}
         </h1>
         {% block form %}
-            <form hx-post="."
-                  hx-target="this"
-                  hx-swap="outerHTML"
-                  method="post" id="edit-form">
+            <form method="post" id="edit-form">
+                {% csrf_token %}
                 {{ form }}
             </form>
         {% endblock form %}
@@ -20,11 +19,23 @@
             {% trans "Enrégister" %}
         </button>
 
-        <button
-            class="text-white bg-red-700 focus:ring-4 focus:ring-red-300 font-medium text-sm px-5 py-2.5 mb-2 rounded-lg focus:outline-none"
-            hx-confirm="{% trans "Êtes vous sure de vouloir supprimer cette carte ?" %}"
-            hx-post="{% url "flashcards:delete" flashcard.pk %}">{% trans "Supprimer cette carte" %}</button>
+
     </div>
 
 
 {% endblock content %}
+
+{% block javascript %}
+    <script>
+        new TomSelect("#id_review_days", {
+            plugins: {
+                remove_button: {
+                    title: 'Remove this item',
+                }
+            },
+            persist: false,
+            createOnBlur: true,
+            create: true
+        });
+    </script>
+{% endblock javascript %}

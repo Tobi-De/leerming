@@ -7,19 +7,18 @@
 {% endblock breadcrumb %}
 
 {% block card_answer %}
-<p hx-get="{% url 'flashcards:show_question' flashcard.pk %}" hx-target="this" hx-swap="outerHTML"
-    class="mt-2 text-green-800 dark:text-green-400 cursor-pointer">{{flashcard.answer_display}}</p>
+    <p hx-get="{% url 'flashcards:show_question' flashcard.pk %}" hx-target="this" hx-swap="outerHTML"
+       class="mt-2 text-green-800 dark:text-green-400 cursor-pointer">{{flashcard.answer_display}}</p>
 {% endblock card_answer %}
 
 {% block content %}
-    <header class="mb-4">
-
+    <header class="mb-6">
         <h1 class="block text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white">{% trans "Vos Cartes" %}</h1>
-        <p class="mt-2 text-lg text-gray-800 dark:text-gray-400">This is a simple application layout with sidebar and header examples using Tailwind CSS.</p>
+        <p class="mt-2 text-lg text-gray-800 dark:text-gray-400">{% blocktrans %} Toutes vos cartes de révisions, vous pouvez cliquer sur une carte pour voir la réponses associé.{% endblocktrans %}</p>
         <div class="mt-5 flex flex-col items-center gap-2 sm:flex-row sm:gap-3">
             <a href="{% url 'flashcards:create' %}" class="w-full sm:w-auto inline-flex justify-center items-center gap-x-3 text-center bg-blue-600 hover:bg-blue-700 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-white transition py-3 px-4 dark:focus:ring-offset-gray-800">
                 {% heroicon_outline "plus" width="16" height="16" %}
-                {% translate "Nouvelle carte" %}
+                {% translate "Nouvelle carte(s)" %}
             </a>
         </div>
     </header>
@@ -46,10 +45,10 @@
 
                 <div class="mt-2">
                     {% block card_question %}
-                    <p hx-get="{% url 'flashcards:show_answer' flashcard.pk %}"
-                       hx-target="this" hx-swap="outerHTML" class="mt-2 text-gray-800 dark:text-gray-400 cursor-pointer">{{ flashcard }}</p>
+                        <p hx-get="{% url 'flashcards:show_answer' flashcard.pk %}"
+                           hx-target="this" hx-swap="outerHTML" class="mt-2 text-gray-800 dark:text-gray-400 cursor-pointer">{{ flashcard }}</p>
                     {% endblock card_question %}
-                    </div>
+                </div>
 
                 <div class="flex items-center justify-end mt-4">
                     <a  href="{% url 'flashcards:edit' flashcard.pk %}"

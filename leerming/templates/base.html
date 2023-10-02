@@ -7,14 +7,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block head_title %}leerming{% endblock %}</title>
         <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
-        <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+        <link href="{% static '/css/tom-select.css' %}" rel="stylesheet">
         <script defer src="{% static 'vendors/htmx/htmx.min.js' %}"></script>
         {% django_htmx_script %}
   <!-- TODO: download to serve locally -->
         <script defer src="{% static 'vendors/preline/preline.js' %}"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
         <script src="{% static 'javascript/theme-switcher.js' %}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+        <script src="{% static 'vendors/tom-select/tom-select.complete.min.js' %}"></script>
         {% block extra_head %}
         {% endblock %}
     </head>
@@ -115,7 +115,7 @@
                                         </a>
                                         <a
                                             class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                                            href="#">
+                                            href="{% url 'profiles:edit' %}">
                                             {% heroicon_outline "user-circle" class="flex-none" width="16" height="16" %}
                                             {% trans "Profile & Préférences" %}
                                         </a>
