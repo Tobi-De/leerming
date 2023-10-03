@@ -5,8 +5,6 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /tmp
 
-RUN pip install poetry
-
 COPY requirements.lock /tmp/requirements.txt
 
 # Modify requirements.txt file in a single RUN command
