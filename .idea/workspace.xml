@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="41c5c547-a60c-425a-b8f5-133a48ac7fe3" name="Changes" comment="feat: add profile register and setup flowbite">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/docker/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements-dev.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements-dev.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +109,7 @@
       <workItem from="1695963950338" duration="2592000" />
       <workItem from="1696017003385" duration="29059000" />
       <workItem from="1696153189556" duration="14507000" />
-      <workItem from="1696251668450" duration="2849000" />
+      <workItem from="1696251668450" duration="5307000" />
     </task>
     <task id="LOCAL-00001" summary="feat: add profile register and setup flowbite">
       <option name="closed" value="true" />
