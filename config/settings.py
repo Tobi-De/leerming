@@ -185,7 +185,7 @@ Q_CLUSTER = {
 SCHEMA_VIEWER = {"apps": LOCAL_APPS}
 
 # Django compressor
-COMPRESS_ENABLED = True
+COMPRESS_ENABLED = DEBUG
 COMPRESS_OFFLINE = True
 
 if DJANGO_ENV == "production":
