@@ -51,6 +51,7 @@ factory-boy==3.3.0
 faker==19.6.2
 filelock==3.12.4
 fuzzy-couscous==3.1.1
+granian==0.6.0
 gunicorn==21.2.0
 h11==0.14.0
 heroicons==2.4.0
@@ -108,7 +109,9 @@ traitlets==5.10.1
 typer==0.7.0
 urllib3==1.26.17
 urlman==2.0.1
+uvloop==0.17.0
 virtualenv==20.24.5
+watchfiles==0.20.0
 wcwidth==0.2.8
 whitenoise==6.5.0
 # The following packages are considered to be unsafe in a requirements file:

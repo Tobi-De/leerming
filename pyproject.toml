@@ -43,6 +43,7 @@ dependencies = [
     "sentry-sdk>=1.31",
     "whitenoise",
     "django_compressor>=4.4",
+    "granian>=0.6.0",
 ]
 
 [build-system]
