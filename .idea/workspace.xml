@@ -5,22 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41c5c547-a60c-425a-b8f5-133a48ac7fe3" name="Changes" comment="feat: add profile register and setup flowbite">
-      <change afterPath="$PROJECT_DIR$/leerming/static/css/tom-select.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leerming/static/vendors/tom-select/tom-select.complete.min.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/staticfiles/CACHE/css/output.171871c1a556.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/staticfiles/CACHE/js/output.26e0aa6fe38a.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/staticfiles/CACHE/js/output.2c73a0810188.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/staticfiles/CACHE/js/output.70b3f19707cb.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/staticfiles/CACHE/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.pre-commit-config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/.pre-commit-config.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker/entrypoint.sh" beforeDir="false" afterPath="$PROJECT_DIR$/docker/entrypoint.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/core/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/core/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements-dev.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements-dev.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +109,7 @@
       <workItem from="1695963950338" duration="2592000" />
       <workItem from="1696017003385" duration="29059000" />
       <workItem from="1696153189556" duration="14507000" />
-      <workItem from="1696251668450" duration="9537000" />
+      <workItem from="1696251668450" duration="10016000" />
     </task>
     <task id="LOCAL-00001" summary="feat: add profile register and setup flowbite">
       <option name="closed" value="true" />
