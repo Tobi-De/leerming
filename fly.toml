@@ -7,29 +7,27 @@ app = "leerming"
 primary_region = "sin"
 
 [build]
-  image = "ghcr.io/tobi-de/leerming:main"
-  # dockerfile = "docker/Dockerfile"
+image = "ghcr.io/tobi-de/leerming:main"
+#dockerfile = "docker/Dockerfile"
 
 [processes]
-  web = "granian --interface wsgi config.wsgi:application --host 0.0.0.0 --port 80"
-  worker = "python manage.py qcluster"
+web = ""
+worker = "python manage.py qcluster"
 
 [http_service]
-  internal_port = 80
-  force_https = true
-  auto_stop_machines = true # TODO: change this to false with real users, should never scale down to zero
-  auto_start_machines = true
-  min_machines_running = 0 # TODO: change this at some point
-  processes = ["web"]
-  [http_service.concurrency]
-    type = "requests"
+internal_port = 80
+force_https = true
+auto_stop_machines = true # TODO: change this to false with real users, should never scale down to zero
+auto_start_machines = true
+min_machines_running = 0 # TODO: change this at some point
+processes = ["web"]
 
 [env]
-  DJANGO_ALLOWED_HOSTS = "leerming.fly.dev,leerming.com"
-  DJANGO_CSRF_TRUSTED_ORIGINS = "https://leerming.fly.dev,https://leerming.com,http://leerming.com"
-  DJANGO_DEBUG = "False"
-  DJANGO_AWS_S3_REGION_NAME = "ap-south-1"
-  DJANGO_SUPERUSER_EMAIL= "tobidegnon@proton.me"
-  DJANGO_ENV = "production"
-  DJANGO_SERVER_EMAIL = "noreply@leerming.com"
+DJANGO_ALLOWED_HOSTS = "leerming.fly.dev,leerming.com"
+DJANGO_CSRF_TRUSTED_ORIGINS = "https://leerming.fly.dev,https://leerming.com,http://leerming.com"
+DJANGO_DEBUG = "False"
+DJANGO_AWS_S3_REGION_NAME = "ap-south-1"
+DJANGO_SUPERUSER_EMAIL = "tobidegnon@proton.me"
+DJANGO_ENV = "production"
+DJANGO_SERVER_EMAIL = "noreply@leerming.com"
 
