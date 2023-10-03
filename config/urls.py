@@ -31,7 +31,11 @@ urlpatterns = [
     ),
     path(
         "reviews/",
-        decorator_include(login_required, "leerming.reviews.urls", namespace="reviews"),
+        decorator_include(
+            (login_required, profile_required),
+            "leerming.reviews.urls",
+            namespace="reviews",
+        ),
     ),
     path(
         "",
