@@ -1701,6 +1701,20 @@ select {
   --placement: bottom-right;
 }
 
+#id_password1_wrapper > ul {
+  list-style-position: inside;
+  list-style-type: disc;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity));
+}
+
+#id_password1_wrapper > ul > li {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
 .before\:mr-6::before {
   content: var(--tw-content);
   margin-right: 1.5rem;

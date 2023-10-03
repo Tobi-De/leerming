@@ -22,7 +22,7 @@ class SignupForm(AllauthSignupForm):
         widget=forms.TextInput(
             attrs={"placeholder": "Entrez votre petit nom ou un prénom"}
         ),
-        required=False,
+        required=False
     )
 
     def clean_email(self):

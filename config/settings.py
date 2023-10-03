@@ -185,9 +185,9 @@ Q_CLUSTER = {
 SCHEMA_VIEWER = {"apps": LOCAL_APPS}
 
 # Django compressor
-COMPRESS_ENABLED = DEBUG
+COMPRESS_ENABLED = False
 COMPRESS_OFFLINE = True
-
+    
 if DJANGO_ENV == "production":
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
@@ -233,6 +233,8 @@ if DJANGO_ENV == "production":
     )
 
     # email
+    DEFAULT_FROM_EMAIL = env("DJANGO_DEFAULT_FROM_EMAIL",default="leerming <noreply@leerming.com>")
+    SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)
     EMAIL_BACKEND = "anymail.backends.amazon_ses.EmailBackend"
     ANYMAIL = {
         "AMAZON_SES_CLIENT_PARAMS": {

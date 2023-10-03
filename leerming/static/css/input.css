@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+#id_password1_wrapper > ul {
+    @apply list-disc list-inside text-gray-500 text-sm
+}
+
+#id_password1_wrapper > ul > li {
+    @apply my-1
+}
