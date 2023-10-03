@@ -43,6 +43,7 @@ THIRD_PARTY_APPS = [
     "heroicons",
     "widget_tweaks",
     "debug_toolbar",
+    "compressor",
 ]
 
 LOCAL_APPS = [
@@ -112,10 +113,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [APPS_DIR / "static"]
+STATICFILES_DIRS = [(APPS_DIR / "static")]
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
 ]
 STORAGES = {
     "staticfiles": {
@@ -181,6 +183,10 @@ Q_CLUSTER = {
 
 # Schema Viewer settings
 SCHEMA_VIEWER = {"apps": LOCAL_APPS}
+
+# Django compressor
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
 
 if DJANGO_ENV == "production":
     import sentry_sdk

@@ -28,7 +28,7 @@ def is_htmx(request: HttpRequest):
     return request.headers.get("Hx-Request", False)
 
 
-def for_htmx(  #  noqa
+def for_htmx(  # noqa
     *,
     if_hx_target: str | None = None,
     use_template: str | None = None,

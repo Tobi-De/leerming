@@ -70,11 +70,3 @@ repos:
       - id: django-upgrade
         args: [ --target-version, "4.2" ]
         alias: autoformat
-
-  # - repo: local
-  #   hooks:
-  #     - id: build-tailwind-prod
-  #       name: 'build tailwind prod'
-  #       language: system
-  #       entry: "rye run tailwind-prod"
-  #       always_run: true
