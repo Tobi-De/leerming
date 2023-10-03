@@ -5,13 +5,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-from django_lifecycle import (
-    LifecycleModelMixin,
-    hook,
-    AFTER_CREATE,
-    BEFORE_SAVE,
-    AFTER_UPDATE,
-)
+from django_lifecycle import AFTER_CREATE
+from django_lifecycle import AFTER_UPDATE
+from django_lifecycle import BEFORE_SAVE
+from django_lifecycle import hook
+from django_lifecycle import LifecycleModelMixin
 from django_q.models import Schedule
 from model_utils.models import TimeStampedModel
 

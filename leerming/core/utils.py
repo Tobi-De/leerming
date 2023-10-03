@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 import copy
 
-from django.http.request import HttpRequest, QueryDict
+from django.http.request import HttpRequest
+from django.http.request import QueryDict
 from django.http.response import HttpResponse
 from django.utils.functional import wraps
 from render_block import render_block_to_string
@@ -25,7 +28,7 @@ def is_htmx(request: HttpRequest):
     return request.headers.get("Hx-Request", False)
 
 
-def for_htmx(
+def for_htmx(  #  noqa
     *,
     if_hx_target: str | None = None,
     use_template: str | None = None,
@@ -47,9 +50,9 @@ def for_htmx(
             "You must pass exactly one of 'use_template', 'use_block' or 'use_block_from_params=True'"
         )
 
-    def decorator(view):
+    def decorator(view):  # noqa
         @wraps(view)
-        def _view(request, *args, **kwargs):
+        def _view(request, *args, **kwargs):  # noqa
             resp = view(request, *args, **kwargs)
             if is_htmx(request):
                 if (

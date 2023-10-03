@@ -80,9 +80,9 @@ class Review(TimeStampedModel):
     @classmethod
     def compute_score_percentage(cls, score: int, nbr_of_cards: int) -> int:
         return 0 if nbr_of_cards == 0 else round((score / nbr_of_cards) * 100)
-    
+
     @classmethod
-    def get_cards_to_review_for(cls, reviewer:User,date:dt.date)->list[FlashCard]:
+    def get_cards_to_review_for(cls, reviewer: User, date: dt.date) -> list[FlashCard]:
         cards = []
         for card in reviewer.flashcards.filter(mastered_at__isnull=True):
             if not card.last_review_date:
@@ -91,16 +91,15 @@ class Review(TimeStampedModel):
                 cards.append(card)
         return cards
 
-
     @classmethod
-    def _get_or_create(cls, reviewer: User, date: dt.date) -> "Review":
+    def _get_or_create(cls, reviewer: User, date: dt.date) -> Review:
         if not reviewer.flashcards.filter(mastered_at__isnull=True).filter():
             raise NoCardsToReviewError("No cards to review")
 
-        with suppress(cls.DoesNotExist):
+        with suppress(ObjectDoesNotExist):
             return cls.objects.get(reviewer=reviewer, creation_date=date)
 
-        cards = cls.get_cards_to_review_for(reviewer,date)
+        cards = cls.get_cards_to_review_for(reviewer, date)
         if not cards:
             raise NoCardsToReviewError("No cards to review")
         instance = cls.objects.create(reviewer=reviewer, creation_date=date)
@@ -108,7 +107,7 @@ class Review(TimeStampedModel):
         return instance
 
     @classmethod
-    def start(cls, reviewer: User, request: HttpRequest) -> "Review":
+    def start(cls, reviewer: User, request: HttpRequest) -> Review:
         review = cls._get_or_create(reviewer, date=dt.date.today())
 
         # if the review is already in the user session then there is nothing to do
@@ -189,7 +188,7 @@ class Review(TimeStampedModel):
         request.session[answers_session_key] = answers
 
     @classmethod
-    def get_current_card(cls, request: HttpRequest) -> tuple[FlashCard, "str"]:
+    def get_current_card(cls, request: HttpRequest) -> tuple[FlashCard, str]:
         current_card_id = request.session.get(current_card_session_key)
         current_card_index = request.session.get(cards_session_key).index(
             current_card_id

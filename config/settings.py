@@ -1,6 +1,7 @@
-import environ
 import os
 from pathlib import Path
+
+import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 APPS_DIR = BASE_DIR / "leerming"
@@ -244,3 +245,6 @@ if DJANGO_ENV == "production":
         auto_session_tracking=False,
         release="1.0.0",
     )
+
+    # whitenoise
+    WHITENOISE_MANIFEST_STRICT = False

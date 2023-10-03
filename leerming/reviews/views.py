@@ -1,16 +1,20 @@
 from django import forms
-from django.contrib import messages
-from django.http import HttpRequest, HttpResponse, Http404
-from django.shortcuts import get_object_or_404, redirect
+from django.http import Http404
+from django.http import HttpRequest
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
 from django_htmx.http import HttpResponseClientRedirect
 
+from .models import NoCardsToReviewError
+from .models import Review
+from .models import SessionEndedError
 from leerming.core.utils import render_block_to_string
 from leerming.flashcards.models import FlashCard
-from .models import Review, NoCardsToReviewError, SessionEndedError
 
 
 def index(request: HttpRequest):
@@ -32,7 +36,11 @@ def details(request: HttpRequest, review_id: int):
 
 
 def no_cards_to_review(request: HttpRequest):
-    return TemplateResponse(request, "reviews/no_cards_to_review.html", {'no_cards': not request.user.flashcards.exists()})
+    return TemplateResponse(
+        request,
+        "reviews/no_cards_to_review.html",
+        {"no_cards": not request.user.flashcards.exists()},
+    )
 
 
 @require_http_methods(["POST"])
@@ -65,7 +73,7 @@ def reveal_answer(request: HttpRequest):
         render_block_to_string(
             "reviews/show_current_card.html",
             "answer_revealed",
-            context={"card":current_card},
+            context={"card": current_card},
         )
     )
 
