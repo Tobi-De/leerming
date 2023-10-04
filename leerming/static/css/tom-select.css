@@ -212,14 +212,7 @@
   cursor: text;
 }
 
-:is(.dark .dark\:ts-control, .ts-wrapper.single.input-active .ts-control) {
-  background: #0f172a;
-  cursor: text;
-}
-
-
 .ts-control {
-  /*border: 1px solid #d0d0d0; */
   border: 1px solid #d0d0d0;
   padding: 8px 8px;
   width: 100%;
@@ -232,22 +225,6 @@
   display: flex;
   flex-wrap: wrap;
 }
-
-:is(.dark .dark\:ts-control) {
-  /*border: 1px solid #d0d0d0; */
-  border: 1px solid #0f172a;
-  padding: 8px 8px;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
-  box-sizing: border-box;
-  box-shadow: none;
-  border-radius: 3px;
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .ts-wrapper.multi.has-items .ts-control {
   padding: calc( 8px - 2px - 0px) 8px calc( 8px - 2px - 3px - 0px);
 }

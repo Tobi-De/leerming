@@ -10,3 +10,36 @@
 #id_password1_wrapper > ul > li {
     @apply my-1
 }
+
+.tom-select {
+    @apply py-2 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400
+}
+
+.ts-control {
+    @apply text-sm dark:bg-slate-900 ;
+    border: none !important;
+}
+
+.ts-wrapper.multi .ts-control > div {
+    @apply dark:bg-gray-800 dark:text-gray-400;
+}
+
+.ts-wrapper.plugin-remove_button:not(.rtl) .item .remove {
+    @apply dark:border-l-0;
+}
+
+#id_review_days-ts-control {
+    @apply dark:bg-gray-800 dark:text-gray-400;
+}
+
+.ts-dropdown {
+    @apply dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400;
+}
+
+.ts-dropdown .active {
+    @apply dark:bg-[#f5fafd] dark:text-gray-400;
+}
+
+.ts-dropdown .active.create {
+    @apply dark:text-gray-400;
+}

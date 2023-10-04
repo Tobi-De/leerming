@@ -17,6 +17,7 @@ class ProfileForm(forms.Form):
             Profile.Weekday.SUNDAY,
         ],
         label=_("Jours de révision"),
+        widget=forms.SelectMultiple(attrs={"class": "tom-select"}),
     )
     review_time = forms.TimeField(
         widget=forms.TimeInput(attrs={"type": "time"}),
