@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41c5c547-a60c-425a-b8f5-133a48ac7fe3" name="Changes" comment="feat: add profile register and setup flowbite">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leerming/static/sp-push-worker-fb.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/entrypoint.sh" beforeDir="false" afterPath="$PROJECT_DIR$/docker/entrypoint.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fly.toml" beforeDir="false" afterPath="$PROJECT_DIR$/fly.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/static/css/tailwind.css" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/css/tailwind.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/templates/profiles/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/profiles/edit.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,33 +53,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/tobi/Builds/leerming/new_leerming/leerming&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_interpreter_path&quot;: &quot;/home/tobi/.nvm/versions/node/v20.7.0/bin/node&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/tobi/Builds/leerming/leerming/static",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_interpreter_path": "/home/tobi/.nvm/versions/node/v20.7.0/bin/node",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "Errors",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/leerming/static" />
       <recent name="$PROJECT_DIR$/new_leerming/leerming" />
       <recent name="$PROJECT_DIR$/new_leerming/leerming/leerming" />
       <recent name="$PROJECT_DIR$/new_leerming/leerming/leerming/templates" />
       <recent name="$PROJECT_DIR$/new_leerming" />
-      <recent name="$PROJECT_DIR$/templates/account" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -113,7 +114,7 @@
       <workItem from="1696153189556" duration="14507000" />
       <workItem from="1696251668450" duration="11435000" />
       <workItem from="1696337656467" duration="577000" />
-      <workItem from="1696357664422" duration="2086000" />
+      <workItem from="1696357664422" duration="5511000" />
     </task>
     <task id="LOCAL-00001" summary="feat: add profile register and setup flowbite">
       <option name="closed" value="true" />
