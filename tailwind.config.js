@@ -35,6 +35,14 @@ module.exports = {
         },
       },
     },
+    fontFamily: {
+      sans: [
+        'Roboto', // Primary font
+        'Open Sans',
+        'Arial',
+        'sans-serif',
+      ],
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),
