@@ -21,7 +21,7 @@ class ProfileForm(forms.Form):
     )
     review_time = forms.TimeField(
         widget=forms.TimeInput(attrs={"type": "time"}),
-        initial="07:00",
+        initial="18:00",
         input_formats=["%H:%M"],
         label=_("Heure de révision"),
     )
