@@ -223,10 +223,6 @@ class Review(TimeStampedModel):
             )
 
     @classmethod
-    def get_last_review(cls, reviewer: User) -> Review:
-        return cls.objects.get(reviewer=reviewer, completed_at__isnull=False)
-
-    @classmethod
     def get_next_review_datetime(
         cls, reviewer: User, last_review_date: dt.date | None = None
     ) -> dt.datetime:
