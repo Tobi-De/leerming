@@ -179,6 +179,7 @@ Q_CLUSTER = {
     "queue_limit": 50,
     "bulk": 10,
     "orm": "default",
+    "catch_up": False,
 }
 
 # Schema Viewer settings
@@ -187,6 +188,10 @@ SCHEMA_VIEWER = {"apps": LOCAL_APPS}
 # Django compressor
 COMPRESS_ENABLED = False
 COMPRESS_OFFLINE = True
+
+# email
+DEFAULT_FROM_EMAIL = env("DJANGO_DEFAULT_FROM_EMAIL",default="leerming <noreply@leerming.com>")
+SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)
     
 if DJANGO_ENV == "production":
     import sentry_sdk
@@ -233,8 +238,6 @@ if DJANGO_ENV == "production":
     )
 
     # email
-    DEFAULT_FROM_EMAIL = env("DJANGO_DEFAULT_FROM_EMAIL",default="leerming <noreply@leerming.com>")
-    SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)
     EMAIL_BACKEND = "anymail.backends.amazon_ses.EmailBackend"
     ANYMAIL = {
         "AMAZON_SES_CLIENT_PARAMS": {

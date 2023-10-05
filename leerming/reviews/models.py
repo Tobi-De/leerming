@@ -13,6 +13,8 @@ from model_utils.models import TimeStampedModel
 
 from leerming.flashcards.models import FlashCard
 from leerming.users.models import User
+from .utils import notify_reviewers
+from django_q.models import Schedule, Task
 
 review_id_session_key = "review_id"
 cards_session_key = "review_cards"
@@ -162,7 +164,7 @@ class Review(TimeStampedModel):
         request.session.pop(answers_session_key)
 
         # create reminder for next review
-        current_review.reviewer.profile.create_next_review_session_schedule()
+        current_review.reviewer.profile.register_for_next_review()
 
     @classmethod
     def move_to_next_card(cls, request: HttpRequest) -> FlashCard:
@@ -204,6 +206,8 @@ class Review(TimeStampedModel):
         try:
             if current_review_id := request.session.get(review_id_session_key):
                 return cls.objects.get(pk=current_review_id)
+        except AttributeError:
+            return 
         except ObjectDoesNotExist:
             request.session.pop(current_card_session_key)
             request.session.pop(cards_session_key)
@@ -248,3 +252,67 @@ class Review(TimeStampedModel):
 
         next_run = dt.datetime.combine(next_review_date, review_time)
         return timezone.make_aware(next_run, timezone.get_current_timezone())
+
+
+
+class ScheduleManager(TimeStampedModel):
+    """
+   The aim of this model is to group users according to their review session schedule.
+     If some users have their next session on the same day, at the same time, they will be grouped so that notifications are sent
+    to them all at the same time, instead of one schedule per user.
+    This is mainly a way of getting around the fact that sendpulse campaigns are limited to one every 15 minutes.
+    """
+
+    reviewers = models.ManyToManyField(User)
+    schedule = models.OneToOneField("django_q.Schedule", on_delete=models.SET_NULL, null=True)
+    result_task = models.OneToOneField("django_q.Task", on_delete=models.CASCADE, null=True)
+
+    def __str__(self) -> str:
+        if self.schedule:
+            return f"will run at {self.schedule.next_run}"
+        return f"ran at {self.result_task.started}"
+
+    @classmethod
+    def add(cls, reviewer: User, review_datetime: dt.datetime) -> None:
+        try:
+            manager = cls.objects.get(schedule__next_run=review_datetime)
+        except cls.DoesNotExist:
+            manager = cls.objects.create()
+            schedule = Schedule.objects.create(
+                func="leerming.reviews.tasks.run_schedule_manager",
+                next_run = review_datetime,
+                kwargs={"manager_id": manager.id},
+                hook="leerming.reviews.tasks.update_manager_result_task",
+            )
+            manager.schedule = schedule
+            manager.save()
+        
+        manager.reviewers.add(reviewer)
+        manager.refresh_from_db()
+
+    @classmethod
+    def remove(cls, reviewer: User) -> None:
+        for manager in cls.objects.filter(reviewers__in=[reviewer]):
+            manager.reviewers.remove(reviewer)
+            if not manager.reviewers.exists():
+                manager.schedule.delete()
+                manager.delete()
+        
+
+
+    def notify_reviewers(self):
+        date =  timezone.now().date()
+
+        reviewers_to_notify = []
+        for reviewer in self.reviewers.all():
+            last_review_was_today = Review.get_last_review_date(reviewer=reviewer) == date
+            on_going_review = bool(Review.get_current_review(reviewer=reviewer))
+            if last_review_was_today or on_going_review:
+                continue
+            reviewers_to_notify.append(reviewer)
+        
+        notify_reviewers(reviewers_to_notify)
+
+
+     
+

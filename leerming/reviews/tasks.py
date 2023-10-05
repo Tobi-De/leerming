@@ -1,19 +1,18 @@
-from django.utils import timezone
+from .models import ScheduleManager
+from django_q.models import Task
 
-from leerming.reviews.models import Review
-from leerming.users.models import User
-
-
-def send_review_notification(user_id: int):
+def run_schedule_manager(manager_id: int):
     try:
-        user = User.objects.get(id=user_id)
-    except User.DoesNotExist:
+        manager = ScheduleManager.objects.get(pk=manager_id)
+    except ScheduleManager.DoesNotExist:
         return
 
-    last_review_was_today = (
-        Review.get_last_review_date(reviewer=user) == timezone.now().date()
-    )
-    on_going_review = bool(Review.get_current_review(reviewer=user))
-    if not last_review_was_today and not on_going_review:
-        # TODO: send notification
-        ...
+    manager.notify_reviewers()
+
+def update_manager_result_task(task:Task):
+    try:
+        manager = ScheduleManager.objects.get(pk=task.kwargs["manager_id"])
+    except ScheduleManager.DoesNotExist:
+        return
+    manager.result_task = task
+    manager.save()

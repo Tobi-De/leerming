@@ -1,7 +1,6 @@
 from contextlib import suppress
 
 from django.contrib.postgres.fields import ArrayField
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -10,13 +9,12 @@ from django_lifecycle import AFTER_UPDATE
 from django_lifecycle import BEFORE_SAVE
 from django_lifecycle import hook
 from django_lifecycle import LifecycleModelMixin
-from django_q.models import Schedule
 from model_utils.models import TimeStampedModel
 
-from leerming.reviews.models import Review
+from leerming.reviews.models import Review, ScheduleManager
 
 
-class Profile(TimeStampedModel, LifecycleModelMixin):
+class Profile(LifecycleModelMixin,TimeStampedModel):
     class Weekday(models.IntegerChoices):
         MONDAY = 0, _("Lundi")
         TUESDAY = 1, _("Mardi")
@@ -35,6 +33,9 @@ class Profile(TimeStampedModel, LifecycleModelMixin):
     )
     review_time = models.TimeField(verbose_name=_("Heure de révision"))
 
+    def __str__(self):
+        return f"Profile of {self.user}"
+
     @cached_property
     def review_scheduler_name(self) -> str:
         return f"{self.user.email}_review_scheduler"
@@ -51,23 +52,14 @@ class Profile(TimeStampedModel, LifecycleModelMixin):
         when_any=["review_days", "review_time"],
         has_changed=True,
     )
-    def update_scheduler(self):
-        with suppress(ObjectDoesNotExist):
-            Schedule.objects.get(
-                name=self.review_scheduler_name,
-                func="leerming.reviews.tasks.send_review_notification",
-            ).delete()
-        self.create_next_review_session_schedule()
+    def update_scheduler(self):   
+        ScheduleManager.remove(reviewer=self.user)
+        self.register_for_next_review()
 
     @hook(AFTER_CREATE)
-    def create_next_review_session_schedule(self):
-        next_run = Review.get_next_review_datetime(
+    def register_for_next_review(self):
+        next_review_datetime = Review.get_next_review_datetime(
             reviewer=self.user,
             last_review_date=Review.get_last_review_date(reviewer=self.user),
         )
-        Schedule.objects.get_or_create(
-            name=self.review_scheduler_name,
-            func="leerming.reviews.tasks.send_review_notification",
-            kwargs={"user_id": self.user.id},
-            defaults={"next_run": next_run},
-        )
+        ScheduleManager.add(reviewer=self.user, review_datetime=next_review_datetime)

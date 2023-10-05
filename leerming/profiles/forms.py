@@ -26,6 +26,13 @@ class ProfileForm(forms.Form):
         label=_("Heure de révision"),
     )
 
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        review_days = cleaned_data.get("review_days")
+        review_days = [int(day) for day in review_days]
+        cleaned_data["review_days"] = review_days
+        return cleaned_data
+
 
 class ProfileEditForm(ProfileForm):
     short_name = forms.CharField(max_length=50, label=_("Nom court"), required=False)
