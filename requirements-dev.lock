@@ -80,7 +80,8 @@ platformdirs==3.11.0
 pluggy==1.3.0
 pre-commit==3.4.0
 prompt-toolkit==3.0.39
-psycopg2==2.9.9
+psycopg==3.1.12
+psycopg-c==3.1.12
 ptyprocess==0.7.0
 pure-eval==0.2.2
 pycparser==2.21
@@ -109,6 +110,7 @@ toml==0.10.2
 tomli-w==1.0.0
 traitlets==5.11.2
 typer==0.7.0
+typing-extensions==4.8.0
 urllib3==1.26.17
 urlman==2.0.1
 uvloop==0.17.0

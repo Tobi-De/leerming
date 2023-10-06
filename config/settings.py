@@ -237,6 +237,9 @@ if DJANGO_ENV == "production":
         "SECURE_HSTS_INCLUDE_SUBDOMAINS", default=False
     )
 
+    # Databases
+    DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)
+
     # email
     EMAIL_BACKEND = "anymail.backends.amazon_ses.EmailBackend"
     ANYMAIL = {
