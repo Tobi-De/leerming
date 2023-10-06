@@ -51,10 +51,15 @@ class Profile(LifecycleModelMixin, TimeStampedModel):
     def get_next_review_datetime(
         self, from_date: dt.date | None = None, include_from_date: bool = False
     ) -> dt.datetime:
+        # prevent the function to return dates in the past
+        today = timezone.now().date()
+        if from_date < today :
+            from_date = today
+
         if include_from_date:
-            condition_check = lambda x: x >= from_date.weekday()  # noqa E731
+            condition_check = lambda weekday: weekday >= from_date.weekday()  # noqa E731
         else:
-            condition_check = lambda x: x > from_date.weekday()  # noqa E731
+            condition_check = lambda weekday: weekday > from_date.weekday()  # noqa E731
 
         next_weekday = next(
             (weekday for weekday in self.review_days if condition_check(weekday)),
@@ -65,6 +70,8 @@ class Profile(LifecycleModelMixin, TimeStampedModel):
             next_review_date = from_date
         else:
             next_review_date = from_date + dt.timedelta(days=1)
+
+     
 
         # loop until we find a day that matches the next_weekday
         while next_review_date.weekday() != next_weekday:
