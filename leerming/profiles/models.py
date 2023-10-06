@@ -1,5 +1,3 @@
-from contextlib import suppress
-
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.functional import cached_property
@@ -11,10 +9,11 @@ from django_lifecycle import hook
 from django_lifecycle import LifecycleModelMixin
 from model_utils.models import TimeStampedModel
 
-from leerming.reviews.models import Review, ScheduleManager
+from leerming.reviews.models import Review
+from leerming.reviews.models import ScheduleManager
 
 
-class Profile(LifecycleModelMixin,TimeStampedModel):
+class Profile(LifecycleModelMixin, TimeStampedModel):
     class Weekday(models.IntegerChoices):
         MONDAY = 0, _("Lundi")
         TUESDAY = 1, _("Mardi")
@@ -32,6 +31,9 @@ class Profile(LifecycleModelMixin,TimeStampedModel):
         verbose_name=_("Jours de révision"),
     )
     review_time = models.TimeField(verbose_name=_("Heure de révision"))
+    email_notifications_enabled = models.BooleanField(
+        default=True, verbose_name=_("Notifications par email")
+    )
 
     def __str__(self):
         return f"Profile of {self.user}"
@@ -52,7 +54,7 @@ class Profile(LifecycleModelMixin,TimeStampedModel):
         when_any=["review_days", "review_time"],
         has_changed=True,
     )
-    def update_scheduler(self):   
+    def update_scheduler(self):
         ScheduleManager.remove(reviewer=self.user)
         self.register_for_next_review()
 

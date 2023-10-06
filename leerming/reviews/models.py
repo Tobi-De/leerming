@@ -9,12 +9,12 @@ from django.db import models
 from django.http import HttpRequest
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django_q.models import Schedule
 from model_utils.models import TimeStampedModel
 
+from .utils import notify_reviewers
 from leerming.flashcards.models import FlashCard
 from leerming.users.models import User
-from .utils import notify_reviewers
-from django_q.models import Schedule, Task
 
 review_id_session_key = "review_id"
 cards_session_key = "review_cards"
@@ -207,7 +207,7 @@ class Review(TimeStampedModel):
             if current_review_id := request.session.get(review_id_session_key):
                 return cls.objects.get(pk=current_review_id)
         except AttributeError:
-            return 
+            return
         except ObjectDoesNotExist:
             request.session.pop(current_card_session_key)
             request.session.pop(cards_session_key)
@@ -254,18 +254,21 @@ class Review(TimeStampedModel):
         return timezone.make_aware(next_run, timezone.get_current_timezone())
 
 
-
 class ScheduleManager(TimeStampedModel):
     """
-   The aim of this model is to group users according to their review session schedule.
-     If some users have their next session on the same day, at the same time, they will be grouped so that notifications are sent
-    to them all at the same time, instead of one schedule per user.
-    This is mainly a way of getting around the fact that sendpulse campaigns are limited to one every 15 minutes.
+    The aim of this model is to group users according to their review session schedule.
+      If some users have their next session on the same day, at the same time, they will be grouped so that notifications are sent
+     to them all at the same time, instead of one schedule per user.
+     This is mainly a way of getting around the fact that sendpulse campaigns are limited to one every 15 minutes.
     """
 
     reviewers = models.ManyToManyField(User)
-    schedule = models.OneToOneField("django_q.Schedule", on_delete=models.SET_NULL, null=True)
-    result_task = models.OneToOneField("django_q.Task", on_delete=models.CASCADE, null=True)
+    schedule = models.OneToOneField(
+        "django_q.Schedule", on_delete=models.SET_NULL, null=True
+    )
+    result_task = models.OneToOneField(
+        "django_q.Task", on_delete=models.CASCADE, null=True
+    )
 
     def __str__(self) -> str:
         if self.schedule:
@@ -280,13 +283,13 @@ class ScheduleManager(TimeStampedModel):
             manager = cls.objects.create()
             schedule = Schedule.objects.create(
                 func="leerming.reviews.tasks.run_schedule_manager",
-                next_run = review_datetime,
+                next_run=review_datetime,
                 kwargs={"manager_id": manager.id},
                 hook="leerming.reviews.tasks.update_manager_result_task",
             )
             manager.schedule = schedule
             manager.save()
-        
+
         manager.reviewers.add(reviewer)
         manager.refresh_from_db()
 
@@ -295,24 +298,21 @@ class ScheduleManager(TimeStampedModel):
         for manager in cls.objects.filter(reviewers__in=[reviewer]):
             manager.reviewers.remove(reviewer)
             if not manager.reviewers.exists():
-                manager.schedule.delete()
+                if manager.schedule:
+                    manager.schedule.delete()
                 manager.delete()
-        
-
 
     def notify_reviewers(self):
-        date =  timezone.now().date()
+        date = timezone.now().date()
 
         reviewers_to_notify = []
-        for reviewer in self.reviewers.all():
-            last_review_was_today = Review.get_last_review_date(reviewer=reviewer) == date
+        for reviewer in self.reviewers.select_related("profile").all():
+            last_review_was_today = (
+                Review.get_last_review_date(reviewer=reviewer) == date
+            )
             on_going_review = bool(Review.get_current_review(reviewer=reviewer))
             if last_review_was_today or on_going_review:
                 continue
             reviewers_to_notify.append(reviewer)
-        
+
         notify_reviewers(reviewers_to_notify)
-
-
-     
-
