@@ -31,8 +31,8 @@
             <div class="max-w-2xl px-8 py-4 bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
                 <div class="flex items-center justify-between">
                     <span class="text-sm font-light text-gray-600 dark:text-gray-400">
-                        {% if flashcard.last_review_date %}
-                            {{ flashcard.last_review_date|naturalday }}
+                        {% if flashcard.next_review_date %}
+                            {{ flashcard.next_review_date|naturalday }}
                         {% else %}
                             {% trans "Jamais" %}
                         {% endif %}

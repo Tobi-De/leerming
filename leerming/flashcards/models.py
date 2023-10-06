@@ -1,30 +1,29 @@
-from typing import TypedDict
+import datetime as dt
 
 from django.core.validators import MaxValueValidator
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django_lifecycle import LifecycleModelMixin
 from model_utils.models import TimeStampedModel
 
 
-class SoftLimit(TypedDict):
-    question: int
-    answer: int
+LEVEL_TO_DAYS_MAP = {
+    1: 1,
+    2: 2,
+    3: 4,
+    4: 7,
+    5: 15,
+    6: 30,
+    7: 60,
+}
 
 
-class FlashCard(TimeStampedModel):
+class FlashCard(LifecycleModelMixin, TimeStampedModel):
     # TODO probably change the primary key of this to uuid
     class CardType(models.TextChoices):
         FRONT_BACK = "FRONT_BACK", _("Deux faces")
         FILL_IN_THE_GAP = "FILL_IN_THE_GAP", _("Remplissage")
-
-    # The size limits one these fields is to avoid users wasting to much time on
-    # creating flashcards or flashcards too big that they are not really practical
-    CARD_TYPES_SOFT_LIMITS: dict[CardType, SoftLimit] = {
-        CardType.FILL_IN_THE_GAP: {"question": 200, "answer": 50},
-        CardType.FRONT_BACK: {"question": 150, "answer": 200},
-    }
 
     owner = models.ForeignKey(
         "users.User", on_delete=models.CASCADE, related_name="flashcards"
@@ -43,8 +42,8 @@ class FlashCard(TimeStampedModel):
         ),
         validators=[MinValueValidator(1), MaxValueValidator(7)],
     )
-    last_review_date = models.DateField(
-        verbose_name=_("Date de dernière révision"), blank=True, null=True
+    next_review_date = models.DateField(
+        verbose_name=_("Date de la prochaine révision"), blank=True, null=True
     )
     mastered_at = models.DateTimeField(
         verbose_name=_("Maîtrisée à"), blank=True, null=True
@@ -68,14 +67,20 @@ class FlashCard(TimeStampedModel):
             return self.answer
         return self.question
 
-    def review(self, correct_answer: bool) -> None:
+    def review(self, correct_answer: bool, for_date: dt.date) -> None:
         if self.mastered_at:
             return
         if correct_answer and self.level < 7:
             self.level += 1
         elif not correct_answer:
             self.level = 1
-        if correct_answer and self.level == 7:
-            self.mastered_at = timezone.now()
-        self.last_review_date = timezone.now().date()
+        elif correct_answer and self.level == 7:
+            self.mastered_at = for_date
+            self.next_review_date = None
+            self.save()
+            return
+        review_interval = dt.timedelta(days=LEVEL_TO_DAYS_MAP[self.level])
+        self.next_review_date = self.owner.profile.get_next_review_datetime(
+            from_date=for_date + review_interval, include_from_date=True
+        )
         self.save()

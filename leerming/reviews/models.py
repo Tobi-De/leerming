@@ -6,6 +6,7 @@ from contextlib import suppress
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.db.models.query import QuerySet
 from django.http import HttpRequest
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -84,14 +85,14 @@ class Review(TimeStampedModel):
         return 0 if nbr_of_cards == 0 else round((score / nbr_of_cards) * 100)
 
     @classmethod
-    def get_cards_to_review_for(cls, reviewer: User, date: dt.date) -> list[FlashCard]:
-        cards = []
-        for card in reviewer.flashcards.filter(mastered_at__isnull=True):
-            if not card.last_review_date:
-                cards.append(card)
-            elif card.last_review_date < date - dt.timedelta(days=7**card.level):
-                cards.append(card)
-        return cards
+    def get_cards_to_review_for(
+        cls, reviewer: User, date: dt.date
+    ) -> QuerySet[FlashCard]:
+        return reviewer.flashcards.filter(
+            models.Q(next_review_date__lte=date)
+            | models.Q(next_review_date__isnull=True),
+            mastered_at__isnull=True,
+        )
 
     @classmethod
     def _get_or_create(cls, reviewer: User, date: dt.date) -> Review:
@@ -137,10 +138,11 @@ class Review(TimeStampedModel):
             return
 
         answers = request.session.get(answers_session_key)
+        completion_date = timezone.now()
 
         for card_id, correct_answer in answers.items():
             current_review.flashcards.get(id=card_id).review(
-                correct_answer=correct_answer
+                correct_answer=correct_answer, for_date=completion_date.date()
             )
 
         current_review.score_percentage = cls.compute_score_percentage(
@@ -154,7 +156,7 @@ class Review(TimeStampedModel):
             nbr_of_cards=current_review.flashcards.count(),
         )
 
-        current_review.completed_at = timezone.now()
+        current_review.completed_at = completion_date
         current_review.save()
 
         # clean session
@@ -225,33 +227,6 @@ class Review(TimeStampedModel):
                 .first()
                 .creation_date
             )
-
-    @classmethod
-    def get_next_review_datetime(
-        cls, reviewer: User, last_review_date: dt.date | None = None
-    ) -> dt.datetime:
-        review_days = reviewer.profile.review_days
-        review_time = reviewer.profile.review_time
-
-        today = dt.date.today()
-        today_weekday = today.weekday()
-        next_weekday = next(
-            (weekday for weekday in review_days if weekday > today_weekday),
-            review_days[0],
-        )
-
-        # if the user already a review for today, use tomorrow as the starting point
-        if last_review_date and last_review_date == today:
-            next_review_date = last_review_date + dt.timedelta(days=1)
-        else:
-            next_review_date = today
-
-        # loop until we find a day that matches the next_weekday
-        while next_review_date.weekday() != next_weekday:
-            next_review_date += dt.timedelta(days=1)
-
-        next_run = dt.datetime.combine(next_review_date, review_time)
-        return timezone.make_aware(next_run, timezone.get_current_timezone())
 
 
 class ScheduleManager(TimeStampedModel):

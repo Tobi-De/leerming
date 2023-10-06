@@ -1,5 +1,8 @@
+import datetime as dt
+
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from django_lifecycle import AFTER_CREATE
@@ -45,6 +48,31 @@ class Profile(LifecycleModelMixin, TimeStampedModel):
     def is_in_review_days(self, day: Weekday) -> bool:
         return day in self.review_days
 
+    def get_next_review_datetime(
+        self, from_date: dt.date | None = None, include_from_date: bool = False
+    ) -> dt.datetime:
+        if include_from_date:
+            condition_check = lambda x: x >= from_date.weekday()  # noqa E731
+        else:
+            condition_check = lambda x: x > from_date.weekday()  # noqa E731
+
+        next_weekday = next(
+            (weekday for weekday in self.review_days if condition_check(weekday)),
+            self.review_days[0],
+        )
+
+        if include_from_date:
+            next_review_date = from_date
+        else:
+            next_review_date = from_date + dt.timedelta(days=1)
+
+        # loop until we find a day that matches the next_weekday
+        while next_review_date.weekday() != next_weekday:
+            next_review_date += dt.timedelta(days=1)
+
+        next_run = dt.datetime.combine(next_review_date, self.review_time)
+        return timezone.make_aware(next_run, timezone.get_current_timezone())
+
     @hook(BEFORE_SAVE)
     def sort_review_days(self):
         self.review_days = sorted(self.review_days)
@@ -60,8 +88,12 @@ class Profile(LifecycleModelMixin, TimeStampedModel):
 
     @hook(AFTER_CREATE)
     def register_for_next_review(self):
-        next_review_datetime = Review.get_next_review_datetime(
-            reviewer=self.user,
-            last_review_date=Review.get_last_review_date(reviewer=self.user),
+        now = timezone.now()
+        today = now.date()
+        last_review_date = Review.get_last_review_date(reviewer=self.user)
+        from_date = last_review_date or today
+        next_review_datetime = self.get_next_review_datetime(
+            from_date=from_date,
+            include_from_date=last_review_date and last_review_date != today,
         )
         ScheduleManager.add(reviewer=self.user, review_datetime=next_review_datetime)
