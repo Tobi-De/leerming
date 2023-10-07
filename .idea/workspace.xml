@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="41c5c547-a60c-425a-b8f5-133a48ac7fe3" name="Changes" comment="feat: add profile register and setup flowbite">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/static/css/input.css" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/css/input.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/static/css/tailwind.css" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/css/tailwind.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/templates/forms/field.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/forms/field.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements-dev.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements-dev.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/flashcards/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/profiles/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +115,7 @@
       <workItem from="1696357664422" duration="6380000" />
       <workItem from="1696452387478" duration="632000" />
       <workItem from="1696619505855" duration="412000" />
-      <workItem from="1696619937747" duration="5018000" />
+      <workItem from="1696619937747" duration="10583000" />
     </task>
     <task id="LOCAL-00001" summary="feat: add profile register and setup flowbite">
       <option name="closed" value="true" />

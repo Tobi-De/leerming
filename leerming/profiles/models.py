@@ -8,8 +8,8 @@ from django.utils.translation import gettext_lazy as _
 from django_lifecycle import AFTER_CREATE
 from django_lifecycle import AFTER_UPDATE
 from django_lifecycle import BEFORE_SAVE
-from django_lifecycle import hook
 from django_lifecycle import LifecycleModelMixin
+from django_lifecycle import hook
 from model_utils.models import TimeStampedModel
 
 from leerming.reviews.models import Review
@@ -53,11 +53,12 @@ class Profile(LifecycleModelMixin, TimeStampedModel):
     ) -> dt.datetime:
         # prevent the function to return dates in the past
         today = timezone.now().date()
-        if from_date < today :
-            from_date = today
+        from_date = max(from_date, today)
 
         if include_from_date:
-            condition_check = lambda weekday: weekday >= from_date.weekday()  # noqa E731
+            condition_check = (
+                lambda weekday: weekday >= from_date.weekday()  # noqa E731
+            )
         else:
             condition_check = lambda weekday: weekday > from_date.weekday()  # noqa E731
 
@@ -70,8 +71,6 @@ class Profile(LifecycleModelMixin, TimeStampedModel):
             next_review_date = from_date
         else:
             next_review_date = from_date + dt.timedelta(days=1)
-
-     
 
         # loop until we find a day that matches the next_weekday
         while next_review_date.weekday() != next_weekday:

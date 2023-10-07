@@ -7,7 +7,6 @@ from django.utils.translation import gettext_lazy as _
 from django_lifecycle import LifecycleModelMixin
 from model_utils.models import TimeStampedModel
 
-
 LEVEL_TO_DAYS_MAP = {
     1: 1,
     2: 2,
@@ -72,13 +71,13 @@ class FlashCard(LifecycleModelMixin, TimeStampedModel):
             return
         if correct_answer and self.level < 7:
             self.level += 1
-        elif not correct_answer:
-            self.level = 1
         elif correct_answer and self.level == 7:
             self.mastered_at = for_date
             self.next_review_date = None
             self.save()
             return
+        else:
+            self.level = 1
         review_interval = dt.timedelta(days=LEVEL_TO_DAYS_MAP[self.level])
         self.next_review_date = self.owner.profile.get_next_review_datetime(
             from_date=for_date + review_interval, include_from_date=True
