@@ -37,7 +37,7 @@
 }
 
 .ts-dropdown .active {
-    @apply dark:bg-[#f5fafd] dark:text-gray-400;
+    @apply dark:bg-slate-600 dark:text-gray-400;
 }
 
 .ts-dropdown .active.create {
