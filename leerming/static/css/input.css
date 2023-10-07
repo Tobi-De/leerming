@@ -20,6 +20,18 @@
     border: none !important;
 }
 
+.full .ts-control {
+    @apply text-sm dark:bg-slate-900  dark:text-gray-400;
+}
+
+.ts-control > input {
+    @apply dark:text-gray-400;
+}
+
+.ts-control, .ts-wrapper.single.input-active .ts-control {
+    @apply dark:bg-slate-900 dark:text-gray-400;
+}
+
 .ts-wrapper.multi .ts-control > div {
     @apply dark:bg-gray-800 dark:text-gray-400;
 }

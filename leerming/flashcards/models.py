@@ -7,24 +7,45 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
 
-LEVEL_TO_DAYS_MAP = {
-    1: 1,
-    2: 2,
-    3: 4,
-    4: 7,
-    5: 15,
-    6: 30,
-    7: 60,
-}
 
-DIFFICULTY_TO_LEVEL_MAP = {
-    "EASY": (5, 6, 7),
-    "MEDIUM": (3, 4),
-    "HARD": (1, 2),
-}
+class Topic(TimeStampedModel):
+    created_by = models.ForeignKey(
+        "users.User", on_delete=models.CASCADE, related_name="topics"
+    )
+    title = models.CharField(
+        verbose_name=_("Titre"),
+        max_length=255,
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["created_by", "title"],
+                name="unique_topic",
+            )
+        ]
+
+    def __str__(self) -> str:
+        return self.title
 
 
 class FlashCard(TimeStampedModel):
+    LEVEL_TO_DAYS_MAP = {
+        1: 1,
+        2: 2,
+        3: 4,
+        4: 7,
+        5: 15,
+        6: 30,
+        7: 60,
+    }
+
+    DIFFICULTY_TO_LEVEL_MAP = {
+        "EASY": (5, 6, 7),
+        "MEDIUM": (3, 4),
+        "HARD": (1, 2),
+    }
+
     class Difficulty(models.TextChoices):
         EASY = "EASY", _("Facile")
         MEDIUM = "MEDIUM", _("Moyen")
@@ -36,6 +57,14 @@ class FlashCard(TimeStampedModel):
 
     owner = models.ForeignKey(
         "users.User", on_delete=models.CASCADE, related_name="flashcards"
+    )
+    topic = models.ForeignKey(
+        Topic,
+        verbose_name=_("Sujet"),
+        on_delete=models.CASCADE,
+        related_name="flashcards",
+        blank=True,
+        null=True,
     )
     card_type = models.CharField(
         verbose_name=_("Type de carte"),
@@ -85,8 +114,8 @@ class FlashCard(TimeStampedModel):
 
     def update_level_from_difficulty(self) -> None:
         # when user manually change the difficulty
-        self.level = DIFFICULTY_TO_LEVEL_MAP.get(self.difficulty)[0]
-        review_interval = dt.timedelta(days=LEVEL_TO_DAYS_MAP[self.level])
+        self.level = self.DIFFICULTY_TO_LEVEL_MAP.get(self.difficulty)[0]
+        review_interval = dt.timedelta(days=self.LEVEL_TO_DAYS_MAP[self.level])
         # would be even better if the from_date was the user last_review date
         self.next_review_date = self.owner.profile.get_next_review_datetime(
             from_date=timezone.now().date() + review_interval, include_from_date=True
@@ -105,7 +134,7 @@ class FlashCard(TimeStampedModel):
             return
         else:
             self.level = 1
-        review_interval = dt.timedelta(days=LEVEL_TO_DAYS_MAP[self.level])
+        review_interval = dt.timedelta(days=self.LEVEL_TO_DAYS_MAP[self.level])
         self.difficulty = FlashCard.get_difficulty_for(self.level)
         self.next_review_date = self.owner.profile.get_next_review_datetime(
             from_date=for_date + review_interval, include_from_date=True
@@ -114,6 +143,6 @@ class FlashCard(TimeStampedModel):
 
     @staticmethod
     def get_difficulty_for(level) -> str:
-        for key, value in DIFFICULTY_TO_LEVEL_MAP.items():
+        for key, value in FlashCard.DIFFICULTY_TO_LEVEL_MAP.items():
             if level in value:
                 return key

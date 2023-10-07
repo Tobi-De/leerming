@@ -3,8 +3,13 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from import_export.admin import ImportExportModelAdmin
 
-from .models import FlashCard
+from .models import FlashCard, Topic
 from .resources import FlashCardResource
+
+
+@admin.register(Topic)
+class TopicAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(FlashCard)

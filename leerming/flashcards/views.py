@@ -7,10 +7,10 @@ from django.views.decorators.http import require_http_methods
 from django_htmx.http import HttpResponseClientRedirect
 from render_block import render_block_to_string
 
+from leerming.core.utils import for_htmx
 from .forms import FlashCard
 from .forms import FlashCardCreateForm
 from .forms import FlashCardEditForm
-from leerming.core.utils import for_htmx
 
 
 def index(request: HttpRequest):
@@ -22,7 +22,7 @@ def index(request: HttpRequest):
 
 @for_htmx(use_block="form")
 def create(request: HttpRequest):
-    form = FlashCardCreateForm(request.POST or None)
+    form = FlashCardCreateForm(request.POST or None, request=request)
     if request.method == "POST" and form.is_valid():
         form.instance.owner = request.user
         form.save()
@@ -38,7 +38,9 @@ def create(request: HttpRequest):
 @for_htmx(use_block="form")
 def edit(request: HttpRequest, pk: int):
     flashcard = get_object_or_404(FlashCard.objects.filter(owner=request.user), pk=pk)
-    form = FlashCardEditForm(instance=flashcard, data=request.POST or None)
+    form = FlashCardEditForm(
+        instance=flashcard, data=request.POST or None, request=request
+    )
     if request.method == "POST" and form.is_valid():
         form.save()
         return HttpResponseClientRedirect(reverse("flashcards:edit", args=[pk]))

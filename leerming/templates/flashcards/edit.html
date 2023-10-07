@@ -3,7 +3,7 @@
 {% block content %}
 
     <div
-        class="bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
+            class="bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
         <h1 class="mb-2 text-xl font-bold text-gray-800 dark:text-white">
             {% trans "Modifier une Carte" %}
         </h1>
@@ -21,10 +21,22 @@
         </button>
 
         <button
-            class="text-white bg-red-700 focus:ring-4 focus:ring-red-300 font-medium text-sm px-5 py-2.5 mb-2 rounded-lg focus:outline-none"
-            hx-confirm="{% trans "Êtes vous sure de vouloir supprimer cette carte ?" %}"
-            hx-post="{% url "flashcards:delete" flashcard.pk %}">{% trans "Supprimer cette carte" %}</button>
+                class="text-white bg-red-700 focus:ring-4 focus:ring-red-300 font-medium text-sm px-5 py-2.5 mb-2 rounded-lg focus:outline-none"
+                hx-confirm="{% trans "Êtes vous sure de vouloir supprimer cette carte ?" %}"
+                hx-post="{% url "flashcards:delete" flashcard.pk %}">{% trans "Supprimer cette carte" %}</button>
     </div>
 
 
 {% endblock content %}
+
+{% block javascript %}
+    <script>
+        new TomSelect("#id_topic", {
+            create: true,
+            sortField: {
+                field: "text",
+                direction: "asc"
+            }
+        });
+    </script>
+{% endblock javascript %}

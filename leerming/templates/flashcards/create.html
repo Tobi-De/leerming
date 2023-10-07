@@ -38,3 +38,15 @@
     </div>
 
 {% endblock content %}
+
+{% block javascript %}
+    <script>
+        new TomSelect("#id_topic", {
+            create: true,
+            sortField: {
+                field: "text",
+                direction: "asc"
+            }
+        });
+    </script>
+{% endblock javascript %}
