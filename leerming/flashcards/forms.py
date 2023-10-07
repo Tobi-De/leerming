@@ -34,16 +34,18 @@ class FlashCardForm(forms.ModelForm):
     def clean(self):
         cleaned_data = self.cleaned_data
 
-        topic = self.cleaned_data.pop("topic")
-        try:
-            topic_id = int(topic)
-        except ValueError:
-            topic = Topic.objects.create(
-                title=topic.capitalize(), created_by=self.request.user
-            )
-        else:
-            topic = Topic.objects.get(id=topic_id)
-        self.instance.topic = topic
+        if topic := self.cleaned_data.pop("topic"):
+            try:
+                topic_id = int(topic)
+            except ValueError:
+                topic = Topic.objects.create(
+                    title=topic.capitalize(), created_by=self.request.user
+                )
+            else:
+                print("here")
+                topic = Topic.objects.get(id=topic_id)
+                print(topic)
+            self.instance.topic = topic
 
         if (
             cleaned_data["card_type"] == FlashCard.CardType.FILL_IN_THE_GAP
