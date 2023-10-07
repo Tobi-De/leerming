@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41c5c547-a60c-425a-b8f5-133a48ac7fe3" name="Changes" comment="feat: add profile register and setup flowbite">
-      <change afterPath="$PROJECT_DIR$/leerming/flashcards/resources.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/flashcards/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/leerming/templates/flashcards/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/flashcards/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements-dev.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements-dev.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/users/views.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +115,7 @@
       <workItem from="1696357664422" duration="6380000" />
       <workItem from="1696452387478" duration="632000" />
       <workItem from="1696619505855" duration="412000" />
-      <workItem from="1696619937747" duration="15433000" />
+      <workItem from="1696619937747" duration="18985000" />
     </task>
     <task id="LOCAL-00001" summary="feat: add profile register and setup flowbite">
       <option name="closed" value="true" />
