@@ -7,9 +7,13 @@
 {% endblock breadcrumb %}
 
 {% block card_answer %}
-    <p hx-get="{% url 'flashcards:show_question' flashcard.pk %}" hx-target="this" hx-swap="outerHTML"
-       class="mt-2 text-green-800 dark:text-green-400 cursor-pointer">{{ flashcard.answer_display }}</p>
+    <div id="flashcard-{{ flashcard.id }}"
+         hx-get="{% url 'flashcards:show_question' flashcard.pk %}" hx-target="this" hx-swap="outerHTML"
+         class="flex flex-col justify-center border cursor-pointer shadow-sm rounded-md p-4 md:p-5 text-white bg-teal-700">
+        <p>{{ flashcard.answer_display }}</p>
+    </div>
 {% endblock card_answer %}
+
 
 {% block content %}
     <header class="mb-6">
@@ -30,61 +34,56 @@
         </div>
     </header>
 
-
-    {#<div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">#}
-    <!-- Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
         {% for flashcard in flashcards %}
-            <div class="max-w-2xl px-8 py-4 bg-white border shadow-sm  rounded-md p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
-                <div class="flex items-center justify-between">
+            {% block card_question %}
+                <div id="flashcard-{{ flashcard.id }}"
+                     class="max-w-2xl px-8 py-4 bg-white border shadow-sm  rounded-md p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
+                    <div class="flex items-center justify-between">
                     <span class="text-sm font-light text-gray-600 dark:text-gray-400">
                        {{ flashcard.topic|default:"" }}
                     </span>
 
-                    <span
-                            {% if flashcard.difficulty == 'HARD' %}
-                                class="px-3 py-1 text-sm font-bold bg-red-500 text-white rounded"
-                            {% elif flashcard.difficulty == 'MEDIUM' %}
-                                class="px-3 py-1 text-sm font-bold bg-yellow-500 text-white rounded"
-                            {% else %}
-                                class="px-3 py-1 text-sm font-bold bg-green-500 text-white rounded"
-                            {% endif %}
-                                tabindex="0" role="button">{{ flashcard.get_difficulty_display }}</span>
-                </div>
+                        <span
+                                {% if flashcard.difficulty == 'HARD' %}
+                                    class="px-3 py-1 text-sm font-bold bg-red-500 text-white rounded"
+                                {% elif flashcard.difficulty == 'MEDIUM' %}
+                                    class="px-3 py-1 text-sm font-bold bg-yellow-500 text-white rounded"
+                                {% else %}
+                                    class="px-3 py-1 text-sm font-bold bg-green-500 text-white rounded"
+                                {% endif %}
+                                    tabindex="0" role="button">{{ flashcard.get_difficulty_display }}</span>
+                    </div>
 
-                <div class="mt-2">
-                    {% block card_question %}
+                    <div class="mt-2">
                         <p hx-get="{% url 'flashcards:show_answer' flashcard.pk %}"
-                           hx-target="this" hx-swap="outerHTML"
+                           hx-target="#flashcard-{{ flashcard.pk }}" hx-swap="outerHTML"
                            class="mt-2 text-gray-800 dark:text-gray-400 cursor-pointer">{{ flashcard }}</p>
-                    {% endblock card_question %}
+
+                    </div>
+
+                    <div class="flex items-center justify-between mt-4">
+
+                        {% if flashcard.next_review_date %}
+                            <p class="text-md text-gray-500 dark:text-gray-500">
+                                {{ flashcard.next_review_date|naturalday }}
+                            </p>
+                        {% else %}
+                            <p class="text-xs text-gray-500 dark:text-gray-500">
+                                {% trans "Prochaine révision" %}
+                            </p>
+                        {% endif %}
+
+                        <a href="{% url 'flashcards:edit' flashcard.pk %}"
+                           class="py-[.688rem] px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-gray-200 font-semibold text-blue-500 hover:text-white hover:bg-blue-500 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:border-gray-700 dark:hover:border-blue-500">
+                            {% trans "Édité" %}
+                            {% heroicon_outline "pencil" width="15" height="15" %}
+                        </a>
+                    </div>
                 </div>
-
-                <div class="flex items-center justify-between mt-4">
-
-                    {% if flashcard.next_review_date %}
-                        <p class="text-md text-gray-500 dark:text-gray-500">
-                            {{ flashcard.next_review_date|naturalday }}
-                        </p>
-                    {% else %}
-                        <p class="text-xs text-gray-500 dark:text-gray-500">
-                            {% trans "Prochaine révision" %}
-                        </p>
-                    {% endif %}
-
-                    <a href="{% url 'flashcards:edit' flashcard.pk %}"
-                       class="py-[.688rem] px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-gray-200 font-semibold text-blue-500 hover:text-white hover:bg-blue-500 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:border-gray-700 dark:hover:border-blue-500">
-                        {% trans "Édité" %}
-                        {% heroicon_outline "pencil" width="15" height="15" %}
-                    </a>
-                </div>
-
-            </div>
+            {% endblock card_question %}
         {% endfor %}
 
     </div>
-    <!-- End Grid -->
-    {#</div>#}
-
 
 {% endblock content %}
