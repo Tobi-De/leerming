@@ -9,7 +9,7 @@ class FlashCardForm(forms.ModelForm):
 
     class Meta:
         model = FlashCard
-        fields = ("card_type", "question", "answer", "level")
+        fields = ("card_type", "question", "answer", "difficulty")
         widgets = {
             "question": forms.Textarea(attrs={"rows": 2}),
             "answer": forms.Textarea(attrs={"rows": 2}),
@@ -41,4 +41,8 @@ class FlashCardCreateForm(FlashCardForm):
 
 
 class FlashCardEditForm(FlashCardForm):
-    pass
+    def save(self, commit=True):
+        instance: FlashCard = super().save(commit=commit)
+        if "difficulty" in self.changed_data:
+            instance.update_level_from_difficulty()
+        return instance
