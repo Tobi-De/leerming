@@ -44,6 +44,7 @@ THIRD_PARTY_APPS = [
     "widget_tweaks",
     "debug_toolbar",
     "compressor",
+    "import_export",
 ]
 
 LOCAL_APPS = [
@@ -190,9 +191,11 @@ COMPRESS_ENABLED = False
 COMPRESS_OFFLINE = True
 
 # email
-DEFAULT_FROM_EMAIL = env("DJANGO_DEFAULT_FROM_EMAIL",default="leerming <noreply@leerming.com>")
+DEFAULT_FROM_EMAIL = env(
+    "DJANGO_DEFAULT_FROM_EMAIL", default="leerming <noreply@leerming.com>"
+)
 SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)
-    
+
 if DJANGO_ENV == "production":
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
