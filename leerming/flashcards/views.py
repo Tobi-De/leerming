@@ -43,7 +43,7 @@ def edit(request: HttpRequest, pk: int):
     )
     if request.method == "POST" and form.is_valid():
         form.save()
-        return HttpResponseClientRedirect(reverse("flashcards:edit", args=[pk]))
+        return HttpResponseClientRedirect(reverse("flashcards:index"))
     return TemplateResponse(
         request, "flashcards/edit.html", {"flashcard": flashcard, "form": form}
     )
