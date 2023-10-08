@@ -34,11 +34,11 @@
         </div>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
         {% for flashcard in flashcards %}
             {% block card_question %}
                 <div id="flashcard-{{ flashcard.id }}"
-                     class="max-w-2xl px-8 py-4 bg-white border shadow-sm  rounded-md p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
+                     class="flex flex-col justify-between max-w-2xl px-8 py-4 bg-white border shadow-sm  rounded-md p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
                     <div class="flex items-center justify-between">
                     <span class="text-sm font-light text-gray-600 dark:text-gray-400">
                        {{ flashcard.topic|default:"" }}
@@ -69,7 +69,7 @@
                                 {{ flashcard.next_review_date|naturalday }}
                             </p>
                         {% else %}
-                            <p class="text-xs text-gray-500 dark:text-gray-500">
+                            <p class="text-md text-gray-500 dark:text-gray-500">
                                 {% trans "Prochaine révision" %}
                             </p>
                         {% endif %}
