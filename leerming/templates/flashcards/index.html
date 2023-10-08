@@ -9,7 +9,7 @@
 {% block card_answer %}
     <div id="flashcard-{{ flashcard.id }}"
          hx-get="{% url 'flashcards:show_question' flashcard.pk %}" hx-target="this" hx-swap="outerHTML"
-         class="flex flex-col justify-center border cursor-pointer shadow-sm rounded-md p-4 md:p-5 text-white bg-teal-700">
+         class="flex flex-col justify-center border cursor-pointer shadow-sm rounded-md p-4 md:p-5 text-white bg-teal-700 dark:border-teal-900">
         <p>{{ flashcard.answer_display }}</p>
     </div>
 {% endblock card_answer %}
