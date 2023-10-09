@@ -45,6 +45,7 @@ THIRD_PARTY_APPS = [
     "debug_toolbar",
     "compressor",
     "import_export",
+    "template_partials",
 ]
 
 LOCAL_APPS = [
@@ -101,6 +102,7 @@ TEMPLATES = [
             "builtins": [
                 "heroicons.templatetags.heroicons",
                 "django.templatetags.i18n",
+                "template_partials.templatetags.partials",
             ],
         },
     },

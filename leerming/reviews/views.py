@@ -1,7 +1,6 @@
 from django import forms
 from django.http import Http404
 from django.http import HttpRequest
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
@@ -13,7 +12,6 @@ from django_htmx.http import HttpResponseClientRedirect
 from .models import NoCardsToReviewError
 from .models import Review
 from .models import SessionEndedError
-from leerming.core.utils import render_block_to_string
 from leerming.flashcards.models import FlashCard
 
 
@@ -69,12 +67,10 @@ def show_current_card(request: HttpRequest):
 
 def reveal_answer(request: HttpRequest):
     current_card, _ = Review.get_current_card(request)
-    return HttpResponse(
-        render_block_to_string(
-            "reviews/show_current_card.html",
-            "answer_revealed",
-            context={"card": current_card},
-        )
+    return TemplateResponse(
+        request,
+        "reviews/show_current_card.html#answer_revealed",
+        {"flashcard": current_card},
     )
 
 

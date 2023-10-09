@@ -1,13 +1,10 @@
 from django.http import HttpRequest
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django_htmx.http import HttpResponseClientRedirect
-from render_block import render_block_to_string
 
-from leerming.core.utils import for_htmx
 from .forms import FlashCard
 from .forms import FlashCardCreateForm
 from .forms import FlashCardEditForm
@@ -20,7 +17,6 @@ def index(request: HttpRequest):
     )
 
 
-@for_htmx(use_block="form")
 def create(request: HttpRequest):
     form = FlashCardCreateForm(request.POST or None, request=request)
     if request.method == "POST" and form.is_valid():
@@ -32,10 +28,12 @@ def create(request: HttpRequest):
             else "flashcards:index"
         )
         return HttpResponseClientRedirect(reverse(next_url))
-    return TemplateResponse(request, "flashcards/create.html", {"form": form})
+    template_name = (
+        "flashcards/create.html#form" if request.htmx else "flashcards/create.html"
+    )
+    return TemplateResponse(request, template_name, {"form": form})
 
 
-@for_htmx(use_block="form")
 def edit(request: HttpRequest, pk: int):
     flashcard = get_object_or_404(FlashCard.objects.filter(owner=request.user), pk=pk)
     form = FlashCardEditForm(
@@ -44,26 +42,25 @@ def edit(request: HttpRequest, pk: int):
     if request.method == "POST" and form.is_valid():
         form.save()
         return HttpResponseClientRedirect(reverse("flashcards:index"))
+    template_name = (
+        "flashcards/edit.html#form" if request.htmx else "flashcards/edit.html"
+    )
     return TemplateResponse(
-        request, "flashcards/edit.html", {"flashcard": flashcard, "form": form}
+        request, template_name, {"flashcard": flashcard, "form": form}
     )
 
 
 def show_question(request: HttpRequest, pk: int):
     flashcard = get_object_or_404(FlashCard.objects.filter(owner=request.user), pk=pk)
-    return HttpResponse(
-        render_block_to_string(
-            "flashcards/index.html", "card_question", {"flashcard": flashcard}
-        )
+    return TemplateResponse(
+        request, "flashcards/index.html#card_question", {"flashcard": flashcard}
     )
 
 
 def show_answer(request: HttpRequest, pk: int):
     flashcard = get_object_or_404(FlashCard.objects.filter(owner=request.user), pk=pk)
-    return HttpResponse(
-        render_block_to_string(
-            "flashcards/index.html", "card_answer", {"flashcard": flashcard}
-        )
+    return TemplateResponse(
+        request, "flashcards/index.html#card_answer", {"flashcard": flashcard}
     )
 
 

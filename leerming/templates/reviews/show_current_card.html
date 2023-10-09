@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
 
-{% block answer_revealed %}
+{% partialdef answer_revealed %}
     <div
         class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
 
         <div class="bg-gray-100 border-b rounded-t-xl py-3 px-4 md:py-4 md:px-5 dark:bg-gray-800 dark:border-gray-700">
             <p class="mt-1 text-sm text-gray-500 dark:text-gray-500">
-                {{card}}
+                {{flashcard}}
             </p>
         </div>
-        <div class="p-4 md:p-5">
-            <p class="text-green-600 dark:text-green-200 text-2xl md:text-4xl">
-                {{ card.answer_display }}
+        <div class="p-4 md:p-5 text-green-600 dark:text-green-200">
+            <p class="text-2xl md:text-4xl">
+                {{ flashcard.answer_display }}
             </p>
         </div>
 
@@ -36,7 +36,7 @@
         </div>
     </div>
 
-{% endblock answer_revealed %}
+{% endpartialdef answer_revealed %}
 
 {% block body %}
     <div class="absolute top-0 right-0 text-xl md:text-4xl dark:text-gray-400 p-2 md:p-3 m-3 border rounded">

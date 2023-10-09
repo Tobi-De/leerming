@@ -6,13 +6,13 @@
     {% include "partials/breadcrumb.html" with menu=menu %}
 {% endblock breadcrumb %}
 
-{% block card_answer %}
+{% partialdef card_answer %}
     <div id="flashcard-{{ flashcard.id }}"
          hx-get="{% url 'flashcards:show_question' flashcard.pk %}" hx-target="this" hx-swap="outerHTML"
          class="flex flex-col justify-center border cursor-pointer shadow-sm rounded-md p-4 md:p-5 text-white bg-teal-700 dark:border-teal-900">
         <p>{{ flashcard.answer_display }}</p>
     </div>
-{% endblock card_answer %}
+{% endpartialdef card_answer %}
 
 
 {% block content %}
@@ -36,23 +36,23 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
         {% for flashcard in flashcards %}
-            {% block card_question %}
+            {% partialdef card_question inline=True %}
                 <div id="flashcard-{{ flashcard.id }}"
                      class="flex flex-col justify-between max-w-2xl px-8 py-4 bg-white border shadow-sm  rounded-md p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
                     <div class="flex items-center justify-between">
-                    <span class="text-sm font-light text-gray-600 dark:text-gray-400">
-                       {{ flashcard.topic|default:"" }}
-                    </span>
+                        <span class="text-sm font-light text-gray-600 dark:text-gray-400">
+                            {{ flashcard.topic|default:"" }}
+                        </span>
 
                         <span
-                                {% if flashcard.difficulty == 'HARD' %}
-                                    class="px-3 py-1 text-sm font-bold bg-red-500 text-white rounded"
-                                {% elif flashcard.difficulty == 'MEDIUM' %}
-                                    class="px-3 py-1 text-sm font-bold bg-yellow-500 text-white rounded"
-                                {% else %}
-                                    class="px-3 py-1 text-sm font-bold bg-green-500 text-white rounded"
-                                {% endif %}
-                                    tabindex="0" role="button">{{ flashcard.get_difficulty_display }}</span>
+                            {% if flashcard.difficulty == 'HARD' %}
+                                class="px-3 py-1 text-sm font-bold bg-red-500 text-white rounded"
+                            {% elif flashcard.difficulty == 'MEDIUM' %}
+                                class="px-3 py-1 text-sm font-bold bg-yellow-500 text-white rounded"
+                            {% else %}
+                                class="px-3 py-1 text-sm font-bold bg-green-500 text-white rounded"
+                            {% endif %}
+                            tabindex="0" role="button">{{ flashcard.get_difficulty_display }}</span>
                     </div>
 
                     <div class="mt-2">
@@ -81,7 +81,7 @@
                         </a>
                     </div>
                 </div>
-            {% endblock card_question %}
+            {% endpartialdef card_question %}
         {% endfor %}
 
     </div>
