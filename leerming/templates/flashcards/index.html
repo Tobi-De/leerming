@@ -35,7 +35,7 @@
     </header>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
-        {% for flashcard in flashcards %}
+        {% for flashcard in page_obj %}
             {% partialdef card_question inline=True %}
                 <div id="flashcard-{{ flashcard.id }}"
                      class="flex flex-col justify-between max-w-2xl px-8 py-4 bg-white border shadow-sm  rounded-md p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
@@ -85,5 +85,45 @@
         {% endfor %}
 
     </div>
+
+<div
+    class="mt-5 px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center">
+    <div class="">
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+            <span class="font-semibold text-gray-800 dark:text-gray-200">{{ page_obj|length }}</span> {% trans "résultats sur" %} <span
+                class="font-semibold text-gray-800 dark:text-gray-200">{{ page_obj.paginator.count }}</span> 
+        </p>
+    </div>
+
+    <div>
+        <div class="inline-flex gap-x-2">
+            {% if page_obj.has_previous %}
+            <a href="{% url 'flashcards:index' %}?page={{ page_obj.previous_page_number}}"
+                class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800">
+                <svg class="w-3 h-3" width="16" height="16" viewBox="0 0 16 15" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10.506 1.64001L4.85953 7.28646C4.66427 7.48172 4.66427 7.79831 4.85953 7.99357L10.506 13.64"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                Prev
+            </a>
+            {% endif %}
+            {% if page_obj.has_next %}
+            <a href="{% url 'flashcards:index' %}?page={{ page_obj.next_page_number}}"
+                class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800">
+                Next
+                <svg class="w-3 h-3" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4.50598 2L10.1524 7.64645C10.3477 7.84171 10.3477 8.15829 10.1524 8.35355L4.50598 14"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
 
 {% endblock content %}

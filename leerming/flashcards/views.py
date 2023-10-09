@@ -8,12 +8,15 @@ from django_htmx.http import HttpResponseClientRedirect
 from .forms import FlashCard
 from .forms import FlashCardCreateForm
 from .forms import FlashCardEditForm
-
+from django.core.paginator import Paginator
 
 def index(request: HttpRequest):
     flashcards = FlashCard.objects.filter(owner=request.user)
+    paginator = Paginator(flashcards, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     return TemplateResponse(
-        request, "flashcards/index.html", {"flashcards": flashcards}
+        request, "flashcards/index.html", {"page_obj": page_obj}
     )
 
 
