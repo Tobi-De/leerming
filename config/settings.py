@@ -46,6 +46,7 @@ THIRD_PARTY_APPS = [
     "compressor",
     "import_export",
     "template_partials",
+    "watson",
 ]
 
 LOCAL_APPS = [
@@ -69,6 +70,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
+    "watson.middleware.SearchContextMiddleware",
 ]
 
 if DEBUG:

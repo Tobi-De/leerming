@@ -18,7 +18,7 @@
 {% block content %}
     <header class="mb-6">
         <h1 class="block text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white">{% trans "Vos Cartes" %}
-            - {{ flashcards.count }}</h1>
+            - {{ total_count }}</h1>
         <p class="mt-2 text-lg text-gray-800 dark:text-gray-400">{% blocktrans %} Toutes vos cartes de révisions, vous
             pouvez cliquer sur une carte pour voir la réponses associé.
             Toute les nouvelles carte commence avec le niveau difficile pour qu'elle soit evaluer des la prochaine
@@ -34,96 +34,138 @@
         </div>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
-        {% for flashcard in page_obj %}
-            {% partialdef card_question inline=True %}
-                <div id="flashcard-{{ flashcard.id }}"
-                     class="flex flex-col justify-between max-w-2xl px-8 py-4 bg-white border shadow-sm  rounded-md p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm font-light text-gray-600 dark:text-gray-400">
-                            {{ flashcard.topic|default:"" }}
-                        </span>
-
-                        <span
-                            {% if flashcard.difficulty == 'HARD' %}
-                                class="px-3 py-1 text-sm font-bold bg-red-500 text-white rounded"
-                            {% elif flashcard.difficulty == 'MEDIUM' %}
-                                class="px-3 py-1 text-sm font-bold bg-yellow-500 text-white rounded"
-                            {% else %}
-                                class="px-3 py-1 text-sm font-bold bg-green-500 text-white rounded"
-                            {% endif %}
-                            tabindex="0" role="button">{{ flashcard.get_difficulty_display }}</span>
-                    </div>
-
-                    <div class="mt-2">
-                        <p hx-get="{% url 'flashcards:show_answer' flashcard.pk %}"
-                           hx-target="#flashcard-{{ flashcard.pk }}" hx-swap="outerHTML"
-                           class="mt-2 text-gray-800 dark:text-gray-400 cursor-pointer">{{ flashcard }}</p>
-
-                    </div>
-
-                    <div class="flex items-center justify-between mt-4">
-
-                        {% if flashcard.next_review_date %}
-                            <p class="text-md text-gray-500 dark:text-gray-500">
-                                {{ flashcard.next_review_date|naturalday }}
-                            </p>
-                        {% else %}
-                            <p class="text-md text-gray-500 dark:text-gray-500">
-                                {% trans "Prochaine révision" %}
-                            </p>
-                        {% endif %}
-
-                        <a href="{% url 'flashcards:edit' flashcard.pk %}"
-                           class="py-[.688rem] px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-gray-200 font-semibold text-blue-500 hover:text-white hover:bg-blue-500 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:border-gray-700 dark:hover:border-blue-500">
-                            {% trans "Édité" %}
-                            {% heroicon_outline "pencil" width="15" height="15" %}
-                        </a>
-                    </div>
+    <form hx-get="."
+          hx-indicator=".htmx-indicator"
+          hx-target="#flashcards"
+          hx-trigger="keyup change delay:500ms, change, search" class="my-5 flex gap-2">
+        <div class="grow">
+            <label for="icon" class="sr-only">Search</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none z-20 pl-4">
+                    <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                         fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
                 </div>
-            {% endpartialdef card_question %}
-        {% endfor %}
-
-    </div>
-
-    <div
-        class="mt-5 px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center">
-        <div class="">
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-                <span class="font-semibold text-gray-800 dark:text-gray-200">{{ page_obj|length }}</span> {% trans "résultats sur" %} <span
-                    class="font-semibold text-gray-800 dark:text-gray-200">{{ page_obj.paginator.count }}</span>
-            </p>
-        </div>
-
-        <div>
-            <div class="inline-flex gap-x-2">
-                {% if page_obj.has_previous %}
-                    <a href="{% url 'flashcards:index' %}?page={{ page_obj.previous_page_number}}"
-                       class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800">
-                        <svg class="w-3 h-3" width="16" height="16" viewBox="0 0 16 15" fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M10.506 1.64001L4.85953 7.28646C4.66427 7.48172 4.66427 7.79831 4.85953 7.99357L10.506 13.64"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                        </svg>
-                        Prev
-                    </a>
-                {% endif %}
-                {% if page_obj.has_next %}
-                    <a href="{% url 'flashcards:index' %}?page={{ page_obj.next_page_number}}"
-                       class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800">
-                        Next
-                        <svg class="w-3 h-3" width="16" height="16" viewBox="0 0 16 16" fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4.50598 2L10.1524 7.64645C10.3477 7.84171 10.3477 8.15829 10.1524 8.35355L4.50598 14"
-                                  stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                        </svg>
-                    </a>
-                {% endif %}
+                <input type="text" id="icon" name="query"
+                       class="py-3  pl-11 block w-full border-gray-200 shadow-sm rounded-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400"
+                       placeholder="Search">
             </div>
         </div>
+        <select
+            name="topic"
+            class="py-3 px-4 pr-9 block border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400">
+            {% for value, label in topic_options %}
+                <option value="{{value}}">{{ label }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <div id="flashcards">
+        {% partialdef flashcards inline=True %}
+
+            <div class="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
+                {% for flashcard in page_obj %}
+                    {% partialdef card_question inline=True %}
+                        <div id="flashcard-{{ flashcard.id }}"
+                             class="flex flex-col justify-between max-w-2xl px-8 py-4 bg-white border shadow-sm  rounded-md p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-light text-gray-600 dark:text-gray-400">
+                                    {{ flashcard.topic|default:"" }}
+                                </span>
+
+                                <span
+                                    {% if flashcard.difficulty == 'HARD' %}
+                                        class="px-3 py-1 text-sm font-bold bg-red-500 text-white rounded"
+                                    {% elif flashcard.difficulty == 'MEDIUM' %}
+                                        class="px-3 py-1 text-sm font-bold bg-yellow-500 text-white rounded"
+                                    {% else %}
+                                        class="px-3 py-1 text-sm font-bold bg-green-500 text-white rounded"
+                                    {% endif %}
+                                    tabindex="0" role="button">{{ flashcard.get_difficulty_display }}</span>
+                            </div>
+
+                            <div class="mt-2">
+                                <p hx-get="{% url 'flashcards:show_answer' flashcard.pk %}"
+                                   hx-target="#flashcard-{{ flashcard.pk }}" hx-swap="outerHTML"
+                                   class="mt-2 text-gray-800 dark:text-gray-400 cursor-pointer">{{ flashcard }}</p>
+
+                            </div>
+
+                            <div class="flex items-center justify-between mt-4">
+
+                                {% if flashcard.next_review_date %}
+                                    <p class="text-md text-gray-500 dark:text-gray-500">
+                                        {{ flashcard.next_review_date|naturalday }}
+                                    </p>
+                                {% else %}
+                                    <p class="text-md text-gray-500 dark:text-gray-500">
+                                        {% trans "Prochaine révision" %}
+                                    </p>
+                                {% endif %}
+
+                                <a href="{% url 'flashcards:edit' flashcard.pk %}"
+                                   class="py-[.688rem] px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-gray-200 font-semibold text-blue-500 hover:text-white hover:bg-blue-500 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:border-gray-700 dark:hover:border-blue-500">
+                                    {% trans "Édité" %}
+                                    {% heroicon_outline "pencil" width="15" height="15" %}
+                                </a>
+                            </div>
+                        </div>
+                    {% endpartialdef card_question %}
+                {% endfor %}
+
+
+                <div class="htmx-indicator absolute top-0 left-0 w-full h-full bg-white/[.5] rounded-md dark:bg-gray-800/[.4]"></div>
+
+                <div class="htmx-indicator absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <div class="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
+                         role="status" aria-label="loading">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div
+                class="mt-5 px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center">
+                <div class="">
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        <span class="font-semibold text-gray-800 dark:text-gray-200">{{ page_obj|length }}</span> {% trans "résultats sur" %} <span
+                            class="font-semibold text-gray-800 dark:text-gray-200">{{ page_obj.paginator.count }}</span>
+                    </p>
+                </div>
+
+                <div>
+                    <div class="inline-flex gap-x-2">
+                        {% if page_obj.has_previous %}
+                            <a href="{% url 'flashcards:index' %}?page={{ page_obj.previous_page_number}}"
+                               class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800">
+                                <svg class="w-3 h-3" width="16" height="16" viewBox="0 0 16 15" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M10.506 1.64001L4.85953 7.28646C4.66427 7.48172 4.66427 7.79831 4.85953 7.99357L10.506 13.64"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                </svg>
+                                Prev
+                            </a>
+                        {% endif %}
+                        {% if page_obj.has_next %}
+                            <a href="{% url 'flashcards:index' %}?page={{ page_obj.next_page_number}}"
+                               class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800">
+                                Next
+                                <svg class="w-3 h-3" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4.50598 2L10.1524 7.64645C10.3477 7.84171 10.3477 8.15829 10.1524 8.35355L4.50598 14"
+                                          stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                </svg>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endpartialdef flashcards %}
+
     </div>
-
-
 
 {% endblock content %}

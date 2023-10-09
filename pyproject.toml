@@ -32,6 +32,7 @@ dependencies = [
   "django-schema-viewer>=0.1",
   "django-template-partials>=23.3.post1",
   "django-test-plus",
+  "django-watson>=1.6.3",
   "django-widget-tweaks>=1.5",
   "django_compressor>=4.4",
   "granian>=0.6",

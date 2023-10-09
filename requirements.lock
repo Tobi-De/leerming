@@ -42,6 +42,7 @@ django-q2==1.5.4
 django-schema-viewer==0.4.0
 django-template-partials==23.3.post1
 django-test-plus==2.2.3
+django-watson==1.6.3
 django-widget-tweaks==1.5.0
 et-xmlfile==1.1.0
 factory-boy==3.3.0

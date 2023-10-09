@@ -2,56 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-
 #id_password1_wrapper > ul {
-    @apply list-disc list-inside text-gray-500 text-sm
+  @apply list-disc list-inside text-gray-500 text-sm;
 }
 
 #id_password1_wrapper > ul > li {
-    @apply my-1
+  @apply my-1;
 }
 
 .tom-select {
-    @apply py-2 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400
+  @apply py-2 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400;
 }
 
 .ts-control {
-    @apply text-sm dark:bg-slate-900 ;
-    border: none !important;
+  @apply text-sm dark:bg-slate-900;
+  border: none !important;
 }
 
 .full .ts-control {
-    @apply text-sm dark:bg-slate-900  dark:text-gray-400;
+  @apply text-sm dark:bg-slate-900  dark:text-gray-400;
 }
 
 .ts-control > input {
-    @apply dark:text-gray-400;
+  @apply dark:text-gray-400;
 }
 
-.ts-control, .ts-wrapper.single.input-active .ts-control {
-    @apply dark:bg-slate-900 dark:text-gray-400;
+.ts-control,
+.ts-wrapper.single.input-active .ts-control {
+  @apply dark:bg-slate-900 dark:text-gray-400;
 }
 
 .ts-wrapper.multi .ts-control > div {
-    @apply dark:bg-gray-800 dark:text-gray-400;
+  @apply dark:bg-gray-800 dark:text-gray-400;
 }
 
 .ts-wrapper.plugin-remove_button:not(.rtl) .item .remove {
-    @apply dark:border-l-0;
+  @apply dark:border-l-0;
 }
 
 #id_review_days-ts-control {
-    @apply dark:bg-gray-800 dark:text-gray-400;
+  @apply dark:bg-gray-800 dark:text-gray-400;
 }
 
 .ts-dropdown {
-    @apply dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400;
+  @apply dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400;
 }
 
 .ts-dropdown .active {
-    @apply dark:bg-slate-600 dark:text-gray-400;
+  @apply dark:bg-slate-600 dark:text-gray-400;
 }
 
 .ts-dropdown .active.create {
-    @apply dark:text-gray-400;
+  @apply dark:text-gray-400;
+}
+
+.htmx-indicator {
+  display: none;
+}
+.htmx-request .htmx-indicator {
+  display: block;
+}
+.htmx-request.htmx-indicator {
+  display: block;
 }

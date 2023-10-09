@@ -1,22 +1,64 @@
 from django.core.paginator import Paginator
+from django.db.models import QuerySet
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
 from django_htmx.http import HttpResponseClientRedirect
+from watson import search
 
 from .forms import FlashCard
 from .forms import FlashCardCreateForm
 from .forms import FlashCardEditForm
+from leerming.users.models import User
+
+ALL_TOPICS = "ALL_TOPICS"
+NO_TOPIC = "NO_TOPIC"
+
+
+def _get_topic_options(user: User):
+    return [(ALL_TOPICS, _("Tous les sujets")), (NO_TOPIC, _("Sans sujet"))] + [
+        (topic.id, topic.title) for topic in user.topics.all()
+    ]
+
+
+def _search_flashcards(
+    user: User, topic: str, query: str | None = None
+) -> QuerySet[FlashCard]:
+    results = FlashCard.objects.filter(owner=user)
+    if query:
+        results = search.filter(results, query)
+    if topic == ALL_TOPICS:
+        return results
+    if topic == NO_TOPIC:
+        return results.filter(topic__isnull=True)
+
+    return results.filter(topic_id=topic)
 
 
 def index(request: HttpRequest):
-    flashcards = FlashCard.objects.filter(owner=request.user)
+    flashcards = _search_flashcards(
+        user=request.user,
+        topic=request.GET.get("topic", ALL_TOPICS),
+        query=request.GET.get("query"),
+    )
     paginator = Paginator(flashcards, 12)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
-    return TemplateResponse(request, "flashcards/index.html", {"page_obj": page_obj})
+    template_name = (
+        "flashcards/index.html#flashcards" if request.htmx else "flashcards/index.html"
+    )
+    return TemplateResponse(
+        request,
+        template_name,
+        {
+            "page_obj": page_obj,
+            "total_count": flashcards.count(),
+            "topic_options": _get_topic_options(request.user),
+        },
+    )
 
 
 def create(request: HttpRequest):
