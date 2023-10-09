@@ -73,7 +73,7 @@ select = [
     "T" # https://github.com/charliermarsh/ruff#flake8-print
 ]
 extend-exclude = [
-    "*/migrations/*"
+    "*/migrations/*", "docker/*",
 ]
 ignore = ["E501", "E741"] # temporary
 

@@ -89,7 +89,7 @@
                                             <div
                                                 class="flex justify-center items-center w-5 h-5 border border-gray-200 group-hover:bg-gray-200 text-gray-400 rounded dark:border-gray-700 dark:group-hover:bg-gray-700 dark:text-gray-400">
                                                 <svg class="w-2.5 h-2.5" width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
+                                                     xmlns="http://www.w3.org/2000/svg">
                                                     <path
                                                         d="M7.55921 0.287451C7.86808 -0.0958171 8.40096 -0.0958167 8.70982 0.287451L12.9295 5.52367C13.3857 6.08979 13.031 7 12.3542 7H3.91488C3.23806 7 2.88336 6.08979 3.33957 5.52367L7.55921 0.287451Z"
                                                         fill="currentColor" />
@@ -168,9 +168,9 @@
                                             <a class="block relative z-10" href="#">
                                                 <div class="px-6 py-2">
                                                     {% if review.topics.exists %}
-                                                    <p class="text-sm text-gray-500">{{ review.topics.all|join:", " }}</p>
+                                                        <p class="text-sm text-gray-500">{{ review.topics.all|join:", " }}</p>
                                                     {% else %}
-                                                    <p class="text-sm text-gray-500">{% trans "Tous les sujets" %}</p>
+                                                        <p class="text-sm text-gray-500">{% trans "Tous les sujets" %}</p>
                                                     {% endif %}
                                                 </div>
                                             </a>

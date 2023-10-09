@@ -1,4 +1,5 @@
-from import_export import fields, widgets
+from import_export import fields
+from import_export import widgets
 from import_export.resources import ModelResource
 
 from leerming.flashcards.models import FlashCard

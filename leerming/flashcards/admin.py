@@ -3,7 +3,8 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from import_export.admin import ImportExportModelAdmin
 
-from .models import FlashCard, Topic
+from .models import FlashCard
+from .models import Topic
 from .resources import FlashCardResource
 
 
@@ -35,6 +36,6 @@ class FlashCardAdmin(ImportExportModelAdmin):
 
     @admin.display(description="Link to owner of the flashcard")
     def owner_link(self, obj: FlashCard) -> str:
-        return mark_safe(
+        return mark_safe(  # noqa
             f'<a href="{reverse("admin:users_user_change", args=(obj.owner.id,))}">{obj.owner}</a>'
         )

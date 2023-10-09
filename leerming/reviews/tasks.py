@@ -1,5 +1,7 @@
-from .models import ScheduleManager
 from django_q.models import Task
+
+from .models import ScheduleManager
+
 
 def run_schedule_manager(manager_id: int):
     try:
@@ -9,7 +11,8 @@ def run_schedule_manager(manager_id: int):
 
     manager.notify_reviewers()
 
-def update_manager_result_task(task:Task):
+
+def update_manager_result_task(task: Task):
     try:
         manager = ScheduleManager.objects.get(pk=task.kwargs["manager_id"])
     except ScheduleManager.DoesNotExist:
