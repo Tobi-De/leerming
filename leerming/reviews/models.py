@@ -4,6 +4,7 @@ import datetime as dt
 import random
 from contextlib import suppress
 
+from django.contrib.sessions.backends.db import SessionStore
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.query import QuerySet
@@ -15,6 +16,7 @@ from model_utils.models import TimeStampedModel
 
 from .utils import notify_reviewers
 from leerming.flashcards.models import FlashCard
+from leerming.flashcards.models import Topic
 from leerming.users.models import User
 
 review_id_session_key = "review_id"
@@ -41,6 +43,7 @@ class Review(TimeStampedModel):
     """
 
     flashcards = models.ManyToManyField(FlashCard)
+    topics = models.ManyToManyField(Topic)
     reviewer = models.ForeignKey(
         "users.User", on_delete=models.CASCADE, related_name="reviews"
     )
@@ -71,7 +74,7 @@ class Review(TimeStampedModel):
             return
         if reviewer.reviews.count() == 0:
             return _("Démarrez votre première révision!")
-        if cls.get_current_review(reviewer=reviewer, request=request):
+        if cls.get_current_review(reviewer=reviewer, session=request.session):
             return _("Continuez votre révision!")
         reviewer_time = reviewer.profile.review_time
         review_date = now.replace(hour=reviewer_time.hour, minute=reviewer_time.minute)
@@ -85,7 +88,7 @@ class Review(TimeStampedModel):
         return 0 if nbr_of_cards == 0 else round((score / nbr_of_cards) * 100)
 
     @classmethod
-    def get_cards_to_review_for(
+    def get_flashcards_to_review_for(
         cls, reviewer: User, date: dt.date
     ) -> QuerySet[FlashCard]:
         return reviewer.flashcards.filter(
@@ -95,40 +98,38 @@ class Review(TimeStampedModel):
         )
 
     @classmethod
-    def _get_or_create(cls, reviewer: User, date: dt.date) -> Review:
-        if not reviewer.flashcards.filter(mastered_at__isnull=True).filter():
-            raise NoCardsToReviewError("No cards to review")
-
+    def get_or_create(
+        cls,
+        reviewer: User,
+        creation_date: dt.date,
+        flashcards=QuerySet[FlashCard],
+        topics: QuerySet[Topic] | None = None,
+    ) -> Review:
         with suppress(ObjectDoesNotExist):
-            return cls.objects.get(reviewer=reviewer, creation_date=date)
+            return cls.objects.get(reviewer=reviewer, creation_date=creation_date)
 
-        cards = cls.get_cards_to_review_for(reviewer, date)
-        if not cards:
-            raise NoCardsToReviewError("No cards to review")
-        instance = cls.objects.create(reviewer=reviewer, creation_date=date)
-        instance.flashcards.set(cards)
+        instance = cls.objects.create(reviewer=reviewer, creation_date=creation_date)
+        instance.flashcards.set(flashcards)
+        instance.topics.set(topics)
         return instance
 
     @classmethod
-    def start(cls, reviewer: User, request: HttpRequest) -> Review:
-        review = cls._get_or_create(reviewer, date=dt.date.today())
-
+    def start(cls, review: Review, session: SessionStore) -> Review:
         # if the review is already in the user session then there is nothing to do
-        if request.session.get(review_id_session_key):
-            # already started
+        if review.id == session.get(review_id_session_key):
             return review
 
         cards = list(review.flashcards.values_list("id", flat=True))
         random.shuffle(cards)
-        request.session[review_id_session_key] = review.id
-        request.session[cards_session_key] = list(cards)
-        request.session[current_card_session_key] = cards[0]
-        request.session[answers_session_key] = {}
+        session[review_id_session_key] = review.id
+        session[cards_session_key] = list(cards)
+        session[current_card_session_key] = cards[0]
+        session[answers_session_key] = {}
         return review
 
     @classmethod
-    def end(cls, request: HttpRequest) -> None:
-        current_review_id = request.session.get(review_id_session_key)
+    def end(cls, session: SessionStore) -> None:
+        current_review_id = session.get(review_id_session_key)
         try:
             current_review = cls.objects.get(pk=current_review_id)
         except cls.DoesNotExist:
@@ -137,7 +138,7 @@ class Review(TimeStampedModel):
             # the review has already been end, nothing to do
             return
 
-        answers = request.session.get(answers_session_key)
+        answers = session.get(answers_session_key)
         completion_date = timezone.now()
 
         for card_id, correct_answer in answers.items():
@@ -160,61 +161,59 @@ class Review(TimeStampedModel):
         current_review.save()
 
         # clean session
-        request.session.pop(current_card_session_key)
-        request.session.pop(cards_session_key)
-        request.session.pop(review_id_session_key)
-        request.session.pop(answers_session_key)
+        session.pop(current_card_session_key)
+        session.pop(cards_session_key)
+        session.pop(review_id_session_key)
+        session.pop(answers_session_key)
 
         # create reminder for next review
         current_review.reviewer.profile.register_for_next_review()
 
     @classmethod
-    def move_to_next_card(cls, request: HttpRequest) -> FlashCard:
-        cards = request.session.get(cards_session_key)
-        current_card = request.session.get(current_card_session_key)
+    def move_to_next_card(cls, session: SessionStore) -> FlashCard:
+        cards = session.get(cards_session_key)
+        current_card = session.get(current_card_session_key)
 
         try:
             next_card = cards[cards.index(current_card) + 1]
         except IndexError as e:
             raise SessionEndedError() from e
 
-        request.session[current_card_session_key] = next_card
+        session[current_card_session_key] = next_card
 
         try:
             return FlashCard.objects.get(pk=next_card)
         except FlashCard.DoesNotExist:
-            return cls.move_to_next_card(request)
+            return cls.move_to_next_card(session)
 
     @classmethod
-    def add_answer(cls, card_id: int, answer: bool, request: HttpRequest) -> None:
-        answers = request.session.get(answers_session_key)
+    def add_answer(cls, card_id: int, answer: bool, session: SessionStore) -> None:
+        answers = session.get(answers_session_key)
         answers[card_id] = answer
-        request.session[answers_session_key] = answers
+        session[answers_session_key] = answers
 
     @classmethod
-    def get_current_card(cls, request: HttpRequest) -> tuple[FlashCard, str]:
-        current_card_id = request.session.get(current_card_session_key)
-        current_card_index = request.session.get(cards_session_key).index(
-            current_card_id
-        )
-        nbr_of_cards = len(request.session.get(cards_session_key))
+    def get_current_card(cls, session: SessionStore) -> tuple[FlashCard, str]:
+        current_card_id = session.get(current_card_session_key)
+        current_card_index = session.get(cards_session_key).index(current_card_id)
+        nbr_of_cards = len(session.get(cards_session_key))
         step = f"{current_card_index + 1}/{nbr_of_cards}"
         return FlashCard.objects.get(pk=current_card_id), step
 
     @classmethod
     def get_current_review(
-        cls, reviewer: User, request: HttpRequest | None = None
+        cls, reviewer: User, session: SessionStore | None = None
     ) -> Review | None:
         try:
-            if current_review_id := request.session.get(review_id_session_key):
+            if current_review_id := session.get(review_id_session_key):
                 return cls.objects.get(pk=current_review_id)
         except AttributeError:
             return
         except ObjectDoesNotExist:
-            request.session.pop(current_card_session_key)
-            request.session.pop(cards_session_key)
-            request.session.pop(review_id_session_key)
-            request.session.pop(answers_session_key)
+            session.pop(current_card_session_key)
+            session.pop(cards_session_key)
+            session.pop(review_id_session_key)
+            session.pop(answers_session_key)
         with suppress(ObjectDoesNotExist):
             return cls.objects.get(reviewer=reviewer, completed_at__isnull=True)
 

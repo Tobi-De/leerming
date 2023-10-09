@@ -1,7 +1,8 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from .models import FlashCard, Topic
+from .models import FlashCard
+from .models import Topic
 
 
 class NoValidationChoiceField(forms.ChoiceField):
@@ -14,6 +15,9 @@ class FlashCardForm(forms.ModelForm):
         label=_("Sujet"),
         widget=forms.Select(attrs={"class": "tom-select"}),
         required=False,
+        help_text=_(
+            "Si le sujet n'existe pas, soyer certain de cliquer sur ajouter/entrée pour qu'il soit créé"
+        ),
     )
 
     class Meta:
@@ -42,9 +46,7 @@ class FlashCardForm(forms.ModelForm):
                     title=topic.capitalize(), created_by=self.request.user
                 )
             else:
-                print("here")
                 topic = Topic.objects.get(id=topic_id)
-                print(topic)
             self.instance.topic = topic
 
         if (
