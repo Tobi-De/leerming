@@ -1,4 +1,5 @@
 import datetime as dt
+import zoneinfo
 
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
@@ -16,6 +17,9 @@ from leerming.reviews.models import Review
 from leerming.reviews.models import ScheduleManager
 
 
+TIMEZONES_CHOICES = [(tz, tz) for tz in zoneinfo.available_timezones()]
+
+
 class Profile(LifecycleModelMixin, TimeStampedModel):
     class Weekday(models.IntegerChoices):
         MONDAY = 0, _("Lundi")
@@ -29,17 +33,25 @@ class Profile(LifecycleModelMixin, TimeStampedModel):
     user = models.OneToOneField(
         "users.User", related_name="profile", on_delete=models.CASCADE
     )
+    full_name = models.CharField(_("full name"), max_length=200, blank=True)
+    short_name = models.CharField(_("short name"), max_length=50, blank=True)
     review_days = ArrayField(
         models.PositiveSmallIntegerField(choices=Weekday.choices),
         verbose_name=_("Jours de révision"),
     )
     review_time = models.TimeField(verbose_name=_("Heure de révision"))
+    timezone = models.CharField(
+        verbose_name=_("Fuseau horaire"),
+        max_length=50,
+        default="UTC",
+        choices=TIMEZONES_CHOICES,
+    )
     email_notifications_enabled = models.BooleanField(
         default=True, verbose_name=_("Notifications par email")
     )
 
     def __str__(self):
-        return f"Profile of {self.user}"
+        return self.full_name or self.short_name or f"Profile of {self.user}"
 
     @cached_property
     def review_scheduler_name(self) -> str:
@@ -77,7 +89,7 @@ class Profile(LifecycleModelMixin, TimeStampedModel):
             next_review_date += dt.timedelta(days=1)
 
         next_run = dt.datetime.combine(next_review_date, self.review_time)
-        return timezone.make_aware(next_run, timezone.get_current_timezone())
+        return timezone.make_aware(next_run, zoneinfo.ZoneInfo(self.timezone))
 
     @hook(BEFORE_SAVE)
     def sort_review_days(self):
@@ -85,7 +97,7 @@ class Profile(LifecycleModelMixin, TimeStampedModel):
 
     @hook(
         AFTER_UPDATE,
-        when_any=["review_days", "review_time"],
+        when_any=["review_days", "review_time", "timezone"],
         has_changed=True,
     )
     def update_scheduler(self):

@@ -1,8 +1,8 @@
 import os
 from pathlib import Path
-from django.utils.translation import gettext_lazy as _
 
 import environ
+from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 APPS_DIR = BASE_DIR / "leerming"
@@ -16,10 +16,7 @@ DEBUG = env("DJANGO_DEBUG", default=False)
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
 
 LANGUAGE_CODE = "en-us"
-LANGUAGES = [
-    ("en", _("English")),
-    ("fr", _("Français"))
-]
+LANGUAGES = [("en", _("English")), ("fr", _("Français"))]
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
@@ -78,6 +75,7 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
     "watson.middleware.SearchContextMiddleware",
+    "leerming.profiles.middleware.TimezoneMiddleware",
 ]
 
 if DEBUG:
@@ -154,7 +152,6 @@ LOGIN_REDIRECT_URL = "/"
 
 SITE_ID = 1
 
-ACCOUNT_FORMS = {"signup": "leerming.users.forms.SignupForm"}
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"

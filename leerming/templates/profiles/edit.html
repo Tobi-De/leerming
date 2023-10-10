@@ -13,7 +13,7 @@
                 {% csrf_token %}
                 {{ form }}
             </form>
-            <div class="my-4 hs-tooltip flex items-center">
+            <!-- <div class="my-4 hs-tooltip flex items-center">
                 <input type="checkbox" id="hs-tooltip-example" class="sp_notify_prompt hs-tooltip-toggle relative shrink-0 w-[3.25rem] h-7 bg-gray-100 checked:bg-none checked:bg-blue-600 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 border border-transparent ring-1 ring-transparent focus:border-blue-600 focus:ring-blue-600 ring-offset-white focus:outline-none appearance-none dark:bg-gray-700 dark:checked:bg-blue-600 dark:focus:ring-offset-gray-800
 
                                                                       before:inline-block before:w-6 before:h-6 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:shadow before:rounded-full before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-gray-400 dark:checked:before:bg-blue-200">
@@ -23,7 +23,7 @@
                      role="tooltip">
                     Enable push notifications
                 </div>
-            </div>
+            </div> -->
         {% endblock form %}
         <button form="edit-form" type="submit"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
@@ -47,5 +47,6 @@
             createOnBlur: true,
             create: true
         });
+        new TomSelect("#id_timezone");
     </script>
 {% endblock javascript %}

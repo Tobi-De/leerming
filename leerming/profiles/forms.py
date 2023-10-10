@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from .models import Profile
 
 
-class ProfileForm(forms.Form):
+class ProfileForm(forms.ModelForm):
     review_days = forms.MultipleChoiceField(
         choices=Profile.Weekday.choices,
         initial=[
@@ -19,12 +19,14 @@ class ProfileForm(forms.Form):
         label=_("Jours de révision"),
         widget=forms.SelectMultiple(attrs={"class": "tom-select"}),
     )
-    review_time = forms.TimeField(
-        widget=forms.TimeInput(attrs={"type": "time"}),
-        initial="18:00",
-        input_formats=["%H:%M"],
-        label=_("Heure de révision"),
-    )
+
+    class Meta:
+        model = Profile
+        fields = ["review_days", "review_time", "timezone"]
+        widgets = {
+            "timezone": forms.Select(attrs={"class": "tom-select"}),
+            "review_time": forms.TimeInput(format="%H:%M"),
+        }
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -35,5 +37,9 @@ class ProfileForm(forms.Form):
 
 
 class ProfileEditForm(ProfileForm):
-    short_name = forms.CharField(max_length=50, label=_("Nom court"), required=False)
-    full_name = forms.CharField(max_length=200, label=_("Nom complet"), required=False)
+    class Meta(ProfileForm.Meta):
+        fields = ProfileForm.Meta.fields + [
+            "short_name",
+            "full_name",
+            "email_notifications_enabled",
+        ]
