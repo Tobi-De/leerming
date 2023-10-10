@@ -46,7 +46,10 @@ def start(request: HttpRequest):
     if Review.get_current_review(reviewer=request.user, session=request.session):
         return redirect("reviews:show_current_card")
     today = timezone.now().date()
-    form = ReviewForm(request.POST or None, request=request, creation_date=today)
+    # fixme: weird bug here, the form fails to submit when nothing is checked
+    form = ReviewForm(
+        request.POST or {"topics": []}, request=request, creation_date=today
+    )
     if request.method == "POST" and form.is_valid():
         review = form.save()
         Review.start(review, request.session)
