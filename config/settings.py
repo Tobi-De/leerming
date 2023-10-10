@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 
 import environ
 
@@ -15,9 +16,15 @@ DEBUG = env("DJANGO_DEBUG", default=False)
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
 
 LANGUAGE_CODE = "en-us"
+LANGUAGES = [
+    ("en", _("English")),
+    ("fr", _("Français"))
+]
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
+
+LOCALE_PATHS = [BASE_DIR / "locale"]
 
 DJANGO_APPS = [
     "django.contrib.admin",
