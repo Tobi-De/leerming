@@ -8,6 +8,7 @@ from .models import ScheduleManager
 class ReviewAdmin(admin.ModelAdmin):
     list_display = (
         "id",
+        "__str__",
         "reviewer",
         "score_percentage",
         "creation_date",
@@ -27,5 +28,5 @@ class ReviewAdmin(admin.ModelAdmin):
 
 @admin.register(ScheduleManager)
 class ScheduleManagerAdmin(admin.ModelAdmin):
-    list_display = ("id", "created", "modified", "schedule", "result_task")
+    list_display = ("id", "__str__" , "schedule", "result_task", "created", "modified")
     list_filter = ("created", "modified", "schedule", "result_task")
