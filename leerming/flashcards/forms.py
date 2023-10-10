@@ -42,7 +42,7 @@ class FlashCardForm(forms.ModelForm):
             try:
                 topic_id = int(topic)
             except ValueError:
-                topic = Topic.objects.create(
+                topic, _ = Topic.objects.get_or_create(
                     title=topic.capitalize(), created_by=self.request.user
                 )
             else:

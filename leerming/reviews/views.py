@@ -47,13 +47,16 @@ def start(request: HttpRequest):
         return redirect("reviews:show_current_card")
     today = timezone.now().date()
     # fixme: weird bug here, the form fails to submit when nothing is checked
-    form = ReviewForm(
-        request.POST or {"topics": []}, request=request, creation_date=today
-    )
-    if request.method == "POST" and form.is_valid():
-        review = form.save()
-        Review.start(review, request.session)
-        return HttpResponseClientRedirect(reverse("reviews:show_current_card"))
+    # form = ReviewForm(
+    #     request.POST or {"topics": []}, request=request, creation_date=today
+    # )
+    form = ReviewForm(request=request, creation_date=today)
+    if request.method == "POST":
+        form = ReviewForm(request.POST, request=request, creation_date=today)
+        if form.is_valid():
+            review = form.save()
+            Review.start(review, request.session)
+            return HttpResponseClientRedirect(reverse("reviews:show_current_card"))
     template_name = "reviews/start.html#form" if request.htmx else "reviews/start.html"
     return TemplateResponse(
         request, template_name, {"form": form, "review_date": today}
