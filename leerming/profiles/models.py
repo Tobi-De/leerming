@@ -39,7 +39,9 @@ class Profile(LifecycleModelMixin, TimeStampedModel):
         models.PositiveSmallIntegerField(choices=Weekday.choices),
         verbose_name=_("Jours de révision"),
     )
-    review_time = models.TimeField(verbose_name=_("Heure de révision"))
+    review_time = models.TimeField(
+        verbose_name=_("Heure de révision"), default="18:00"
+    )
     timezone = models.CharField(
         verbose_name=_("Fuseau horaire"),
         max_length=50,

@@ -25,7 +25,7 @@ class ProfileForm(forms.ModelForm):
         fields = ["review_days", "review_time", "timezone"]
         widgets = {
             "timezone": forms.Select(attrs={"class": "tom-select"}),
-            "review_time": forms.TimeInput(format="%H:%M"),
+            "review_time": forms.TimeInput(format="%H:%M", attrs={"type": "time"}),
         }
 
     def clean(self):
