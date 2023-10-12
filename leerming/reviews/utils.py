@@ -14,7 +14,7 @@ def email_channel(recipients: list[User], template_name: str, subject: str):
     messages = []
     for user in recipients:
         rendered_html_body = render_to_string(
-            template_name, {"name": user.short_name or user.full_name}
+            template_name, {"name": user.profile.short_name or user.profile.full_name}
         )
         message = EmailMultiAlternatives(
             subject,
