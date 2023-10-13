@@ -104,7 +104,7 @@ class FlashCard(TimeStampedModel):
     def __str__(self):
         if self.card_type == self.CardType.FRONT_BACK:
             return self.question
-        return self.question.replace(self.answer, "...")
+        return self.question.replace(self.answer, "[...]")
 
     @property
     def answer_display(self) -> str:
