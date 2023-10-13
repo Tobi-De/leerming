@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.db import models
-from django.http import HttpRequest
+from django.http import HttpRequest, Http404
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import reverse
@@ -8,9 +8,14 @@ from django.views.decorators.http import require_http_methods
 from django_htmx.http import HttpResponseClientRedirect
 
 from .filters import FilterForm
-from .forms import FlashCard
+from .forms import FlashCard, FlashCardFromDocument
 from .forms import FlashCardCreateForm
 from .forms import FlashCardEditForm
+from .llm_utils import (
+    make_flashcards_from,
+    save_tmp_flashcard_to_session,
+    load_tmp_flashcard_from_session,
+)
 
 
 def index(request: HttpRequest):
@@ -88,3 +93,28 @@ def delete(request: HttpRequest, pk: int):
     flashcard = get_object_or_404(FlashCard.objects.filter(owner=request.user), pk=pk)
     flashcard.delete()
     return HttpResponseClientRedirect(reverse("flashcards:index"))
+
+
+def create_from_document(request: HttpRequest):
+    form = FlashCardFromDocument(request.POST or None, request=request)
+    if request.method == "POST" and form.is_valid():
+        result = make_flashcards_from(
+            source_text=form.cleaned_data["document"],
+            main_focus_point=form.cleaned_data["text_focus"],
+        )
+        save_tmp_flashcard_to_session(request, result)
+        return HttpResponseClientRedirect(reverse("flashcards:triage"))
+
+    return TemplateResponse(
+        request,
+        "flashcards/create_from_document.html",
+        {"form": FlashCardFromDocument(request=request)},
+    )
+
+
+def triage(request: HttpRequest):
+    if flashcards := load_tmp_flashcard_from_session(request):
+        return TemplateResponse(
+            request, "flashcards/triage.html", {"flashcards": flashcards}
+        )
+    raise Http404()

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<header class="mb-6">
+    <h1 class="block text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white">{% trans "Triage" %}
+    <p class="mt-2 text-lg text-gray-800 dark:text-gray-400">{% blocktrans %}Améliorer les cartes auto génerer et décocher celle que vous
+        ne souhaitez pas include{% endblocktrans %}</p>
+</header>
+
+<div id="flashcards">
+    
+
+    <div class="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
+        {% for flashcard in flashcards %}
+        
+        <div id="{{forloop.counter}}"
+            class="flex flex-col justify-between max-w-2xl px-8 py-4 bg-white border shadow-sm  rounded-md p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
+            
+
+            <div class="my-2">
+                <p class="mt-2 text-gray-800 dark:text-gray-400 cursor-pointer">
+                    {{ flashcard.before_answer }} <span class="text-teal-600" >{{ flashcard.answer }}</span> {{ flashcard.after_answer }}</p>
+            </div>
+
+            <a href=""
+                class="py-[.688rem] px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-gray-200 font-semibold text-blue-500 hover:text-white hover:bg-blue-500 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:border-gray-700 dark:hover:border-blue-500">
+                {% trans "Édité" %}
+                {% heroicon_outline "pencil" width="15" height="15" %}
+            </a>
+           
+        </div>
+    {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock content %}

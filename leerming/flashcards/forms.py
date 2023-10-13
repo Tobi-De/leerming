@@ -62,6 +62,7 @@ class FlashCardForm(forms.ModelForm):
                     "La réponse doit être dans la question pour une carte de type Remplissage"
                 ),
             )
+        return cleaned_data
 
         duplicate_check_query = models.Q(
             question=cleaned_data["question"],
@@ -96,3 +97,39 @@ class FlashCardEditForm(FlashCardForm):
         if "difficulty" in self.changed_data:
             instance.update_level_from_difficulty()
         return instance
+
+
+
+
+class FlashCardFromDocument(FlashCardForm):
+    document = forms.CharField(widget=forms.Textarea())
+    text_focus = forms.CharField(help_text=_("What do you want it to focus on?"))
+    class Meta:
+        model = FlashCard
+        fields = ("card_type", "topic", "text_focus", "document")
+        widgets = {
+            "question": forms.Textarea(attrs={"rows": 2}),
+            "answer": forms.Textarea(attrs={"rows": 2}),
+        }
+
+    def clean(self):
+        return self.cleaned_data
+    
+
+class TmpFlashCard(FlashCardForm):
+    class Meta:
+        model = FlashCard
+        fields = ( "question", "answer")
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+
+        if (cleaned_data["answer"] not in cleaned_data["question"]
+        ):
+            self.add_error(
+                field="answer",
+                error=_(
+                    "La réponse doit être dans la question pour une carte de type Remplissage"
+                ),
+            )
+        return cleaned_data

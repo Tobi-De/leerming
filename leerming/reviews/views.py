@@ -21,7 +21,7 @@ def index(request: HttpRequest):
         request,
         "reviews/index.html",
         {
-            "reviews": request.user.reviews.all(),
+            "reviews": request.user.reviews.prefetch_related("topics"),
             "start_review_message": Review.get_review_start_message(
                 request=request, reviewer=request.user
             ),
