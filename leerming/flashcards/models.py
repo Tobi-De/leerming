@@ -52,7 +52,7 @@ class FlashCard(TimeStampedModel):
         HARD = "HARD", _("Difficile")
 
     class CardType(models.TextChoices):
-        FRONT_BACK = "FRONT_BACK", _("Deux faces")
+        FRONT_BACK = "FRONT_BACK", _("Recto / Verso")
         FILL_IN_THE_GAP = "FILL_IN_THE_GAP", _("Remplissage")
 
     owner = models.ForeignKey(
