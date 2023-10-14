@@ -40,6 +40,11 @@
           hx-trigger="keyup change delay:500ms, change, search"
           class="my-5 flex flex-col xl:flex-row gap-2">
         {{form}}
+            <button type="button"
+                class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-gray-500 text-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-offset-gray-800">
+                Envoyer a un ami
+                {% heroicon_solid "paper-airplane" class="w-4 h-4" %}
+            </button>
     </form>
 
     <div id="flashcards">

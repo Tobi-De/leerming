@@ -59,6 +59,7 @@ LOCAL_APPS = [
     "leerming.profiles",
     "leerming.flashcards",
     "leerming.reviews",
+    "leerming.gifts",
 ]
 
 INSTALLED_APPS = LOCAL_APPS + THIRD_PARTY_APPS + DJANGO_APPS
