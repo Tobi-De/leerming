@@ -98,9 +98,6 @@ class FlashCard(TimeStampedModel):
         verbose_name=_("Date de la prochaine révision"), blank=True, null=True
     )
 
-    class Meta:
-        ordering = ("-created",)
-
     def __str__(self):
         if self.card_type == self.CardType.FRONT_BACK:
             return self.question
