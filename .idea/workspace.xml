@@ -5,19 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41c5c547-a60c-425a-b8f5-133a48ac7fe3" name="Changes" comment="chore: unnecessary order by">
-      <change afterPath="$PROJECT_DIR$/leerming/flashcards/llm_utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leerming/templates/flashcards/create_from_document.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leerming/templates/flashcards/triage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/flashcards/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/flashcards/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/flashcards/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/reviews/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/flashcards/llm_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/llm_utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/leerming/static/css/tailwind.css" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/static/css/tailwind.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/leerming/templates/flashcards/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/flashcards/create.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements-dev.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements-dev.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/templates/flashcards/create_from_document.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/flashcards/create_from_document.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/templates/flashcards/triage.html" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/templates/flashcards/triage.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +62,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "Rebasing feat/llm",
+    "git-widget-placeholder": "feat/llm",
     "last_opened_file_path": "/home/tobi/Builds/leerming/leerming/static",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
