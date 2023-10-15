@@ -98,6 +98,13 @@ class FlashCard(TimeStampedModel):
         verbose_name=_("Date de la prochaine révision"), blank=True, null=True
     )
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["owner", "question", "answer"], name="unique_flashcard"
+            )
+        ]
+
     def __str__(self):
         if self.card_type == self.CardType.FRONT_BACK:
             return self.question

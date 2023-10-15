@@ -55,13 +55,13 @@ class FilterForm(forms.Form):
         queryset = self.user.flashcards.select_related("topic")
         if not self.is_valid():
             return queryset
-        query = self.cleaned_data["query"]
+
         topic = self.cleaned_data["topic"]
         difficulty = self.cleaned_data["difficulty"]
         next_review_date = self.cleaned_data["next_review_date"]
         mastered = self.cleaned_data["mastered"]
 
-        if query:
+        if query := self.cleaned_data["query"]:
             queryset = search.filter(queryset, query)
         if next_review_date:
             queryset = queryset.filter(next_review_date=next_review_date)

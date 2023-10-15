@@ -1,0 +1,29 @@
+<div class="p-4 sm:py-6 sm:p-10 text-center">
+    <h3 class="mb-2 text-2xl font-bold text-gray-800 dark:text-gray-200">
+        {% trans "Confirmer l'envoi" %}
+    </h3>
+
+    <ul class="max-w-xs flex flex-col">
+        <li class="inline-flex items-center gap-x-2 py-3 px-4 text-sm font-medium bg-white border text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+            {% trans "Destinataire" %} : <span class="font-bold text-blue-600 dark:text-blue-500">{{ recipient_email }}</span>
+        </li>
+        <li class="inline-flex items-center gap-x-2 py-3 px-4 text-sm font-medium bg-white border text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+            {% trans "Nombre de cartes" %} : <span class="font-bold text-blue-600 dark:text-blue-500">{{ flashcard_count }}</span>
+        </li>
+        <li class="inline-flex items-center gap-x-2 py-3 px-4 text-sm  font-medium bg-white border text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+            {% trans "Sujet(s)" %} : <span class="font-bold text-blue-600 dark:text-blue-500">{% if topic_list %}{{ topic_list|join:", " }} {% else %} {% trans "Sans sujet" %} {% endif %}</span>
+        </li>
+    </ul>
+</div>
+<div class="flex items-center">
+    <button hx-post="{% url 'gifts:cancel_send' %}"
+            class="p-4 w-full inline-flex justify-center items-center gap-2 rounded-bl-xl bg-gray-100 border border-transparent font-semibold text-gray-800 hover:text-blue-600 focus:outline-none focus:ring-2 ring-offset-white focus:ring-gray-100 focus:ring-offset-2 transition-all text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-600 dark:text-white dark:focus:ring-offset-gray-800"
+            data-hs-overlay="#hs-cookies">
+        {% trans "Annuler" %}
+    </button>
+    <button hx-post="{% url 'gifts:confirm_send' %}"
+            class="p-4 w-full inline-flex justify-center items-center gap-2 rounded-br-xl border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
+            data-hs-overlay="#hs-cookies">
+        {% trans "Confirmer" %}
+    </button>
+</div>
