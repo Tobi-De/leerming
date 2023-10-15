@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.db import models
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
@@ -15,6 +16,9 @@ from .forms import FlashCardEditForm
 def index(request: HttpRequest):
     form = FilterForm(request.GET or None, request=request)
     flashcards = form.filter()
+    flashcards = flashcards.order_by(
+        models.F("next_review_date").asc(nulls_first=True), "-created"
+    )
     paginator = Paginator(flashcards, 12)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)

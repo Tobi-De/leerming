@@ -99,7 +99,11 @@ class FlashCard(TimeStampedModel):
     )
 
     class Meta:
-        ordering = ("-created",)
+        constraints = [
+            models.UniqueConstraint(
+                fields=["owner", "question", "answer"], name="unique_flashcard"
+            )
+        ]
 
     def __str__(self):
         if self.card_type == self.CardType.FRONT_BACK:

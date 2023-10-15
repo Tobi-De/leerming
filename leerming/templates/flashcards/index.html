@@ -15,6 +15,58 @@
 {% endpartialdef card_answer %}
 
 
+{% block modal %}
+    <dialog data-modal class="bg-white shadow-lg rounded-xl dark:bg-gray-800">
+        <div class="p-4 sm:py-6 sm:p-10 text-center">
+            <h3 class="mb-2 text-2xl font-bold text-gray-800 dark:text-gray-200">
+                {% trans "Email du destinataire" %}
+            </h3>
+            <form hx-target="dialog"
+                  hx-include="[id='filter-form']"
+                  id="dialog-form" hx-post="{% url 'gifts:set_recipient' %}"></form>
+        </div>
+        <div class="flex items-center">
+            <button data-modal-close type="button"
+                    class="p-4 w-full inline-flex justify-center items-center gap-2 rounded-bl-xl bg-gray-100 border border-transparent font-semibold text-gray-800 hover:text-blue-600 focus:outline-none focus:ring-2 ring-offset-white focus:ring-gray-100 focus:ring-offset-2 transition-all text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-600 dark:text-white dark:focus:ring-offset-gray-800"
+                    data-hs-overlay="#hs-cookies">
+                {% trans "Annuler" %}
+            </button>
+            <button type="submit" form="dialog-form"
+                    class="p-4 w-full inline-flex justify-center items-center gap-2 rounded-br-xl border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
+                    data-hs-overlay="#hs-cookies">
+                {% trans "Soumettre" %}
+            </button>
+        </div>
+    </dialog>
+{% endblock modal %}
+{% block javascript %}
+    <script>
+        const openButton = document.querySelector('[data-open-modal]');
+        const closeButton = document.querySelector('[data-modal-close]');
+        const modal = document.querySelector('[data-modal]');
+
+        openButton.addEventListener("click", () => {
+            modal.showModal();
+        })
+
+        closeButton.addEventListener("click", () => {
+            modal.close();
+        })
+
+        modal.addEventListener("click", (e) => {
+            const dialogDimensions = modal.getBoundingClientRect();
+            if (
+                e.clientX < dialogDimensions.left ||
+                e.clientX > dialogDimensions.right ||
+                e.clientY < dialogDimensions.top ||
+                e.clientY > dialogDimensions.bottom
+
+            ) {
+                modal.close()
+            }
+        })
+    </script>
+{% endblock javascript %}
 {% block content %}
     <header class="mb-6">
         <h1 class="block text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white">{% trans "Vos Cartes" %}
@@ -38,8 +90,18 @@
           hx-indicator=".htmx-indicator"
           hx-target="#flashcards"
           hx-trigger="keyup change delay:500ms, change, search"
-          class="my-5 flex flex-col xl:flex-row gap-2">
-        {{form}}
+          class="my-5 flex flex-col xl:flex-row gap-2"
+          id="filter-form"
+    >
+        {{ form }}
+        <button hx-get="{% url 'gifts:set_recipient' %}"
+                hx-target="#dialog-form"
+                hx-include="[id='filter-form']"
+                data-open-modal
+                class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-gray-500 text-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-offset-gray-800">
+            Envoyer a un ami
+            {% heroicon_solid "paper-airplane" class="w-4 h-4" %}
+        </button>
     </form>
 
     <div id="flashcards">
@@ -111,7 +173,8 @@
                 class="mt-5 px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center">
                 <div class="">
                     <p class="text-sm text-gray-600 dark:text-gray-400">
-                        <span class="font-semibold text-gray-800 dark:text-gray-200">{{ page_obj|length }}</span> {% trans "résultats sur" %} <span
+                        <span class="font-semibold text-gray-800 dark:text-gray-200">{{ page_obj|length }}</span> {% trans "résultats sur" %}
+                        <span
                             class="font-semibold text-gray-800 dark:text-gray-200">{{ page_obj.paginator.count }}</span>
                     </p>
                 </div>
@@ -119,25 +182,25 @@
                 <div>
                     <div class="inline-flex gap-x-2">
                         {% if page_obj.has_previous %}
-                            <a href="{% url 'flashcards:index' %}?page={{ page_obj.previous_page_number}}"
+                            <a href="{% url 'flashcards:index' %}?page={{ page_obj.previous_page_number }}"
                                class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800">
                                 <svg class="w-3 h-3" width="16" height="16" viewBox="0 0 16 15" fill="none"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M10.506 1.64001L4.85953 7.28646C4.66427 7.48172 4.66427 7.79831 4.85953 7.99357L10.506 13.64"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                                 </svg>
                                 Prev
                             </a>
                         {% endif %}
                         {% if page_obj.has_next %}
-                            <a href="{% url 'flashcards:index' %}?page={{ page_obj.next_page_number}}"
+                            <a href="{% url 'flashcards:index' %}?page={{ page_obj.next_page_number }}"
                                class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800">
                                 Next
                                 <svg class="w-3 h-3" width="16" height="16" viewBox="0 0 16 16" fill="none"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path d="M4.50598 2L10.1524 7.64645C10.3477 7.84171 10.3477 8.15829 10.1524 8.35355L4.50598 14"
-                                          stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                          stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                                 </svg>
                             </a>
                         {% endif %}

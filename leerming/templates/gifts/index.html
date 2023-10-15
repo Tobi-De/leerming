@@ -15,24 +15,11 @@
                             class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-gray-700">
                             <div>
                                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
-                                    {% trans "Révisions" %}
+                                    {% trans "Cadeaux" %}
                                 </h2>
                                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                                    {% trans "Consultez vos révisions passées" %}
+                                    {% trans "Les boites de cartes que vous avez reçu ou envoyez." %}
                                 </p>
-                            </div>
-
-                            <div>
-                                <div class="inline-flex gap-x-2">
-                                    {% if start_review_message %}
-
-                                        <a href="{% url "reviews:start" %}"
-                                           class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border cursor-pointer border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
-                                            {% heroicon_outline "rocket-launch" width="16" height="16" %}
-                                            {{ start_review_message }}
-                                        </a>
-                                    {% endif %}
-                                </div>
                             </div>
                         </div>
                         <!-- End Header -->
@@ -44,7 +31,7 @@
                                     <th scope="col" class="px-6 py-3 text-left">
                                         <a class="group inline-flex items-center gap-x-2" href="#">
                                             <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                                                {% trans "Date" %}
+                                                {% trans "Expéditeur" %}
                                             </span>
                                             <div
                                                 class="flex justify-center items-center w-5 h-5 border border-gray-200 group-hover:bg-gray-200 text-gray-400 rounded dark:border-gray-700 dark:group-hover:bg-gray-700 dark:text-gray-400">
@@ -65,7 +52,28 @@
                                     <th scope="col" class="px-6 py-3 text-left">
                                         <a class="group inline-flex items-center gap-x-2" href="#">
                                             <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                                                {% trans "Nombres de cartes" %}
+                                                {% trans "Destinataire" %}
+                                            </span>
+                                            <div
+                                                class="flex justify-center items-center w-5 h-5 border border-gray-200 group-hover:bg-gray-200 text-gray-400 rounded dark:border-gray-700 dark:group-hover:bg-gray-700 dark:text-gray-400">
+                                                <svg class="w-2.5 h-2.5" width="16" height="16" viewBox="0 0 16 16"
+                                                     fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M7.55921 0.287451C7.86808 -0.0958171 8.40096 -0.0958167 8.70982 0.287451L12.9295 5.52367C13.3857 6.08979 13.031 7 12.3542 7H3.91488C3.23806 7 2.88336 6.08979 3.33957 5.52367L7.55921 0.287451Z"
+                                                        fill="currentColor"/>
+                                                    <path
+                                                        d="M8.70983 15.7125C8.40096 16.0958 7.86808 16.0958 7.55921 15.7125L3.33957 10.4763C2.88336 9.9102 3.23806 9 3.91488 9H12.3542C13.031 9 13.3857 9.9102 12.9295 10.4763L8.70983 15.7125Z"
+                                                        fill="currentColor"/>
+                                                </svg>
+                                            </div>
+                                        </a>
+                                    </th>
+
+                                    <th scope="col" class="px-6 py-3 text-left">
+                                        <a class="group inline-flex items-center gap-x-2" href="#">
+                                            <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
+                                                {% trans "Nombre de cartes" %}
                                             </span>
                                             <div
                                                 class="flex justify-center items-center w-5 h-5 border border-gray-200 group-hover:bg-gray-200 text-gray-400 rounded dark:border-gray-700 dark:group-hover:bg-gray-700 dark:text-gray-400">
@@ -108,7 +116,7 @@
                                     <th scope="col" class="px-6 py-3 text-left">
                                         <a class="group inline-flex items-center gap-x-2" href="#">
                                             <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                                                {% trans "Score" %}
+                                                {% trans "Ouvert ?" %}
                                             </span>
                                             <div
                                                 class="flex justify-center items-center w-5 h-5 border border-gray-200 group-hover:bg-gray-200 text-gray-400 rounded dark:border-gray-700 dark:group-hover:bg-gray-700 dark:text-gray-400">
@@ -129,7 +137,7 @@
                                     <th scope="col" class="px-6 py-3 text-left">
                                         <a class="group inline-flex items-center gap-x-2" href="#">
                                             <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                                                {% trans "Date de completion" %}
+                                                {% trans "Date d'envoi" %}
                                             </span>
                                             <div
                                                 class="flex justify-center items-center w-5 h-5 border border-gray-200 group-hover:bg-gray-200 text-gray-400 rounded dark:border-gray-700 dark:group-hover:bg-gray-700 dark:text-gray-400">
@@ -151,56 +159,63 @@
                             </thead>
 
                             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                                {% for review in reviews %}
+                                {% for gift in gifts %}
                                     <tr class="bg-white hover:bg-gray-50 dark:bg-slate-900 dark:hover:bg-slate-800">
                                         <td class="h-px w-px whitespace-nowrap">
-                                            <a class="block relative z-10" href="#">
-                                                <div class="px-6 py-2">
-                                                    <div class="block text-sm text-blue-600 decoration-2 hover:underline dark:text-blue-500">
-                                                        <a href="#">{{ review.creation_date|naturalday }}</a>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </td>
-                                        <td class="h-px w-72 min-w-[18rem]">
                                             <div class="px-6 py-2">
-                                                <p class="text-sm text-gray-500">{{ review.flashcards.count }}</p>
+                                                <div class="block text-sm text-gray-500">
+                                                    {{ gift.sender.email }}
+                                                </div>
                                             </div>
                                         </td>
                                         <td class="h-px w-72 min-w-[18rem]">
                                             <a class="block relative z-10" href="#">
                                                 <div class="px-6 py-2">
-                                                    {% if review.topics.exists %}
-                                                        <p class="text-sm text-gray-500">
-                                                            {{ review.topics.all|join:", " }}</p>
+                                                    <p class="text-sm text-gray-500">{{ gift.recipient.email }}</p>
+                                                </div>
+                                            </a>
+                                        </td>
+                                        <td class="h-px w-72 min-w-[18rem]">
+                                            <a class="block relative z-10" href="#">
+                                                <div class="px-6 py-2">
+                                                    <p class="text-sm text-gray-500">{{ gift.flashcard_count }}</p>
+                                                </div>
+                                            </a>
+                                        </td>
+                                        <td class="h-px w-72 min-w-[18rem]">
+                                            <a class="block relative z-10" href="#">
+                                                <div class="px-6 py-2">
+                                                    {% if gift.topic_list %}
+                                                        <p class="text-sm text-gray-500">{{ gift.topic_list|join:", " }}</p>
                                                     {% else %}
-                                                        <p class="text-sm text-gray-500">{% trans "Tous les sujets (sans sujets inclut)" %}</p>
+                                                        <p class="text-sm text-gray-500">{% trans "Sans sujet" %}</p>
                                                     {% endif %}
                                                 </div>
                                             </a>
                                         </td>
                                         <td class="h-px w-px whitespace-nowrap">
-                                            <a class="block relative z-10" href="#">
-                                                <div class="px-6 py-2">
-                                                    <span
-                                                        class="inline-flex items-center gap-1.5 py-1 px-2 rounded-md text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
-                                                        {{ review.score_percentage }} %
-                                                    </span>
-                                                </div>
-                                            </a>
-                                        </td>
-                                        <td class="h-px w-px whitespace-nowrap">
-                                            <a class="block relative z-10" href="#">
-                                                <div class="px-6 py-2">
-                                                    <span
-                                                        class="inline-flex items-center gap-1.5 py-1 px-2 rounded-md text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
-                                                        {% if review.completed_at %}
-                                                            {{ review.completed_at|naturalday }}{% else %} - {% endif %}
-                                                    </span>
-                                                </div>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                            <div class="px-6 py-2 inline-flex items-center gap-1.5">
+                                                {% if gift.opened_at %}
+                                                    {% heroicon_outline "check-circle" class="w-4.5 h-4.5 text-green-700" %}
+                                                {% else %}
+                                                    {% if request.user == gift.recipient %}
+                                                        <a class="block text-sm text-blue-600 decoration-2 hover:underline dark:text-blue-500 cursor-pointer"
+                                                           hx-post="{% url 'gifts:open' gift.id %}">{% heroicon_outline "folder-open" %}Ouvrir</a>
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                {% endif %}
+                                            </td>
+                                            <td class="h-px w-px whitespace-nowrap">
+                                                <a class="block relative z-10" href="#">
+                                                    <div class="px-6 py-2">
+                                                        <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-md text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+                                                            {{ gift.created|naturalday }}
+                                                        </span>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                        </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
@@ -211,7 +226,7 @@
                             class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-gray-700">
                             <div>
                                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                                    <span class="font-semibold text-gray-800 dark:text-gray-200">{{ reviews.count }}</span> {% trans "résultats" %}
+                                    <span class="font-semibold text-gray-800 dark:text-gray-200">{{ gifts.count }}</span> {% trans "résultats" %}
                                 </p>
                             </div>
 
