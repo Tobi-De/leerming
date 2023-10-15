@@ -1,4 +1,5 @@
 from django import forms
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from .models import FlashCard
@@ -35,19 +36,21 @@ class FlashCardForm(forms.ModelForm):
             (t.id, t.title) for t in Topic.objects.filter(created_by=self.request.user)
         ]
 
-    def clean(self):
-        cleaned_data = self.cleaned_data
-
+    def clean_topic(self):
         if topic := self.cleaned_data.pop("topic"):
             try:
                 topic_id = int(topic)
             except ValueError:
-                topic, __ = Topic.objects.get_or_create(
+                topic, _ = Topic.objects.get_or_create(
                     title=topic.capitalize(), created_by=self.request.user
                 )
             else:
                 topic = Topic.objects.get(id=topic_id)
-            self.instance.topic = topic
+            return topic
+        return None
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
 
         if (
             cleaned_data["card_type"] == FlashCard.CardType.FILL_IN_THE_GAP
@@ -59,6 +62,21 @@ class FlashCardForm(forms.ModelForm):
                     "La réponse doit être dans la question pour une carte de type Remplissage"
                 ),
             )
+
+        duplicate_check_query = models.Q(
+            question=cleaned_data["question"],
+            answer=cleaned_data["answer"],
+            owner=self.request.user,
+        )
+        if self.instance:
+            duplicate_check_query = duplicate_check_query & ~models.Q(
+                pk=self.instance.pk
+            )
+        if FlashCard.objects.filter(duplicate_check_query).exists():
+            self.add_error(
+                None, _("Une carte avec cette question et cette réponse existe déjà.")
+            )
+        return cleaned_data
 
 
 class FlashCardCreateForm(FlashCardForm):
