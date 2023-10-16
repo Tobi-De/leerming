@@ -130,5 +130,6 @@ dmypy.json
 
 # Pycharm
 .idea/
+.idea/workspace.xml
 
 node_modules
