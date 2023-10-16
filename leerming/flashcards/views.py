@@ -10,7 +10,6 @@ from django.views.decorators.http import require_http_methods
 from django_htmx.http import HttpResponseClientRedirect
 
 from .filters import FilterForm
-
 from .forms import FlashCardCreateForm
 from .forms import FlashCardEditForm
 from .forms import FlashCardFromDocument
@@ -21,15 +20,6 @@ from .llm_utils import make_flashcards_from
 from .llm_utils import save_llm_flashcards_to_session
 from .models import FlashCard
 from .models import Topic
-
-from .forms import FlashCard
-from .forms import FlashCardCreateForm
-from .forms import FlashCardEditForm
-from .forms import FlashCardFromDocument
-
-from .llm_utils import make_flashcards_from
-
-
 
 
 def index(request: HttpRequest):
