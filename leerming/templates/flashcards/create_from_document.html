@@ -7,10 +7,26 @@
 {% endblock breadcrumb %}
 
 {% block content %}
-    <div class="my-3 flex justify-end">
-        <a href="{% url 'flashcards:create' %}"
-           class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">{% trans "Mode manuelle" %}</a>
+    <div class="flex mb-4 justify-end">
+        <div class="flex bg-gray-100 hover:bg-gray-200 rounded-lg transition p-1 dark:bg-gray-700 dark:hover:bg-gray-600">
+            <nav class="flex space-x-2" aria-label="Tabs" role="tablist">
+
+                <a href="{% url 'flashcards:create' %}"
+                   type="button"
+                   class="hs-tab-active:bg-white hs-tab-active:text-gray-700 hs-tab-active:dark:bg-gray-800 hs-tab-active:dark:text-gray-400 dark:hs-tab-active:bg-gray-800 py-3 px-4 inline-flex items-center gap-2 bg-transparent text-sm text-gray-500 hover:text-gray-700 font-medium rounded-md hover:hover:text-blue-600 dark:text-gray-400 dark:hover:text-gray-300"
+                   id="segment-item-2" data-hs-tab="#segment-2" aria-controls="segment-2" role="tab">
+                    Manuelle
+                </a>
+                <a href="{% url 'flashcards:create_from_document' %}"
+                   type="button"
+                   class="hs-tab-active:bg-white hs-tab-active:text-gray-700 hs-tab-active:dark:bg-gray-800 hs-tab-active:dark:text-gray-400 dark:hs-tab-active:bg-gray-800 py-3 px-4 inline-flex items-center gap-2 bg-transparent text-sm text-gray-500 hover:text-gray-700 font-medium rounded-md hover:hover:text-blue-600 dark:text-gray-400 dark:hover:text-white active"
+                   id="segment-item-1" data-hs-tab="#segment-1" aria-controls="segment-1" role="tab">
+                    Avancé
+                </a>
+            </nav>
+        </div>
     </div>
+
     <div class="bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
 
         <div class="mb-4">
@@ -25,13 +41,13 @@
             </p>
         </div>
         {% partialdef form inline=True %}
-            <form hx-post="." hx-target="this" hx-swap="outerHTML" method="post" id="create-form">
+            <form hx-post="." hx-target="this" hx-swap="outerHTML" method="post" id="create-form" hx-indicator="#loading-circle">
                 {{ form }}
             </form>
         {% endpartialdef form %}
         <button form="create-form" type="submit"
                 class="inline-flex justify-center items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-            <span class="htmx-indicator animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+            <span id="loading-circle" class="htmx-indicator animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
             {% trans "Générer" %}
         </button>
     </div>

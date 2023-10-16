@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load humanize %}
+{% load static %}
 
 {% block breadcrumb %}
     {% trans "Cartes" as menu %}
@@ -40,32 +41,7 @@
     </dialog>
 {% endblock modal %}
 {% block javascript %}
-    <script>
-        const openButton = document.querySelector('[data-open-modal]');
-        const closeButton = document.querySelector('[data-modal-close]');
-        const modal = document.querySelector('[data-modal]');
-
-        openButton.addEventListener("click", () => {
-            modal.showModal();
-        })
-
-        closeButton.addEventListener("click", () => {
-            modal.close();
-        })
-
-        modal.addEventListener("click", (e) => {
-            const dialogDimensions = modal.getBoundingClientRect();
-            if (
-                e.clientX < dialogDimensions.left ||
-                e.clientX > dialogDimensions.right ||
-                e.clientY < dialogDimensions.top ||
-                e.clientY > dialogDimensions.bottom
-
-            ) {
-                modal.close()
-            }
-        })
-    </script>
+    <script src="{% static 'javascript/modal.js' %}"></script>
 {% endblock javascript %}
 {% block content %}
     <header class="mb-6">

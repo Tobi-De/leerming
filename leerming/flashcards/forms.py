@@ -62,7 +62,6 @@ class FlashCardForm(forms.ModelForm):
                     "La réponse doit être dans la question pour une carte de type Remplissage"
                 ),
             )
-        return cleaned_data
 
         duplicate_check_query = models.Q(
             question=cleaned_data["question"],
@@ -99,14 +98,18 @@ class FlashCardEditForm(FlashCardForm):
         return instance
 
 
-
-
 class FlashCardFromDocument(FlashCardForm):
     document = forms.CharField(widget=forms.Textarea())
-    text_focus = forms.CharField(help_text=_("What do you want it to focus on?"))
+    focus_on = forms.CharField(
+        label=_("Point central"),
+        help_text=_(
+            "Sur quelle point central les cartes générer doivent se concentrer"
+        ),
+    )
+
     class Meta:
         model = FlashCard
-        fields = ("card_type", "topic", "text_focus", "document")
+        fields = ("card_type", "topic", "focus_on", "document")
         widgets = {
             "question": forms.Textarea(attrs={"rows": 2}),
             "answer": forms.Textarea(attrs={"rows": 2}),
@@ -114,18 +117,21 @@ class FlashCardFromDocument(FlashCardForm):
 
     def clean(self):
         return self.cleaned_data
-    
 
-class TmpFlashCard(FlashCardForm):
+
+class LLMFlashCard(forms.ModelForm):
     class Meta:
         model = FlashCard
-        fields = ( "question", "answer")
+        fields = ("question", "answer")
+        widgets = {
+            "question": forms.Textarea(attrs={"rows": 2}),
+            "answer": forms.Textarea(attrs={"rows": 2}),
+        }
 
     def clean(self):
         cleaned_data = self.cleaned_data
 
-        if (cleaned_data["answer"] not in cleaned_data["question"]
-        ):
+        if cleaned_data["answer"] not in cleaned_data["question"]:
             self.add_error(
                 field="answer",
                 error=_(

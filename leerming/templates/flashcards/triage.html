@@ -1,4 +1,39 @@
 {% extends "base.html" %}
+{% load static %}
+
+
+{% partialdef edit_flashcard %}
+    <form id="dialog-form" hx-post="{{ url }}">
+        {{ form }}
+    </form>
+{% endpartialdef %}
+
+{% block modal %}
+    <dialog data-modal class="bg-white shadow-lg rounded-xl dark:bg-gray-800">
+        <div class="p-4 sm:py-6 sm:p-10">
+            <h3 class="mb-2 text-2xl font-bold text-gray-800 dark:text-gray-200">
+                {% trans "Éditer" %}
+            </h3>
+            <form id="dialog-form"></form>
+        </div>
+        <div class="flex items-center">
+            <button data-modal-close type="button"
+                    class="p-4 w-full inline-flex justify-center items-center gap-2 rounded-bl-xl bg-gray-100 border border-transparent font-semibold text-gray-800 hover:text-blue-600 focus:outline-none focus:ring-2 ring-offset-white focus:ring-gray-100 focus:ring-offset-2 transition-all text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-600 dark:text-white dark:focus:ring-offset-gray-800"
+                    data-hs-overlay="#hs-cookies">
+                {% trans "Annuler" %}
+            </button>
+            <button type="submit" form="dialog-form"
+                    class="p-4 w-full inline-flex justify-center items-center gap-2 rounded-br-xl border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
+                    data-hs-overlay="#hs-cookies">
+                {% trans "Soumettre" %}
+            </button>
+        </div>
+    </dialog>
+{% endblock modal %}
+
+{% block javascript %}
+    <script src="{% static 'javascript/modal.js' %}"></script>
+{% endblock javascript %}
 
 {% block content %}
 
@@ -9,48 +44,49 @@
             ne souhaitez pas include.{% endblocktrans %}</p>
 
         <div class="mt-5 flex flex-col items-center gap-2 sm:flex-row sm:gap-3">
-            <a href="{% url 'flashcards:create' %}"
-               class="w-full sm:w-auto inline-flex justify-center items-center gap-x-3 text-center bg-blue-600 hover:bg-blue-700 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-white transition py-3 px-4 dark:focus:ring-offset-gray-800">
+            <button form="triage-form" type="submit"
+                    class="w-full sm:w-auto inline-flex justify-center items-center gap-x-3 text-center bg-blue-600 hover:bg-blue-700 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-white transition py-3 px-4 dark:focus:ring-offset-gray-800">
                 {% translate "Enrégistrer" %}
-            </a>
+            </button>
         </div>
     </header>
 
     <div id="flashcards">
-        <div class="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
+        <form id="triage-form" method="post" action="{% url 'flashcards:save_llm_flashcards' %}"
+              class="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
+            {% csrf_token %}
             {% for flashcard in flashcards %}
-
-                <div id="{{ forloop.counter }}"
+                <div id="id_{{ flashcard.id }}"
                      class="flex flex-col gap-2 justify-between max-w-2xl px-8 py-4 bg-white border shadow-sm  rounded-md p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
-
 
                     <div class="my-2">
                         <p class="mt-2 text-gray-800 dark:text-gray-400 cursor-pointer">
-                            {{ flashcard.before_answer }} <span
-                                class="text-teal-600">{{ flashcard.answer }}</span> {{ flashcard.after_answer }}</p>
+                            {{ flashcard.before_answer }} <span class="text-teal-600">{{ flashcard.answer }}</span> {{ flashcard.after_answer }}</p>
                     </div>
 
-
                     <div class="flex  flex-col md:flex-row gap-2">
-                        <label for="hs-checkbox-in-form"
+                        <label for="{{ flashcard.id }}"
                                class="flex p-3  bg-white border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
                             <input type="checkbox"
                                    class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500   dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                                   id="hs-checkbox-in-form" checked>
-                            <span class="text-sm text-gray-500 ml-3 dark:text-gray-400">{% trans "Inclure" %}</span>
+                                   name ="selected_flashcards"
+                                   value ="{{ flashcard.id }}"
+                                   id="{{ flashcard.id }}" checked>
+                            <span class="text-sm text-gray-500 ml-3 dark:text-gray-400">{% trans "Accepter" %}</span>
                         </label>
-                        <a href=""
-                           class="grow py-[.688rem] px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-gray-200 font-semibold text-blue-500 hover:text-white hover:bg-blue-500 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:border-gray-700 dark:hover:border-blue-500">
-                            {% trans "Édité" %}
+                        <button data-open-modal
+                                hx-get="{% url 'flashcards:edit_llm_flashcard' flashcard.id %}"
+                                hx-target="#dialog-form"
+                                hx-swap="outerHTML"
+                                class="grow py-[.688rem] px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-gray-200 font-semibold text-blue-500 hover:text-white hover:bg-blue-500 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:border-gray-700 dark:hover:border-blue-500">
+                            {% trans "Éditer" %}
                             {% heroicon_outline "pencil" width="15" height="15" %}
-                        </a>
+                        </button>
 
                     </div>
-
-
                 </div>
             {% endfor %}
-        </div>
+        </form>
     </div>
 
 {% endblock content %}

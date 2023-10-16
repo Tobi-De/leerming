@@ -1,21 +1,25 @@
 from django.core.paginator import Paginator
 from django.db import models
-from django.http import HttpRequest, Http404
+from django.http import Http404
+from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django_htmx.http import HttpResponseClientRedirect
 
 from .filters import FilterForm
-from .forms import FlashCard, FlashCardFromDocument
 from .forms import FlashCardCreateForm
 from .forms import FlashCardEditForm
-from .llm_utils import (
-    make_flashcards_from,
-    save_tmp_flashcard_to_session,
-    load_tmp_flashcard_from_session,
-)
+from .forms import FlashCardFromDocument
+from .forms import LLMFlashCard
+from .llm_utils import delete_llm_flashcards_from_session
+from .llm_utils import load_llm_flashcards_from_session
+from .llm_utils import make_flashcards_from
+from .llm_utils import save_llm_flashcards_to_session
+from .models import FlashCard
+from .models import Topic
 
 
 def index(request: HttpRequest):
@@ -98,11 +102,14 @@ def delete(request: HttpRequest, pk: int):
 def create_from_document(request: HttpRequest):
     form = FlashCardFromDocument(request.POST or None, request=request)
     if request.method == "POST" and form.is_valid():
+        topic = form.cleaned_data["topic"]
         result = make_flashcards_from(
             source_text=form.cleaned_data["document"],
-            main_focus_point=form.cleaned_data["text_focus"],
+            main_focus_point=form.cleaned_data["focus_on"],
+            card_type=form.cleaned_data["card_type"],
+            topic_id=topic.id if topic else None,
         )
-        save_tmp_flashcard_to_session(request, result)
+        save_llm_flashcards_to_session(request, result)
         return HttpResponseClientRedirect(reverse("flashcards:triage"))
 
     return TemplateResponse(
@@ -113,8 +120,55 @@ def create_from_document(request: HttpRequest):
 
 
 def triage(request: HttpRequest):
-    if flashcards := load_tmp_flashcard_from_session(request):
+    if flashcards := load_llm_flashcards_from_session(request):
         return TemplateResponse(
             request, "flashcards/triage.html", {"flashcards": flashcards}
         )
     raise Http404()
+
+
+def edit_llm_flashcard(request: HttpRequest, id: str):
+    flashcards = load_llm_flashcards_from_session(request)
+    flashcard = [flashcard for flashcard in flashcards if flashcard.id == id][0]
+    form = LLMFlashCard(
+        request.POST or None,
+        initial={"question": flashcard.question, "answer": flashcard.answer},
+    )
+    if request.POST and form.is_valid():
+        flashcard.question = form.cleaned_data["question"]
+        flashcard.answer = form.cleaned_data["answer"]
+        save_llm_flashcards_to_session(request, flashcards)
+        return HttpResponseClientRedirect(reverse("flashcards:triage"))
+    return TemplateResponse(
+        request,
+        "flashcards/triage.html#edit_flashcard",
+        {
+            "form": form,
+            "url": reverse("flashcards:edit_llm_flashcard", kwargs={"id": id}),
+        },
+    )
+
+
+@require_http_methods(["POST"])
+def save_llm_flashcards(request: HttpRequest):
+    flashcards = load_llm_flashcards_from_session(request)
+    selected_flashcards = request.POST.getlist("selected_flashcards")
+    db_flashcards = [
+        FlashCard(
+            question=flashcard.question,
+            answer=flashcard.answer,
+            owner=request.user,
+            card_type=flashcard.card_type,
+        )
+        for flashcard in flashcards
+        if flashcard.id in selected_flashcards
+    ]
+    topic_id = flashcards[0].topic_id
+    if topic_id:
+        topic = Topic.objects.get(id=topic_id)
+        for f in db_flashcards:
+            f.topic = topic
+
+    FlashCard.objects.bulk_create(db_flashcards, ignore_conflicts=True)
+    delete_llm_flashcards_from_session(request)
+    return redirect("flashcards:index")
