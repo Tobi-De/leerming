@@ -6,8 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="41c5c547-a60c-425a-b8f5-133a48ac7fe3" name="Changes" comment="chore: unnecessary order by">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/flashcards/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leerming/flashcards/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/flashcards/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/flashcards/migrations/0002_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/flashcards/migrations/0002_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/gifts/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/gifts/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/gifts/migrations/0002_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/gifts/migrations/0002_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/profiles/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/profiles/migrations/0002_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/profiles/migrations/0002_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/reviews/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/reviews/migrations/0002_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/reviews/migrations/0002_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leerming/users/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/leerming/users/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements-dev.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements-dev.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.lock" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
