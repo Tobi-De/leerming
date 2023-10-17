@@ -132,7 +132,7 @@ def edit_llm_flashcard(request: HttpRequest, id: str):
     flashcard = [flashcard for flashcard in flashcards if flashcard.id == id][0]
     form = LLMFlashCard(
         request.POST or None,
-        initial={"question": flashcard.question, "answer": flashcard.answer},
+        initial={"question": flashcard.question, "answer": flashcard.answer, "card_type": flashcard.card_type},
     )
     if request.POST and form.is_valid():
         flashcard.question = form.cleaned_data["question"]

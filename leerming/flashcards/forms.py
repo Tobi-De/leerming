@@ -103,7 +103,7 @@ class FlashCardFromDocument(FlashCardForm):
     focus_on = forms.CharField(
         label=_("Point central"),
         help_text=_(
-            "Sur quelle point central les cartes générer doivent se concentrer"
+            "Cette question servira a orienter l'IA sur le 'sujet' des cartes générées, sur quoi les cartes porteront-elles ?"
         ),
     )
 
@@ -120,9 +120,11 @@ class FlashCardFromDocument(FlashCardForm):
 
 
 class LLMFlashCard(forms.ModelForm):
+
+    card_type = forms.CharField(label="",widget=forms.HiddenInput())
     class Meta:
         model = FlashCard
-        fields = ("question", "answer")
+        fields = ("question", "answer", "card_type")
         widgets = {
             "question": forms.Textarea(attrs={"rows": 2}),
             "answer": forms.Textarea(attrs={"rows": 2}),
@@ -131,7 +133,10 @@ class LLMFlashCard(forms.ModelForm):
     def clean(self):
         cleaned_data = self.cleaned_data
 
-        if cleaned_data["answer"] not in cleaned_data["question"]:
+        if (
+            cleaned_data["card_type"] == FlashCard.CardType.FILL_IN_THE_GAP
+            and cleaned_data["answer"] not in cleaned_data["question"]
+        ):
             self.add_error(
                 field="answer",
                 error=_(
@@ -139,3 +144,5 @@ class LLMFlashCard(forms.ModelForm):
                 ),
             )
         return cleaned_data
+    
+

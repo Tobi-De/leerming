@@ -60,8 +60,16 @@
                      class="flex flex-col gap-2 justify-between max-w-2xl px-8 py-4 bg-white border shadow-sm  rounded-md p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
 
                     <div class="my-2">
-                        <p class="mt-2 text-gray-800 dark:text-gray-400 cursor-pointer">
+                        {% if flashcard.card_type == "FILL_IN_THE_GAP" %}
+                        <p class="mt-2 text-gray-800 dark:text-gray-400">
                             {{ flashcard.before_answer }} <span class="text-teal-600">{{ flashcard.answer }}</span> {{ flashcard.after_answer }}</p>
+                        {% else %}
+                        <p class="mt-2 text-gray-800 dark:text-gray-400">
+                            {{ flashcard.question }}</p>
+                            <p class="mt-2 text-teal-600">
+                                {{ flashcard.answer }}
+                            </p>
+                        {% endif %}
                     </div>
 
                     <div class="flex  flex-col md:flex-row gap-2">
