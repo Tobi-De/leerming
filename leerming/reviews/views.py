@@ -53,9 +53,17 @@ def no_cards_to_review(request: HttpRequest):
 def start(request: HttpRequest):
     if Review.get_current_review(reviewer=request.user):
         return redirect("reviews:show_current_card")
+
+    if uncompleted_review := request.user.reviews.filter(
+        completed_at__isnull=True
+    ).first():
+        uncompleted_review.start()
+        return HttpResponseClientRedirect(reverse("reviews:show_current_card"))
+
     today = timezone.now().date()
-    form = ReviewForm(request.POST or {}, request=request, creation_date=today)
+    form = ReviewForm(request=request, creation_date=today)
     if request.method == "POST":
+        form = ReviewForm(request.POST, request=request, creation_date=today)
         if form.is_valid():
             review = form.save()
             review.start()
