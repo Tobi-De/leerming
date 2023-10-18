@@ -1,8 +1,9 @@
 import re
 import uuid
+from typing import TypedDict
+
 from langchain.prompts import PromptTemplate
 from langchain.schema import BaseOutputParser
-from typing import TypedDict
 
 
 """
@@ -72,26 +73,27 @@ front_back_template = PromptTemplate.from_template(FRONT_BACK_TEMPLATE)
 
 
 class ParsedCard(TypedDict):
-    id:str
-    question:str
+    id: str
+    question: str
     answer: str
 
 
 class PipeSeparatedListOutputParser(BaseOutputParser):
     """Parse the output of an LLM call to a comma-separated list."""
 
-
-    def parse(self, text: str)->list[ParsedCard]:
+    def parse(self, text: str) -> list[ParsedCard]:
         """Parse the output of an LLM call."""
-        statements =  text.strip().split("|")
+        statements = text.strip().split("|")
         flashcards = []
         for statement in statements:
-            statement, clozed_deletions = self.extract_clozed_deletions(statement).values()
+            statement, clozed_deletions = self.extract_clozed_deletions(
+                statement
+            ).values()
             flashcards.extend(
                 {
-                    "id":str(uuid.uuid4()),
-                    "question":statement,
-                    "answer":cz,
+                    "id": str(uuid.uuid4()),
+                    "question": statement,
+                    "answer": cz,
                 }
                 for cz in clozed_deletions
             )
@@ -103,25 +105,31 @@ class PipeSeparatedListOutputParser(BaseOutputParser):
         cloze_matches = re.findall(cloze_pattern, statement)
         cleaned_statement = re.sub(r"{c\d+::(.*?)}", r"\1", statement)
 
-        return {"statement": cleaned_statement.strip(), "clozed_deletions": cloze_matches}
-    
-pipe_separated_list_output_parser = PipeSeparatedListOutputParser()
-    
-class DoublePipeSeparatedListOutputParser(BaseOutputParser):
+        return {
+            "statement": cleaned_statement.strip(),
+            "clozed_deletions": cloze_matches,
+        }
 
-    def parse(self, text: str)->list[ParsedCard]:
+
+pipe_separated_list_output_parser = PipeSeparatedListOutputParser()
+
+
+class DoublePipeSeparatedListOutputParser(BaseOutputParser):
+    def parse(self, text: str) -> list[ParsedCard]:
         result = text.strip().split("||")
-        print(result)
         flashcards = []
         for qa in result:
             try:
-                flashcards.append({
-                    "id":str(uuid.uuid4()),
-                    "question":qa.split("|")[0],
-                    "answer":qa.split("|")[1],
-                })
+                flashcards.append(
+                    {
+                        "id": str(uuid.uuid4()),
+                        "question": qa.split("|")[0],
+                        "answer": qa.split("|")[1],
+                    }
+                )
             except IndexError:
                 continue
         return flashcards
-    
+
+
 double_pipe_separated_list_output_parser = DoublePipeSeparatedListOutputParser()

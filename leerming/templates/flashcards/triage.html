@@ -61,11 +61,11 @@
 
                     <div class="my-2">
                         {% if flashcard.card_type == "FILL_IN_THE_GAP" %}
-                        <p class="mt-2 text-gray-800 dark:text-gray-400">
-                            {{ flashcard.before_answer }} <span class="text-teal-600">{{ flashcard.answer }}</span> {{ flashcard.after_answer }}</p>
+                            <p class="mt-2 text-gray-800 dark:text-gray-400">
+                                {{ flashcard.before_answer }} <span class="text-teal-600">{{ flashcard.answer }}</span> {{ flashcard.after_answer }}</p>
                         {% else %}
-                        <p class="mt-2 text-gray-800 dark:text-gray-400">
-                            {{ flashcard.question }}</p>
+                            <p class="mt-2 text-gray-800 dark:text-gray-400">
+                                {{ flashcard.question }}</p>
                             <p class="mt-2 text-teal-600">
                                 {{ flashcard.answer }}
                             </p>

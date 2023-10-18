@@ -14,6 +14,13 @@ from .forms import ReviewForm
 from .models import Review
 from .models import SessionEndedError
 from leerming.flashcards.models import FlashCard
+from leerming.users.models import User
+
+
+def _get_current_review_or_404(user: User) -> Review:
+    if current_review := Review.get_current_review(reviewer=user):
+        return current_review
+    raise Http404(_("No review in progress"))
 
 
 def index(request: HttpRequest):
@@ -23,7 +30,8 @@ def index(request: HttpRequest):
         {
             "reviews": request.user.reviews.prefetch_related("topics"),
             "start_review_message": Review.get_review_start_message(
-                request=request, reviewer=request.user
+                reviewer=request.user,
+                current_review=Review.get_current_review(reviewer=request.user),
             ),
         },
     )
@@ -43,19 +51,14 @@ def no_cards_to_review(request: HttpRequest):
 
 
 def start(request: HttpRequest):
-    if Review.get_current_review(reviewer=request.user, session=request.session):
+    if Review.get_current_review(reviewer=request.user):
         return redirect("reviews:show_current_card")
     today = timezone.now().date()
-    # fixme: weird bug here, the form fails to submit when nothing is checked
-    # form = ReviewForm(
-    #     request.POST or {"topics": []}, request=request, creation_date=today
-    # )
-    form = ReviewForm(request=request, creation_date=today)
+    form = ReviewForm(request.POST or {}, request=request, creation_date=today)
     if request.method == "POST":
-        form = ReviewForm(request.POST, request=request, creation_date=today)
         if form.is_valid():
             review = form.save()
-            Review.start(review, request.session)
+            review.start()
             return HttpResponseClientRedirect(reverse("reviews:show_current_card"))
     template_name = "reviews/start.html#form" if request.htmx else "reviews/start.html"
     return TemplateResponse(
@@ -64,14 +67,9 @@ def start(request: HttpRequest):
 
 
 def show_current_card(request: HttpRequest):
-    current_review = Review.get_current_review(
-        reviewer=request.user, session=request.session
-    )
-    if not current_review:
-        raise Http404(_("No review in progress"))
-
+    current_review = _get_current_review_or_404(request.user)
     try:
-        current_card, step = Review.get_current_card(session=request.session)
+        current_card, step = current_review.get_current_card()
     except FlashCard.DoesNotExist:
         return redirect("reviews:move_to_next_card")
 
@@ -81,7 +79,8 @@ def show_current_card(request: HttpRequest):
 
 
 def reveal_answer(request: HttpRequest):
-    current_card, _ = Review.get_current_card(session=request.session)
+    current_review = _get_current_review_or_404(request.user)
+    current_card, _ = current_review.get_current_card()
     return TemplateResponse(
         request,
         "reviews/show_current_card.html#answer_revealed",
@@ -94,23 +93,24 @@ answer_field = forms.BooleanField(required=False)
 
 @require_http_methods(["POST"])
 def answer_card(request: HttpRequest):
-    current_card, _ = Review.get_current_card(session=request.session)
-    Review.add_answer(
-        card_id=current_card.id,
-        answer=answer_field.clean(request.POST.get("answer")),
-        session=request.session,
+    current_review = _get_current_review_or_404(request.user)
+    current_card, _ = current_review.get_current_card()
+    current_review.add_answer(
+        card_id=current_card.id, answer=answer_field.clean(request.POST.get("answer"))
     )
     return redirect("reviews:move_to_next_card")
 
 
 def move_to_next_card(request: HttpRequest):
+    current_review = _get_current_review_or_404(request.user)
     try:
-        Review.move_to_next_card(session=request.session)
+        current_review.move_to_next_card()
     except SessionEndedError:
         return HttpResponseClientRedirect(reverse("reviews:end"))
     return HttpResponseClientRedirect(reverse("reviews:show_current_card"))
 
 
 def end(request: HttpRequest):
-    Review.end(session=request.session)
+    current_review = _get_current_review_or_404(request.user)
+    current_review.end()
     return TemplateResponse(request, "reviews/end.html")

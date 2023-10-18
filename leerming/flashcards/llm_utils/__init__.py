@@ -2,18 +2,15 @@ from dataclasses import asdict
 from dataclasses import dataclass
 from functools import cached_property
 
-
 from django.http import HttpRequest
 from langchain.llms import OpenAI
 
 from ..models import FlashCard
-from .prompts import (
-    clozed_delete_template,
-    front_back_template,
-    pipe_separated_list_output_parser,
-    double_pipe_separated_list_output_parser,
-    ParsedCard,
-)
+from .prompts import clozed_delete_template
+from .prompts import double_pipe_separated_list_output_parser
+from .prompts import front_back_template
+from .prompts import ParsedCard
+from .prompts import pipe_separated_list_output_parser
 
 
 LLM = OpenAI()
@@ -64,7 +61,9 @@ def make_flashcards_from(
             "min_result": max_result,
         }
     )
-    return [LLMFlashCard(**c, card_type=card_type, topic_id=topic_id) for c in parsed_cards]
+    return [
+        LLMFlashCard(**c, card_type=card_type, topic_id=topic_id) for c in parsed_cards
+    ]
 
 
 def save_llm_flashcards_to_session(

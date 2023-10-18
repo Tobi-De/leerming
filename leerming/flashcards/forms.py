@@ -120,8 +120,8 @@ class FlashCardFromDocument(FlashCardForm):
 
 
 class LLMFlashCard(forms.ModelForm):
+    card_type = forms.CharField(label="", widget=forms.HiddenInput())
 
-    card_type = forms.CharField(label="",widget=forms.HiddenInput())
     class Meta:
         model = FlashCard
         fields = ("question", "answer", "card_type")
@@ -144,5 +144,3 @@ class LLMFlashCard(forms.ModelForm):
                 ),
             )
         return cleaned_data
-    
-

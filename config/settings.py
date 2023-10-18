@@ -205,6 +205,13 @@ DEFAULT_FROM_EMAIL = env(
 )
 SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "leerming_cache_table",
+    }
+}
+
 if DJANGO_ENV == "production":
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
