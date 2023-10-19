@@ -1,10 +1,15 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block breadcrumb %}
     {% trans "Cartes" as menu %}
     {% trans "Nouvelle Carte" as sub_menu %}
     {% include "partials/breadcrumb.html" with menu=menu sub_menu=sub_menu %}
 {% endblock breadcrumb %}
+
+{% block extra_head %}
+  <script src="{% static 'vendors/tom-select/tom-select.complete.min.js' %}"></script>
+{% endblock extra_head %}
 
 {% block content %}
     <div class="flex mb-4 justify-end">

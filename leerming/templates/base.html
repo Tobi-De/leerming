@@ -12,16 +12,14 @@
             <link href="{% static 'css/tom-select.css' %}" rel="stylesheet">
         {% endcompress %}
         <script defer src="{% static 'vendors/htmx/htmx.min.js' %}"></script>
-        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script defer src="{% static 'vendors/alpine/alpine.js' %}"></script>
         {% compress js %}
-            <script src="{% static 'javascript/theme-switcher.js' %}"></script>
             <script defer src="{% static 'vendors/preline/preline.js' %}"></script>
-            <script src="{% static 'vendors/tom-select/tom-select.complete.min.js' %}"></script>
+            <script src="{% static 'javascript/theme-switcher.js' %}"></script>
         {% endcompress %}
         {% block extra_head %}
-        {% endblock %}
+        {% endblock extra_head %}
         {% django_htmx_script %}
-        <script charset="UTF-8" src="//web.webpushs.com/js/push/b04a0fabeab344e1b73d2dfae1d69c40_1.js" async></script>
     </head>
 
 

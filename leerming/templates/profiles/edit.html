@@ -1,8 +1,10 @@
 {% extends "base.html" %}
+{% load static %}
 
+{% block extra_head %}
+  <script src="{% static 'vendors/tom-select/tom-select.complete.min.js' %}"></script>
+{% endblock extra_head %}
 {% block content %}
-
-
     <div
         class="bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
         <h1 class="mb-2 text-xl font-bold text-gray-800 dark:text-white">
