@@ -24,7 +24,8 @@
             </h3>
             <form hx-target="dialog"
                   hx-include="[id='filter-form']"
-                  id="dialog-form" hx-post="{% url 'gifts:set_recipient' %}"></form>
+                  id="dialog-form"
+                  hx-post="{% url 'gifts:set_recipient' %}"></form>
         </div>
         <div class="flex items-center">
             <button data-modal-close type="button"
@@ -65,7 +66,7 @@
     <form hx-get="."
           hx-indicator=".htmx-indicator"
           hx-target="#flashcards"
-          hx-trigger="keyup change delay:500ms, change, search"
+          hx-trigger="keyup delay:500ms, change, search"
           class="my-5 flex flex-col xl:flex-row gap-2"
           id="filter-form"
     >
