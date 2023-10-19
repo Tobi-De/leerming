@@ -56,11 +56,12 @@ class FlashCardForm(forms.ModelForm):
             cleaned_data["card_type"] == FlashCard.CardType.FILL_IN_THE_GAP
             and cleaned_data["answer"] not in cleaned_data["question"]
         ):
-            self.add_error(
-                field="answer",
-                error=_(
-                    "La réponse doit être dans la question pour une carte de type Remplissage"
-                ),
+            raise forms.ValidationError(
+                {
+                    "answer":  [_(
+                        "La réponse doit être dans la question pour une carte de type Remplissage"
+                    )]
+                }
             )
 
         duplicate_check_query = models.Q(
