@@ -60,6 +60,7 @@ LOCAL_APPS = [
     "leerming.flashcards",
     "leerming.reviews",
     "leerming.gifts",
+    "leerming.documents"
 ]
 
 INSTALLED_APPS = LOCAL_APPS + THIRD_PARTY_APPS + DJANGO_APPS
@@ -118,7 +119,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-DATABASES = {"default": env.db("DATABASE_URL", default="postgres:///leerming")}
+DATABASES = {"default": env.db("DATABASE_URL", default="postgres:///leermingooooo")}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

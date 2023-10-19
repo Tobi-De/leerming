@@ -4,7 +4,7 @@
     <option name="enabledOnReformat" value="true" />
     <option name="enabledOnSave" value="true" />
     <option name="executionMode" value="BINARY" />
-    <option name="pathToExecutable" value="$USER_HOME$/.local/bin/black" />
+    <option name="pathToExecutable" value="$USER_HOME$/.pyenv/shims/black" />
     <option name="sdkName" value="Python 3.11 (leerming)" />
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (leerming)" project-jdk-type="Python SDK" />
