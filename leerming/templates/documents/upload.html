@@ -1,24 +1,28 @@
-{% extends "base.html" %}
+<div id="upload-card"
+     class="my-4 relative bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
+    {% block form %}
+        <form
+            hx-target="#empty-div"
+            hx-post="{% url "documents:upload" %}"
+            id="upload-form"
+            hx-indicator=".htmx-indicator-upload"
+            hx-encoding='multipart/form-data'>
+            {{ form }}
+        </form>
 
-{% block content %}
-    <div
-        class="bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
-        <h1 class="mb-2 text-xl font-bold text-gray-800 dark:text-white">
-            {% trans "Modifier votre profile" %}
-        </h1>
-        {% block form %}
-            <form method="post" id="edit-form">
-                {% csrf_token %}
-                {{ form }}
-            </form>
+    {% endblock form %}
+    <input id="upload-button" form="upload-form" type="submit" value="{% trans "Soumettre" %}"
+           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
 
-        {% endblock form %}
-        <button form="edit-form" type="submit"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-            {% trans "Enrégister" %}
-        </button>
+    <div id="empty-div"></div>
 
+    <div class="htmx-indicator-upload absolute top-0 left-0 w-full h-full bg-white/[.5] rounded-md dark:bg-gray-800/[.4]"></div>
+
+    <div class="htmx-indicator-upload absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div class="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
+             role="status" aria-label="loading">
+            <span class="sr-only">Loading...</span>
+        </div>
     </div>
-{% endblock content %}
 
-
+</div>

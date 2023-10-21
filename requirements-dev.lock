@@ -11,19 +11,20 @@ aiohttp==3.8.6
 aiosignal==1.3.1
 annotated-types==0.6.0
 anyio==3.7.1
-appnope==0.1.3
 asgiref==3.7.2
 asttokens==2.4.0
 async-timeout==4.0.3
 atlassian-python-api==3.41.2
 attrs==23.1.0
 backcall==0.2.0
+backoff==2.2.1
 beautifulsoup4==4.12.2
 boto3==1.28.66
 botocore==1.31.66
 certifi==2023.7.22
 cffi==1.16.0
 cfgv==3.4.0
+chardet==5.2.0
 charset-normalizer==3.3.0
 click==8.1.7
 coverage==7.3.2
@@ -46,6 +47,7 @@ django-debug-toolbar==4.2.0
 django-decorator-include==3.0
 django-environ==0.11.2
 django-extensions==3.2.3
+django-forms-dynamic==1.0.0
 django-htmx==1.17.0
 django-import-export==3.3.1
 django-improved-user==2.0a2
@@ -58,11 +60,13 @@ django-template-partials==23.3.post1
 django-test-plus==2.2.3
 django-watson==1.6.3
 django-widget-tweaks==1.5.0
+emoji==2.8.0
 et-xmlfile==1.1.0
 executing==2.0.0
 factory-boy==3.3.0
 faker==19.11.0
 filelock==3.12.4
+filetype==1.2.0
 frozenlist==1.4.0
 fsspec==2023.9.2
 fuzzy-couscous==3.1.1
@@ -86,9 +90,11 @@ joblib==1.3.2
 jsonpatch==1.33
 jsonpointer==2.4
 langchain==0.0.317
+langdetect==1.0.9
 langsmith==0.0.46
 llama-hub==0.0.38
 llama-index==0.8.46
+lxml==4.9.3
 markdown-it-py==3.0.0
 markuppy==1.14
 marshmallow==3.20.1
@@ -98,6 +104,7 @@ model-bakery==1.16.0
 multidict==6.0.4
 mypy-extensions==1.0.0
 nest-asyncio==1.5.8
+networkx==3.2
 nltk==3.8.1
 nodeenv==1.8.0
 numpy==1.26.1
@@ -125,14 +132,18 @@ pydantic==2.4.2
 pydantic-core==2.10.1
 pygments==2.16.1
 pyjwt==2.8.0
+pypdf==3.16.4
 pytest==7.4.2
 pytest-cov==4.1.0
 pytest-django==4.5.2
 python-dateutil==2.8.2
 python-dotenv==1.0.0
+python-iso639==2023.6.15
+python-magic==0.4.27
 python3-openid==3.2.0
 pytz==2023.3.post1
 pyyaml==6.0.1
+rapidfuzz==3.4.0
 rcssmin==1.1.1
 regex==2023.10.3
 requests==2.31.0
@@ -151,6 +162,7 @@ sqlparse==0.4.4
 stack-data==0.6.3
 stamina==23.1.0
 tablib==3.5.0
+tabulate==0.9.0
 tenacity==8.2.3
 tiktoken==0.5.1
 toml==0.10.2
@@ -161,6 +173,7 @@ typer==0.7.0
 typing-extensions==4.8.0
 typing-inspect==0.9.0
 tzdata==2023.3
+unstructured==0.10.24
 urllib3==1.26.18
 urlman==2.0.1
 uvloop==0.18.0
@@ -173,5 +186,6 @@ wrapt==1.15.0
 xlrd==2.0.1
 xlwt==1.3.0
 yarl==1.9.2
+youtube-transcript-api==0.6.1
 # The following packages are considered to be unsafe in a requirements file:
 setuptools==68.2.2

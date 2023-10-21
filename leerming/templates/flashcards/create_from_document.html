@@ -8,7 +8,7 @@
 {% endblock breadcrumb %}
 
 {% block extra_head %}
-  <script src="{% static 'vendors/tom-select/tom-select.complete.min.js' %}"></script>
+    <script src="{% static 'vendors/tom-select/tom-select.complete.min.js' %}"></script>
 {% endblock extra_head %}
 
 {% block content %}
@@ -47,15 +47,22 @@
         </div>
         {% partialdef form inline=True %}
             <form hx-post="." hx-target="this" hx-swap="outerHTML" method="post" id="create-form" hx-indicator="#loading-circle">
-                {{ form }}
+                {% include "forms/field.html" with field=form.card_type %}
+                {% include "forms/field.html" with field=form.topic %}
+                {% include "forms/field.html" with field=form.focus_on %}
             </form>
         {% endpartialdef form %}
-        <button form="create-form" type="submit"
-                class="inline-flex justify-center items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-            <span id="loading-circle" class="htmx-indicator animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
-            {% trans "Générer" %}
-        </button>
+
+
     </div>
+
+    <div hx-get="{% url "documents:index" %}" hx-target="this" hx-trigger="load"></div>
+
+    <button form="create-form" type="submit"
+            class="inline-flex justify-center items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+        <span id="loading-circle" class="htmx-indicator animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+        {% trans "Générer" %}
+    </button>
 
 {% endblock content %}
 

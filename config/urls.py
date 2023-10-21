@@ -44,7 +44,12 @@ urlpatterns = [
         "gifts/",
         decorator_include_login_and_profile("leerming.gifts.urls", namespace="gifts"),
     ),
-    path("documents/",decorator_include_login_and_profile("leerming.documents.urls", namespace="documents")),
+    path(
+        "documents/",
+        decorator_include_login_and_profile(
+            "leerming.documents.urls", namespace="documents"
+        ),
+    ),
     path(
         "",
         lambda request: HttpResponseRedirect(reverse("flashcards:index")),

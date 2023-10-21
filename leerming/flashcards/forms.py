@@ -58,9 +58,11 @@ class FlashCardForm(forms.ModelForm):
         ):
             raise forms.ValidationError(
                 {
-                    "answer":  [_(
-                        "La réponse doit être dans la question pour une carte de type Remplissage"
-                    )]
+                    "answer": [
+                        _(
+                            "La réponse doit être dans la question pour une carte de type Remplissage"
+                        )
+                    ]
                 }
             )
 
@@ -100,13 +102,14 @@ class FlashCardEditForm(FlashCardForm):
 
 
 class FlashCardFromDocument(FlashCardForm):
-    document = forms.CharField(widget=forms.Textarea())
     focus_on = forms.CharField(
         label=_("Point central"),
         help_text=_(
-            "Cette question servira a orienter l'IA sur le 'sujet' des cartes générées, sur quoi les cartes porteront-elles ?"
+            "Cette question servira a orienter l'IA sur le 'sujet' des "
+            "cartes générées, sur quoi les cartes porteront-elles ?"
         ),
     )
+    document = forms.CharField()
 
     class Meta:
         model = FlashCard
@@ -115,6 +118,12 @@ class FlashCardFromDocument(FlashCardForm):
             "question": forms.Textarea(attrs={"rows": 2}),
             "answer": forms.Textarea(attrs={"rows": 2}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["document"] = forms.ModelChoiceField(
+            queryset=self.request.user.uploaded_documents.all()
+        )
 
     def clean(self):
         return self.cleaned_data

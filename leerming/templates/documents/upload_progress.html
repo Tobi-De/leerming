@@ -1,0 +1,5 @@
+<div hx-get="{% url "documents:upload_status" task_id %}"
+     hx-indicator=".htmx-indicator-upload"
+     hx-target="this"
+     hx-swap="outerHTML"
+     hx-trigger="load"></div>
