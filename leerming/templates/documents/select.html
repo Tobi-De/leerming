@@ -1,6 +1,6 @@
 <div
-    id="select-document-card"
-    class="my-4 bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
+        id="select-document-card"
+        class="my-4 bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
 
 
     <fieldset class="mb-5 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
@@ -10,32 +10,32 @@
         {% for doc in documents %}
             <div class="">
                 <input
-                    type="radio"
-                    name="document"
-                    value="{{ doc.id }}"
-                    id="option_{{ doc.id }}"
-                    class="peer hidden [&:checked_+_label_svg]:block"
-                    {% if selected == doc.id %} checked {% endif %}
+                        type="radio"
+                        name="document"
+                        value="{{ doc.id }}"
+                        id="option_{{ doc.id }}"
+                        class="peer hidden [&:checked_+_label_svg]:block"
+                        {% if selected == doc.id %} checked {% endif %}
 
                 />
 
                 <label
-                    for="option_{{ doc.id }}"
-                    class="block cursor-pointer rounded-lg border bg-white p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500 dark:bg-slate-900 dark:border-gray-800"
+                        for="option_{{ doc.id }}"
+                        class="block cursor-pointer rounded-lg border bg-white p-4 text-sm font-medium shadow-sm hover:border-gray-200 peer-checked:border-blue-500 peer-checked:ring-1 peer-checked:ring-blue-500 dark:bg-slate-900 dark:border-gray-800"
                 >
                     <span class="flex items-center justify-between">
                         <span class="text-gray-800 dark:text-gray-200">{{ doc.title }}</span>
 
                         <svg
-                            class="hidden h-5 w-5 text-blue-600"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
+                                class="hidden h-5 w-5 text-blue-600"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
                         >
                             <path
-                                fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                clip-rule="evenodd"></path>
+                                    fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd"></path>
                         </svg>
                     </span>
 
@@ -50,7 +50,9 @@
     <a hx-get="{% url "documents:upload" %}"
        hx-target="#select-document-card"
        hx-swap="outerHTML"
-       class="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+       class="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium
+        rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none
+        dark:focus:ring-blue-800">
         {% trans "Ajouter un document" %}
     </a>
 </div>

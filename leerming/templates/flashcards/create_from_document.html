@@ -51,11 +51,13 @@
                   hx-post="{% url "flashcards:create_from_document" %}"
                   hx-include="[name='document']"
                   hx-indicator="#loading-circle">
+
                 {% include "forms/field.html" with field=form.card_type %}
                 {% include "forms/field.html" with field=form.topic %}
                 {% include "forms/field.html" with field=form.focus_on %}
             </form>
         {% endpartialdef form %}
+
     </div>
 
     <div hx-get="{% url "documents:index" %}" hx-target="this" hx-trigger="load"></div>

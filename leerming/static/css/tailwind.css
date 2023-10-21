@@ -2052,6 +2052,18 @@ select {
   display: block;
 }
 
+.htmx-indicator-upload {
+  display: none;
+}
+
+.htmx-request .htmx-indicator-upload {
+  display: block;
+}
+
+.htmx-request.htmx-indicator-upload {
+  display: block;
+}
+
 dialog::backdrop {
   background-color: rgb(17 24 39 / var(--tw-bg-opacity));
   --tw-bg-opacity: 0.8;
