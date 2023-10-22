@@ -68,18 +68,6 @@
     display: block;
 }
 
-.htmx-indicator-upload {
-    display: none;
-}
-
-.htmx-request .htmx-indicator-upload {
-    display: block;
-}
-
-.htmx-request.htmx-indicator-upload {
-    display: block;
-}
-
 
 dialog::backdrop {
     @apply bg-opacity-80 bg-gray-900

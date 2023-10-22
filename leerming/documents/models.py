@@ -71,7 +71,11 @@ class UploadedDocument(TimeStampedModel):
 
     def get_relevant_chunks_for(self, query: str) -> QuerySet[DocumentChunk]:
         embedded_query = openai_embeddings.embed_query(query)
-        return self.chunks.order_by(L2Distance("embedding", embedded_query))[2]  # noqa
+        return self.chunks.order_by(L2Distance("embedding", embedded_query))[:2]  # noqa
+
+    def get_relevant_text_for(self, query: str):
+        chunks = self.get_relevant_chunks_for(query)
+        return "\n".join(chunk.content for chunk in chunks)
 
     def create_chunks(self, documents: list[LangchainTextDoc]) -> None:
         texts = recursive_text_splitter.split_documents(documents)

@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django_htmx.http import retarget
+from django_htmx.http import trigger_client_event
 from django_q.tasks import async_task
 from django_q.tasks import result
 
@@ -35,7 +36,7 @@ def select(request: HttpRequest):
     )
     if new_target := request.GET.get("retarget"):
         response = retarget(response, f"#{new_target}")
-    return response
+    return trigger_client_event(response, "showSubmitBtn", {})
 
 
 def upload(request: HttpRequest):
@@ -50,7 +51,8 @@ def upload(request: HttpRequest):
             params=cleaned_data,
         )
         return redirect(reverse("documents:upload_progress", args=[task_id]))
-    return TemplateResponse(request, "documents/upload.html", {"form": form})
+    response = TemplateResponse(request, "documents/upload.html", {"form": form})
+    return trigger_client_event(response, "hideSubmitBtn", {})
 
 
 def upload_progress(request: HttpRequest, task_id: str):

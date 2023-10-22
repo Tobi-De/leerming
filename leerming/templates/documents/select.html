@@ -1,5 +1,6 @@
-<div id="select-document-card"
-     class="my-4 bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
+<div
+    id="select-document-card"
+    class="my-4 bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
 
 
     <fieldset class="mb-5 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
@@ -46,7 +47,9 @@
     </fieldset>
 
 
-    <a hx-get="{% url "documents:upload" %}" hx-target="#select-document-card" hx-swap="outerHTML"
+    <a hx-get="{% url "documents:upload" %}"
+       hx-target="#select-document-card"
+       hx-swap="outerHTML"
        class="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
         {% trans "Ajouter un document" %}
     </a>

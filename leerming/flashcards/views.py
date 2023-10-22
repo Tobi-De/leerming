@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django_htmx.http import HttpResponseClientRedirect
 
+from ..documents.models import UploadedDocument
 from .filters import FilterForm
 from .forms import FlashCardCreateForm
 from .forms import FlashCardEditForm
@@ -103,9 +104,11 @@ def create_from_document(request: HttpRequest):
     form = FlashCardFromDocument(request.POST or None, request=request)
     if request.method == "POST" and form.is_valid():
         topic = form.cleaned_data["topic"]
+        document: UploadedDocument = form.cleaned_data["document"]
+        focus_on = form.cleaned_data["focus_on"]
         result = make_flashcards_from(
-            source_text=form.cleaned_data["document"],
-            main_focus_point=form.cleaned_data["focus_on"],
+            source_text=document.get_relevant_text_for(focus_on),
+            main_focus_point=focus_on,
             card_type=form.cleaned_data["card_type"],
             topic_id=topic.id if topic else None,
         )
