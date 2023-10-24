@@ -26,6 +26,7 @@ Ensure you have the following prerequisites in place:
 
 - PostgreSQL database with the [pgvector](https://github.com/pgvector/pgvector) extension. If you use Docker, you can find a suitable [image](https://hub.docker.com/r/ankane/pgvector) available.
 - [Rye](https://github.com/mitsuhiko/rye) for streamlined dependency management. While not mandatory, it simplifies the process. You can use the `requirements-dev.lock` in the project root with any tool that supports the Python `requirements.txt` format.
+- An openai API key, you can get one at https://platform.openai.com/account/api-keys.
 
 ### Setup and Run
 
