@@ -1,4 +1,4 @@
-# leerming (WIP)
+[![leerming](/leerming/static/logo.png)](https://leerming.com)
 
 > **Note:** Alpha quality software!.
 
