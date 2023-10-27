@@ -9,9 +9,9 @@ from django_htmx.http import trigger_client_event
 from django_q.tasks import async_task
 from django_q.tasks import result
 
+from leerming.users.models import User
 from .forms import UploadForm
 from .models import UploadedDocument
-from leerming.users.models import User
 
 
 def _create_document(doc_type: str, owner_id: int, params: dict) -> int | None:

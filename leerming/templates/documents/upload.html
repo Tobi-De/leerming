@@ -2,19 +2,19 @@
      class="my-4 relative bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
     {% block form %}
         <form
-            hx-target="#upload-progres"
-            hx-post="{% url "documents:upload" %}"
-            id="upload-form"
-            hx-indicator=".htmx-indicator.upload"
-            hx-encoding='multipart/form-data'>
+                hx-target="#upload-progress"
+                hx-post="{% url "documents:upload" %}"
+                id="upload-form"
+                hx-encoding='multipart/form-data'>
             {{ form }}
         </form>
 
     {% endblock form %}
-    <input id="upload-button" form="upload-form" type="submit" value="{% trans "Soumettre" %}"
+    <input hx-indicator=".htmx-indicator.upload" id="upload-button" form="upload-form" type="submit"
+           value="{% trans "Soumettre" %}"
            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
 
-    <a hx-get="{% url "documents:select" %}" hx-target="#upload-card" hx-swap="outerHTML"
+    <a hx-get="{% url "documents:select" %}" hx-target="#upload-card" hx-swap="outerHTML transition:true"
        class="cursor-pointer px-5 py-2.5 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-gray-500 text-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-offset-gray-800">
         {% trans "Sélectionner existant" %}
     </a>

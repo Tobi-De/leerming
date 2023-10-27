@@ -12,9 +12,10 @@
 {% endblock extra_head %}
 
 {% block content %}
+
     <div class="flex mb-4 justify-end">
         <div class="flex bg-gray-100 hover:bg-gray-200 rounded-lg transition p-1 dark:bg-gray-700 dark:hover:bg-gray-600">
-            <nav  class="flex space-x-2" aria-label="Tabs" role="tablist">
+            <nav class="flex space-x-2" aria-label="Tabs" role="tablist">
 
                 <a href="{% url 'flashcards:create' %}"
                    type="button"
@@ -60,7 +61,8 @@
 
     </div>
 
-    <div hx-get="{% url "documents:index" %}" hx-target="this" hx-trigger="load"></div>
+    <div hx-get="{% url "documents:index" %}" hx-target="this" hx-swap="innerHTML transition:true"
+         hx-trigger="load"></div>
 
     <button form="create-form" type="submit" id="submit-btn"
             class="hidden mt-2 mb-5  w-full inline-flex justify-center items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">

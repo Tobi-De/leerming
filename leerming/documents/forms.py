@@ -29,7 +29,6 @@ class UploadForm(DynamicFormMixin, forms.Form):
             attrs={
                 "hx-get": reverse_lazy("documents:get_form"),
                 "hx-target": "#upload-form",
-                "hx-indicator": ".htmx-indicator.upload",
             }
         ),
     )
