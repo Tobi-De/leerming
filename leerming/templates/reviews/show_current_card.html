@@ -3,11 +3,11 @@
 
 {% partialdef answer_revealed %}
     <div
-        class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
+            class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
 
         <div class="bg-gray-100 border-b rounded-t-xl py-3 px-4 md:py-4 md:px-5 dark:bg-gray-800 dark:border-gray-700">
             <p class="mt-1 text-sm text-gray-500 dark:text-gray-500">
-                {{flashcard}}
+                {{ flashcard }}
             </p>
         </div>
         <div class="p-4 md:p-5 text-green-600 dark:text-green-200">
@@ -16,14 +16,15 @@
             </p>
         </div>
 
-        <div class="flex w-full gap-2 bg-gray-100 border-t rounded-b-xl py-3 px-4 md:py-4 md:px-5 dark:bg-gray-800 dark:border-gray-700">
+        <div hx-target="body" hx-swap="innerHTML transition:true"
+             class="flex w-full gap-2 bg-gray-100 border-t rounded-b-xl py-3 px-4 md:py-4 md:px-5 dark:bg-gray-800 dark:border-gray-700">
             <button type="button"
                     hx-post="{% url 'reviews:answer_card' %}" hx-vals='{"answer": false}'
                     class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-red-500 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
                 {% trans 'Non' %}
             </button>
             <button
-                class="grow py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-gray-200 dark:border-gray-700 font-semibold text-gray-500 dark:text-gray-300  text-sm">
+                    class="grow py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-gray-200 dark:border-gray-700 font-semibold text-gray-500 dark:text-gray-300  text-sm">
                 {% trans 'Avez vous eu la bonne réponse ?' %}
             </button>
 
@@ -40,15 +41,15 @@
 
 {% block body %}
     <div class="absolute top-0 right-0 text-xl md:text-4xl dark:text-gray-400 p-2 md:p-3 m-3 border rounded">
-        {{step}}
+        {{ step }}
     </div>
     <div class="dark:bg-slate-900 bg-gray-100 flex h-full items-center py-16">
-        <main class="w-full max-w-md md:max-w-2xl mx-auto p-6">
+        <main class="w-full max-w-md md:max-w-2xl mx-auto p-6 sample-transition">
             <div id="answer-revealed"
                  class="flex flex-col bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7] dark:text-gray-400">
                 <p hx-get="{% url "reviews:reveal_answer" %}"
                    hx-target="#answer-revealed"
-                   hx-swap="outerHTML"
+                   hx-swap="outerHTML transition:true"
                    class="cursor-pointer text-2xl md:text-4xl">{{ card }}</p>
             </div>
         </main>
