@@ -10,11 +10,11 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
 from django_htmx.http import HttpResponseClientRedirect
 
+from leerming.flashcards.models import FlashCard
+from leerming.users.models import User
 from .forms import ReviewForm
 from .models import Review
 from .models import SessionEndedError
-from leerming.flashcards.models import FlashCard
-from leerming.users.models import User
 
 
 def _get_current_review_or_404(user: User) -> Review:
@@ -115,7 +115,7 @@ def move_to_next_card(request: HttpRequest):
         current_review.move_to_next_card()
     except SessionEndedError:
         return HttpResponseClientRedirect(reverse("reviews:end"))
-    return HttpResponseClientRedirect(reverse("reviews:show_current_card"))
+    return redirect("reviews:show_current_card")
 
 
 def end(request: HttpRequest):

@@ -1993,7 +1993,7 @@ select {
   color: rgb(156 163 175 / var(--tw-text-opacity));
 }
 
-:is(.dark .ts-control),:is(.dark
+:is(.dark .ts-control),:is(.dark 
 .ts-wrapper.single.input-active .ts-control) {
   --tw-bg-opacity: 1;
   background-color: rgb(15 23 42 / var(--tw-bg-opacity));
@@ -2055,6 +2055,48 @@ select {
 dialog::backdrop {
   background-color: rgb(17 24 39 / var(--tw-bg-opacity));
   --tw-bg-opacity: 0.8;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-from-right {
+  from {
+    transform: translateX(90px);
+  }
+}
+
+@keyframes slide-to-left {
+  to {
+    transform: translateX(-90px);
+  }
+}
+
+/* define animations for the old and new content */
+
+::view-transition-old(slide-it) {
+  animation: 180ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+    600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+}
+
+::view-transition-new(slide-it) {
+  animation: 420ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+    600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+}
+
+/* tie the view transition to a given CSS class */
+
+.sample-transition {
+  view-transition-name: slide-it;
 }
 
 .file\:mr-4::file-selector-button {

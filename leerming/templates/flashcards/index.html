@@ -9,7 +9,7 @@
 
 {% partialdef card_answer %}
     <div id="flashcard-{{ flashcard.id }}"
-         hx-get="{% url 'flashcards:show_question' flashcard.pk %}" hx-target="this" hx-swap="outerHTML"
+         hx-get="{% url 'flashcards:show_question' flashcard.pk %}" hx-target="this" hx-swap="outerHTML transition:true"
          class="flex flex-col justify-center border cursor-pointer shadow-sm rounded-md p-4 md:p-5 text-white bg-teal-700 dark:border-teal-900">
         <p>{{ flashcard.answer_display }}</p>
     </div>
@@ -67,6 +67,7 @@
           hx-indicator=".htmx-indicator"
           hx-target="#flashcards"
           hx-trigger="keyup delay:500ms, change, search"
+          hx-swap="innerHTML transition:true"
           class="my-5 flex flex-col xl:flex-row gap-2"
           id="filter-form"
     >
@@ -107,7 +108,7 @@
 
                             <div class="mt-2">
                                 <p hx-get="{% url 'flashcards:show_answer' flashcard.pk %}"
-                                   hx-target="#flashcard-{{ flashcard.pk }}" hx-swap="outerHTML"
+                                   hx-target="#flashcard-{{ flashcard.pk }}" hx-swap="outerHTML transition:true"
                                    class="mt-2 text-gray-800 dark:text-gray-400 cursor-pointer">{{ flashcard }}</p>
 
                             </div>
