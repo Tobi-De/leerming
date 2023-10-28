@@ -105,10 +105,10 @@ def create_from_document(request: HttpRequest):
     if request.method == "POST" and form.is_valid():
         topic = form.cleaned_data["topic"]
         document: UploadedDocument = form.cleaned_data["document"]
-        focus_on = form.cleaned_data["focus_on"]
+        key_question = form.cleaned_data["key_question"]
         result = make_flashcards_from(
-            source_text=document.get_relevant_text_for(focus_on),
-            main_focus_point=focus_on,
+            source_text=document.get_relevant_text_for(key_question),
+            key_question=key_question,
             card_type=form.cleaned_data["card_type"],
             topic_id=topic.id if topic else None,
         )
