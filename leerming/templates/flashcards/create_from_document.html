@@ -8,10 +8,11 @@
 {% endblock breadcrumb %}
 
 {% block extra_head %}
-  <script src="{% static 'vendors/tom-select/tom-select.complete.min.js' %}"></script>
+    <script src="{% static 'vendors/tom-select/tom-select.complete.min.js' %}"></script>
 {% endblock extra_head %}
 
 {% block content %}
+
     <div class="flex mb-4 justify-end">
         <div class="flex bg-gray-100 hover:bg-gray-200 rounded-lg transition p-1 dark:bg-gray-700 dark:hover:bg-gray-600">
             <nav  class="flex space-x-2" aria-label="Tabs" role="tablist">
@@ -33,29 +34,44 @@
     </div>
 
     <div class="bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
-
         <div class="mb-4">
             <h1 class="text-xl font-bold text-gray-800 dark:text-white">
                 {% translate "Générer des cartes a partir de vos documents" %}
             </h1>
             <p class="mt-1 text-sm md:text-md font-medium  text-gray-500 dark:text-gray-500">
-                {% blocktrans %} Avec ce formulaires, vous pouvez automatiquement générer des cartes a partir de vos documents. Vous pourrez modifier les cartes générer avant qu'elle ne soit
-                    enregistrer. La qualité des cartes généré peut dépendre de plusieurs facteurs, la qualité du documents de base, la question centrale et autres facteurs, ce n'est pas un processus
+                {% blocktrans %} Avec ce formulaires, vous pouvez automatiquement générer des cartes a partir de vos
+                    documents. Vous pourrez modifier les cartes générer avant qu'elle ne soit
+                    enregistrer. La qualité des cartes généré peut dépendre de plusieurs facteurs, la qualité du
+                    documents de base, la question centrale et autres facteurs, ce n'est pas un processus
                     déterministe, nous recommandans donc de primer les cartes manuelle quand c'est possible.
                 {% endblocktrans %}
             </p>
         </div>
         {% partialdef form inline=True %}
-            <form hx-post="." hx-target="this" hx-swap="outerHTML" method="post" id="create-form" hx-indicator="#loading-circle">
-                {{ form }}
+            <form id="create-form"
+                  hx-post="{% url "flashcards:create_from_document" %}"
+                  hx-include="[name='document']"
+                  hx-indicator="#loading-circle">
+
+                {% include "forms/field.html" with field=form.card_type %}
+                {% include "forms/field.html" with field=form.topic %}
+                {% include "forms/field.html" with field=form.key_question %}
             </form>
         {% endpartialdef form %}
-        <button form="create-form" type="submit"
-                class="inline-flex justify-center items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-            <span id="loading-circle" class="htmx-indicator animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
-            {% trans "Générer" %}
-        </button>
+
     </div>
+
+    <div hx-get="{% url "documents:index" %}" hx-target="this" hx-swap="innerHTML transition:true"
+         hx-trigger="load"></div>
+
+    <button form="create-form" type="submit" id="submit-btn"
+            class="hidden mt-2 mb-5  w-full inline-flex justify-center items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+        <span id="loading-circle"
+              class="htmx-indicator animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-white rounded-full"
+              role="status" aria-label="loading"></span>
+        {% trans "Générer" %}
+    </button>
+
 
 {% endblock content %}
 
@@ -68,5 +84,14 @@
                 direction: "asc"
             }
         });
+
+        let submitBtn = document.getElementById("submit-btn");
+
+        document.addEventListener("showSubmitBtn", e => {
+            submitBtn.classList.remove("hidden");
+        })
+        document.addEventListener("hideSubmitBtn", e => {
+            submitBtn.classList.add("hidden");
+        })
     </script>
 {% endblock javascript %}

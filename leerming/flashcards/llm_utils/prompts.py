@@ -5,7 +5,6 @@ from typing import TypedDict
 from langchain.prompts import PromptTemplate
 from langchain.schema import BaseOutputParser
 
-
 """
 I'm using anki mark-up because it seem to be the simplest to describe and work with, plus I found an aleady made prompt that
 I can easily adapt to my needs.
@@ -15,13 +14,13 @@ The original prompt https://thevitalcurriculum.notion.site/AI-Master-Guides-ca4d
 CLOZED_DELETION_TEMPLATE = """
 REVIEW_TEXT: "{source_text}"
 
-FOCUS_ON: "{main_focus_point}"
+KEY_QUESTION: "{key_question}"
 
-TASK: Your task is to condense the information in the REVIEW_TEXT into concise and direct statements based on the provided FOCUS_ON using Anki cloze deletion mark-up. Ensure that each statement is clearly written, easily understandable, and adheres to the specified formatting and reference criteria.
+TASK: Your task is to condense the information in the REVIEW_TEXT into concise and direct statements based on the provided KEY_QUESTION using Anki cloze deletion mark-up. Ensure that each statement is clearly written, easily understandable, and adheres to the specified formatting and reference criteria.
 
 Formatting Criteria:
 - Construct a list of pipe "|" separeted string.
-- Each string is a single statement written in Anki cloze deletion mark-up, focusing on the FOCUS_ON.
+- Each string is a single statement written in Anki cloze deletion mark-up, focusing on one aspect of the KEY_QUESTION.
 - Generate a minimum of {min_result} statements.
 
 Reference Criteria for each "Statement":
@@ -33,7 +32,7 @@ Reference Criteria for each "Statement":
 - Keep ONLY simple, direct, cloze deletion statements.
 - The statement need to be in the same language as the text to review.
 
-Return only the list of pipe "|" separeted string and strictly nothing else, no words that is not part of the string.
+Return only the list of pipe "|" separated string and strictly nothing else, no words that is not part of the string.
 
 Example:
 Sql stands or {{c1::Structured Query Language}} and is used to communicate with databases.|Sql is an {{c1::ANSI}} standard language that is used by all {{c2::relational}} database management systems (RDMS).
@@ -42,15 +41,15 @@ Sql stands or {{c1::Structured Query Language}} and is used to communicate with 
 FRONT_BACK_TEMPLATE = """
 REVIEW_TEXT: "{source_text}"
 
-FOCUS_ON: "{main_focus_point}"
+KEY_QUESTION: "{key_question}"
 
-TASK: Your task is to convert the REVIEW_TEXT into Basic Note Type (front/back) Anki flashcards. Prioritize information regarding the FOCUS_ON. Ensure that each flashcard is clearly written, and adheres to the specified formatting and reference criteria.
+TASK: Your task is to convert the REVIEW_TEXT into Basic Note Type (front/back) Anki flashcards. Prioritize information regarding the KEY_QUESTION. Ensure that each flashcard is clearly written, and adheres to the specified formatting and reference criteria.
 
 Formatting Criteria:
 
-- Construct a list of double pipe "||" separeted statements.
+- Construct text file with each line of the text being one statement.
 - Each statement is a pipe separated question and answer, in the format question|answer.
-- Each statement is question|answer focusing on the FOCUS_ON.
+- Each statement is question|answer focusing on one aspect the KEY_QUESTION.
 - The answer should contain the succinct answer to the corresponding question.
 - Generate a minimum of {min_result} cards.
 
@@ -61,12 +60,12 @@ Reference Criteria for each "Statement":
 - Each statement MUST be able to stand alone. Include the subject of the flashcard somewhere in the text.
 - Keep ONLY simple, direct questions.
 
-Return only the string of double pipe "||" statements strictly nothing else, no words that is not part of the string.
+Return only text content of statements (each statement on it own line) strictly nothing else.
 
 Example:
-what does SQL stand for?|Structured Query Language||What is sql used for?|Sql is used by all relational database management systems (RDMS).
+what does SQL stand for?|Structured Query Language.
+What is sql used for?|Sql is used by all relational database management systems (RDMS).
 """
-
 
 clozed_delete_template = PromptTemplate.from_template(CLOZED_DELETION_TEMPLATE)
 front_back_template = PromptTemplate.from_template(FRONT_BACK_TEMPLATE)
@@ -111,12 +110,12 @@ class PipeSeparatedListOutputParser(BaseOutputParser):
         }
 
 
-pipe_separated_list_output_parser = PipeSeparatedListOutputParser()
+clozed_deletion_output_parser = PipeSeparatedListOutputParser()
 
 
-class DoublePipeSeparatedListOutputParser(BaseOutputParser):
+class NewLineSeparatedListOutputParser(BaseOutputParser):
     def parse(self, text: str) -> list[ParsedCard]:
-        result = text.strip().split("||")
+        result = text.strip().split("\n")
         flashcards = []
         for qa in result:
             try:
@@ -132,4 +131,4 @@ class DoublePipeSeparatedListOutputParser(BaseOutputParser):
         return flashcards
 
 
-double_pipe_separated_list_output_parser = DoublePipeSeparatedListOutputParser()
+front_back_output_parser = NewLineSeparatedListOutputParser()
