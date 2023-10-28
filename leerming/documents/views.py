@@ -52,7 +52,14 @@ def upload(request: HttpRequest):
             params=cleaned_data,
         )
         return redirect(reverse("documents:upload_progress", args=[task_id]))
-    response = TemplateResponse(request, "documents/upload.html", {"form": form})
+    response = TemplateResponse(
+        request,
+        "documents/upload.html",
+        {
+            "form": form,
+            "user_has_existing_documents": request.user.uploaded_documents.exists(),
+        },
+    )
     if not form.is_valid() and request.method == "POST":
         response = retarget(response, "#upload-card")
         return reswap(response, "outerHTML")
