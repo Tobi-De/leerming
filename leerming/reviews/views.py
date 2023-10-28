@@ -10,11 +10,11 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
 from django_htmx.http import HttpResponseClientRedirect
 
-from leerming.flashcards.models import FlashCard
-from leerming.users.models import User
 from .forms import ReviewForm
 from .models import Review
 from .models import SessionEndedError
+from leerming.flashcards.models import FlashCard
+from leerming.users.models import User
 
 
 def _get_current_review_or_404(user: User) -> Review:

@@ -1063,6 +1063,34 @@ select {
   height: 1px;
 }
 
+.h-16 {
+  height: 4rem;
+}
+
+.h-40 {
+  height: 10rem;
+}
+
+.h-14 {
+  height: 3.5rem;
+}
+
+.h-12 {
+  height: 3rem;
+}
+
+.h-10 {
+  height: 2.5rem;
+}
+
+.h-1 {
+  height: 0.25rem;
+}
+
+.h-11 {
+  height: 2.75rem;
+}
+
 .w-2 {
   width: 0.5rem;
 }
@@ -1113,6 +1141,18 @@ select {
 
 .w-px {
   width: 1px;
+}
+
+.w-16 {
+  width: 4rem;
+}
+
+.w-40 {
+  width: 10rem;
+}
+
+.w-20 {
+  width: 5rem;
 }
 
 .min-w-0 {
@@ -1993,7 +2033,7 @@ select {
   color: rgb(156 163 175 / var(--tw-text-opacity));
 }
 
-:is(.dark .ts-control),:is(.dark 
+:is(.dark .ts-control),:is(.dark
 .ts-wrapper.single.input-active .ts-control) {
   --tw-bg-opacity: 1;
   background-color: rgb(15 23 42 / var(--tw-bg-opacity));
@@ -2110,7 +2150,6 @@ dialog::backdrop {
 .sample-transition {
   view-transition-name: slide-it;
 }
-
 
 .file\:mr-4::file-selector-button {
   margin-right: 1rem;
@@ -3071,10 +3110,8 @@ dialog::backdrop {
   .\32xl\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
-
 }
 
 .\[\&\:checked_\+_label_svg\]\:block:checked + label svg {
   display: block;
 }
-
