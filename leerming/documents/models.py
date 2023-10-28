@@ -39,7 +39,7 @@ text_splitter = RecursiveCharacterTextSplitter(
 
 
 @stamina.retry(on=httpx.HTTPError, attempts=3)
-def get_title(url: str):
+def get_title_from(*, url: str):
     response = httpx.get(url, follow_redirects=True)
     response.raise_for_status()
     soup = BeautifulSoup(response.text, "html.parser")
@@ -130,14 +130,11 @@ class UploadedDocument(TimeStampedModel):
         return uploaded_document
 
     @classmethod
-    def create_from_web_page(
-        cls, *, url: str, owner: User, title: str | None = None
-    ) -> UploadedDocument:
+    def create_from_web_page(cls, *, url: str, owner: User, title) -> UploadedDocument:
         loader = UnstructuredURLLoader(
             urls=[url], continue_on_failure=False, headers={"User-Agent": "value"}
         )
         documents = loader.load()
-        title = title or get_title(url)
         uploaded_document = cls.objects.create(
             title=title, url=url, doc_type=cls.DocType.WEB_DOC, owner=owner
         )
@@ -155,13 +152,10 @@ class UploadedDocument(TimeStampedModel):
         return uploaded_document
 
     @classmethod
-    def create_from_youtube(
-        cls, *, url: str, owner: User, title: str | None = None
-    ) -> UploadedDocument:
+    def create_from_youtube(cls, *, url: str, owner: User, title) -> UploadedDocument:
         loader = YoutubeTranscriptReader()
         documents = loader.load_data(ytlinks=[url])
         documents = [d.to_langchain_format() for d in documents]
-        title = title or get_title(url)
         uploaded_document = cls.objects.create(
             title=title, url=url, doc_type=cls.DocType.YOUTUBE_VIDEO, owner=owner
         )

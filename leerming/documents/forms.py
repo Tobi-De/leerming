@@ -9,16 +9,8 @@ from dynamic_forms import DynamicField
 from dynamic_forms import DynamicFormMixin
 from llama_hub.youtube_transcript.utils import is_youtube_video
 
+from .models import get_title_from
 from .models import UploadedDocument
-
-
-def validate_youtube_url(value: str):
-    if not is_youtube_video(value):
-        raise forms.ValidationError(_("Veuillez saisir une URL youtube valide"))
-    return value
-
-
-youtube_validators = [validate_youtube_url]
 
 
 class UploadForm(DynamicFormMixin, forms.Form):
@@ -48,11 +40,8 @@ class UploadForm(DynamicFormMixin, forms.Form):
         label=_("URL"),
         include=lambda form: form["doc_type"].value()
         in [UploadedDocument.DocType.WEB_DOC, UploadedDocument.DocType.YOUTUBE_VIDEO],
-        validators=lambda form: youtube_validators
-        if form["doc_type"].value() == UploadedDocument.DocType.YOUTUBE_VIDEO
-        else [],
     )
-    # TODO: limit to pdf only
+
     pdf_file = DynamicField(
         forms.FileField,
         label=_("Fichier"),
@@ -88,15 +77,45 @@ class UploadForm(DynamicFormMixin, forms.Form):
     def clean(self):
         cleaned_data = self.cleaned_data
         title = cleaned_data.get("title")
-        if in_memory_file := cleaned_data.pop("pdf_file", None) or cleaned_data.pop(
-            "docx_file", None
+        user = self.context.get("user")
+        doc_type = cleaned_data.get("doc_type")
+        url = cleaned_data.get("url")
+
+        if (
+            url
+            and doc_type == UploadedDocument.DocType.YOUTUBE_VIDEO
+            and not is_youtube_video(url)
         ):
-            original_filename = Path(in_memory_file.name)
+            raise forms.ValidationError(
+                {"url": _("Veuillez saisir une URL youtube valide")}
+            )
+
+        in_memory_file = cleaned_data.pop("pdf_file", None) or cleaned_data.pop(
+            "docx_file", None
+        )
+
+        if in_memory_file:
+            title = title or Path(in_memory_file.name).stem
+
+        if doc_type in [
+            UploadedDocument.DocType.WEB_DOC,
+            UploadedDocument.DocType.YOUTUBE_VIDEO,
+        ]:
+            title = title or get_title_from(url=cleaned_data.get("url"))
+
+        cleaned_data["title"] = title
+
+        # fixme: checking for title uniqueness, but current implementation does not look good
+        if UploadedDocument.objects.filter(title=title, owner_id=user).exists():
+            raise forms.ValidationError(
+                _(f"Un document avec le title {title} existe déjà")
+            )
+
+        if in_memory_file:
             with tempfile.NamedTemporaryFile(
-                suffix=original_filename.suffix, delete=False
+                suffix=Path(in_memory_file.name).suffix, delete=False
             ) as temp_file:
                 for chunk in in_memory_file.chunks():
                     temp_file.write(chunk)
             cleaned_data["temp_file"] = Path(temp_file.name)
-            cleaned_data["title"] = title or original_filename.stem
         return cleaned_data

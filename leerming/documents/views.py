@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
+from django_htmx.http import reswap
 from django_htmx.http import retarget
 from django_htmx.http import trigger_client_event
 from django_q.tasks import async_task
@@ -41,7 +42,7 @@ def select(request: HttpRequest):
 
 def upload(request: HttpRequest):
     data = (request.POST, request.FILES) if request.method == "POST" else (None, None)
-    form = UploadForm(*data)
+    form = UploadForm(*data, context={"user": request.user})
     if form.is_valid():
         cleaned_data = form.cleaned_data
         task_id = async_task(
@@ -52,6 +53,9 @@ def upload(request: HttpRequest):
         )
         return redirect(reverse("documents:upload_progress", args=[task_id]))
     response = TemplateResponse(request, "documents/upload.html", {"form": form})
+    if not form.is_valid() and request.method == "POST":
+        response = retarget(response, "#upload-card")
+        return reswap(response, "outerHTML")
     return trigger_client_event(response, "hideSubmitBtn", {})
 
 
