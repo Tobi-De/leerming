@@ -1993,7 +1993,7 @@ select {
   color: rgb(156 163 175 / var(--tw-text-opacity));
 }
 
-:is(.dark .ts-control),:is(.dark
+:is(.dark .ts-control),:is(.dark 
 .ts-wrapper.single.input-active .ts-control) {
   --tw-bg-opacity: 1;
   background-color: rgb(15 23 42 / var(--tw-bg-opacity));
@@ -2110,6 +2110,7 @@ dialog::backdrop {
 .sample-transition {
   view-transition-name: slide-it;
 }
+
 
 .file\:mr-4::file-selector-button {
   margin-right: 1rem;
@@ -3070,8 +3071,10 @@ dialog::backdrop {
   .\32xl\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+
 }
 
 .\[\&\:checked_\+_label_svg\]\:block:checked + label svg {
   display: block;
 }
+
