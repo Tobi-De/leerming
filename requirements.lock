@@ -114,6 +114,7 @@ pytest==7.4.2
 pytest-cov==4.1.0
 pytest-django==4.5.2
 python-dateutil==2.8.2
+python-docx==1.0.1
 python-iso639==2023.6.15
 python-magic==0.4.27
 python3-openid==3.2.0

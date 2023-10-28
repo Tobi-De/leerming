@@ -5,11 +5,14 @@ from pathlib import Path
 import httpx
 import stamina
 from bs4 import BeautifulSoup
+from django.conf import settings
 from django.db import models
 from django.db.models.query import QuerySet
 from django.utils.translation import gettext_lazy as _
+from docx import Document as DocxDocument
 from langchain.document_loaders import PyPDFLoader
 from langchain.document_loaders import UnstructuredURLLoader
+from langchain.embeddings import FakeEmbeddings
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.text_splitter import Document as LangchainTextDoc
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -20,10 +23,18 @@ from pgvector.django import VectorField
 
 from leerming.users.models import User
 
-openai_embeddings = OpenAIEmbeddings()
+EMBEDDING_SIZE = 1536
 
-recursive_text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=1000, chunk_overlap=100
+TEXT_CHUNK_SIZE = 1000
+TEXT_CHUNK_OVERLAP = 100
+
+if settings.DEBUG:
+    openai_embeddings = FakeEmbeddings(size=EMBEDDING_SIZE)
+else:
+    openai_embeddings = OpenAIEmbeddings()
+
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=TEXT_CHUNK_SIZE, chunk_overlap=TEXT_CHUNK_OVERLAP
 )
 
 
@@ -47,9 +58,10 @@ class UploadedDocument(TimeStampedModel):
     chunks: QuerySet[DocumentChunk]
 
     class DocType(models.TextChoices):
-        YOUTUBE_VIDEO = "YOUTUBE_VIDEO", _("Vidéo Youtube")
-        TEXT_DOC = "TEXT_DOC", _("Document texte")
+        PDF_DOC = "PDF_DOC", _("Document PDF")
+        DOCX_DOC = "DOCX_DOC", _("Document Word")
         WEB_DOC = "HTML_DOC", _("Page web")
+        YOUTUBE_VIDEO = "YOUTUBE_VIDEO", _("Vidéo Youtube")
         RAW_TEXT = "RAW_TEXT", _("Texte brut")
 
     owner = models.ForeignKey(
@@ -78,7 +90,7 @@ class UploadedDocument(TimeStampedModel):
         return "\n".join(chunk.content for chunk in chunks)
 
     def create_chunks(self, documents: list[LangchainTextDoc]) -> None:
-        texts = recursive_text_splitter.split_documents(documents)
+        texts = text_splitter.split_documents(documents)
         vectors = openai_embeddings.embed_documents([t.page_content for t in texts])
 
         chunks = [
@@ -92,21 +104,34 @@ class UploadedDocument(TimeStampedModel):
         DocumentChunk.objects.bulk_create(chunks)
 
     @classmethod
-    def create_from_temp_file(
-        cls, *, temp_file: Path, title: str, owner: User, doc_type: DocType
+    def create_from_pdf_file(
+        cls, *, temp_file: Path, title: str, owner: User
     ) -> UploadedDocument:
         loader = PyPDFLoader(str(temp_file))
         documents = loader.load_and_split()
         temp_file.unlink(missing_ok=True)
         uploaded_document = cls.objects.create(
-            title=title, url="", doc_type=doc_type, owner=owner
+            title=title, url="", doc_type=cls.DocType.PDF_DOC, owner=owner
+        )
+        uploaded_document.create_chunks(documents=documents)
+        return uploaded_document
+
+    @classmethod
+    def create_from_docx_file(
+        cls, *, temp_file: Path, title: str, owner: User
+    ) -> UploadedDocument:
+        docx = DocxDocument(str(temp_file))
+        documents = [LangchainTextDoc(page_content=p.text) for p in docx.paragraphs]
+        temp_file.unlink(missing_ok=True)
+        uploaded_document = cls.objects.create(
+            title=title, url="", doc_type=cls.DocType.DOCX_DOC, owner=owner
         )
         uploaded_document.create_chunks(documents=documents)
         return uploaded_document
 
     @classmethod
     def create_from_web_page(
-        cls, *, url: str, owner: User, doc_type: DocType, title: str | None = None
+        cls, *, url: str, owner: User, title: str | None = None
     ) -> UploadedDocument:
         loader = UnstructuredURLLoader(
             urls=[url], continue_on_failure=False, headers={"User-Agent": "value"}
@@ -114,31 +139,31 @@ class UploadedDocument(TimeStampedModel):
         documents = loader.load()
         title = title or get_title(url)
         uploaded_document = cls.objects.create(
-            title=title, url=url, doc_type=doc_type, owner=owner
+            title=title, url=url, doc_type=cls.DocType.WEB_DOC, owner=owner
         )
         uploaded_document.create_chunks(documents=documents)
         return uploaded_document
 
     @classmethod
     def create_from_raw_text(
-        cls, *, text: str, owner: User, doc_type: DocType, title: str
+        cls, *, text: str, owner: User, title: str
     ) -> UploadedDocument:
         uploaded_document = cls.objects.create(
-            title=title, url="", doc_type=doc_type, owner=owner
+            title=title, url="", doc_type=cls.DocType.RAW_TEXT, owner=owner
         )
         uploaded_document.create_chunks(documents=[LangchainTextDoc(page_content=text)])
         return uploaded_document
 
     @classmethod
     def create_from_youtube(
-        cls, *, url: str, owner: User, doc_type: DocType, title: str | None = None
+        cls, *, url: str, owner: User, title: str | None = None
     ) -> UploadedDocument:
         loader = YoutubeTranscriptReader()
         documents = loader.load_data(ytlinks=[url])
         documents = [d.to_langchain_format() for d in documents]
         title = title or get_title(url)
         uploaded_document = cls.objects.create(
-            title=title, url=url, doc_type=doc_type, owner=owner
+            title=title, url=url, doc_type=cls.DocType.YOUTUBE_VIDEO, owner=owner
         )
         uploaded_document.create_chunks(documents=documents)
         return uploaded_document
@@ -147,7 +172,8 @@ class UploadedDocument(TimeStampedModel):
     def get_create_func(cls, doc_type: DocType) -> callable:
         return {
             cls.DocType.YOUTUBE_VIDEO: cls.create_from_youtube,
-            cls.DocType.TEXT_DOC: cls.create_from_temp_file,
+            cls.DocType.PDF_DOC: cls.create_from_pdf_file,
+            cls.DocType.DOCX_DOC: cls.create_from_docx_file,
             cls.DocType.WEB_DOC: cls.create_from_web_page,
             cls.DocType.RAW_TEXT: cls.create_from_raw_text,
         }.get(doc_type)
@@ -158,4 +184,4 @@ class DocumentChunk(TimeStampedModel):
         UploadedDocument, on_delete=models.CASCADE, related_name="chunks"
     )
     content = models.TextField()
-    embedding = VectorField(dimensions=1536)
+    embedding = VectorField(dimensions=EMBEDDING_SIZE)

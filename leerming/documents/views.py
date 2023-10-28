@@ -9,9 +9,9 @@ from django_htmx.http import trigger_client_event
 from django_q.tasks import async_task
 from django_q.tasks import result
 
-from leerming.users.models import User
 from .forms import UploadForm
 from .models import UploadedDocument
+from leerming.users.models import User
 
 
 def _create_document(doc_type: str, owner_id: int, params: dict) -> int | None:
@@ -46,7 +46,7 @@ def upload(request: HttpRequest):
         cleaned_data = form.cleaned_data
         task_id = async_task(
             _create_document,
-            doc_type=cleaned_data["doc_type"],
+            doc_type=cleaned_data.pop("doc_type"),
             owner_id=request.user.id,
             params=cleaned_data,
         )
@@ -61,13 +61,13 @@ def upload_progress(request: HttpRequest, task_id: str):
     )
 
 
-MAX_NBR_OF_TRY = 180
-MILLISECONDS_WAIT = 1000
+#  try for 6 min max for now, query for the result every 3 seconds with a max of 120 attempts
+MAX_NBR_OF_TRY = 120
+MILLISECONDS_WAIT = 3000
 
 
 def upload_status(request: HttpRequest, task_id: str):
     nbr_of_try = request.session.get("nbr_of_try", 1)
-    # try for 3 min max for now, 180 try means 180_000 milliseconds, which give 3 min
     select_url = reverse("documents:select") + "?retarget=upload-card"
     if nbr_of_try > MAX_NBR_OF_TRY:
         # maybe add a message to tell the user to retry or check if task failed

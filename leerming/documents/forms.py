@@ -2,6 +2,7 @@ import tempfile
 from pathlib import Path
 
 from django import forms
+from django.core.validators import FileExtensionValidator
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from dynamic_forms import DynamicField
@@ -24,7 +25,7 @@ class UploadForm(DynamicFormMixin, forms.Form):
     doc_type = forms.ChoiceField(
         label=_("Type de document"),
         choices=UploadedDocument.DocType.choices,
-        initial=UploadedDocument.DocType.TEXT_DOC,
+        initial=UploadedDocument.DocType.PDF_DOC,
         widget=forms.Select(
             attrs={
                 "hx-get": reverse_lazy("documents:get_form"),
@@ -52,11 +53,29 @@ class UploadForm(DynamicFormMixin, forms.Form):
         else [],
     )
     # TODO: limit to pdf only
-    file = DynamicField(
+    pdf_file = DynamicField(
         forms.FileField,
         label=_("Fichier"),
         include=lambda form: form["doc_type"].value()
-        == UploadedDocument.DocType.TEXT_DOC,
+        == UploadedDocument.DocType.PDF_DOC,
+        validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
+        widget=forms.ClearableFileInput(
+            attrs={
+                "accept": ".pdf",
+            }
+        ),
+    )
+    docx_file = DynamicField(
+        forms.FileField,
+        label=_("Fichier"),
+        include=lambda form: form["doc_type"].value()
+        == UploadedDocument.DocType.DOCX_DOC,
+        validators=[FileExtensionValidator(allowed_extensions=["docx"])],
+        widget=forms.ClearableFileInput(
+            attrs={
+                "accept": ".docx",
+            }
+        ),
     )
     text = DynamicField(
         forms.CharField,
@@ -69,7 +88,9 @@ class UploadForm(DynamicFormMixin, forms.Form):
     def clean(self):
         cleaned_data = self.cleaned_data
         title = cleaned_data.get("title")
-        if in_memory_file := cleaned_data.pop("file", None):
+        if in_memory_file := cleaned_data.pop("pdf_file", None) or cleaned_data.pop(
+            "docx_file", None
+        ):
             original_filename = Path(in_memory_file.name)
             with tempfile.NamedTemporaryFile(
                 suffix=original_filename.suffix, delete=False

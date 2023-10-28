@@ -53,6 +53,7 @@ dependencies = [
   "pytest",
   "pytest-cov",
   "pytest-django",
+  "python-docx>=1.0.1",
   "sentry-sdk>=1.31",
   "stamina>=23.1",
   "tiktoken>=0.5.1",

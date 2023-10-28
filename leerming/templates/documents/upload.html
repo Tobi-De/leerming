@@ -2,10 +2,10 @@
      class="my-4 relative bg-white border shadow-sm rounded-xl p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
     {% block form %}
         <form
-                hx-target="#upload-progress"
-                hx-post="{% url "documents:upload" %}"
-                id="upload-form"
-                hx-encoding='multipart/form-data'>
+            hx-target="#upload-progress"
+            hx-post="{% url "documents:upload" %}"
+            id="upload-form"
+            hx-encoding='multipart/form-data'>
             {{ form }}
         </form>
 

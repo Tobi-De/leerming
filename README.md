@@ -42,4 +42,3 @@ Follow these steps to set up and run Leerming locally:
 8. Install [Watson](https://github.com/etianen/django-watson) for full-text search: `python manage.py installwatson`
 9. Create a superuser: `python manage.py makesuperuser`
 10. Start the development server: `python manage.py runserver`
-
