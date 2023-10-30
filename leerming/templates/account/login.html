@@ -32,7 +32,7 @@
                 <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">{% trans "Sign In" %}</h1>
 
                 {% get_providers as socialaccount_providers %}
-
+            
                 {% if socialaccount_providers %}
                     <p class="mt-2 mb-4 text-sm text-gray-600 dark:text-gray-400">
                         {% blocktrans with site.name as site_name %}
@@ -45,7 +45,7 @@
 
                     <div class="socialaccount_ballot">
 
-                        <form method="post" action="/account/google/login/">
+                        <form method="post" action="/account/google/login/?process=login">
                             {% csrf_token %}
                             <button type="submit"
                                     class="w-full py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-gray-800 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800">
