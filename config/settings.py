@@ -166,7 +166,7 @@ SOCIALACCOUNT_PROVIDERS = {
             "email",
         ],
         "AUTH_PARAMS": {
-            "access_type": "online",
+            "access_type": env("GOOGLE_ACCESS_TYPE", default="online"),
         },
         "OAUTH_PKCE_ENABLED": True,
         "EMAIL_AUTHENTICATION": True,
