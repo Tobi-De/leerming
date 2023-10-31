@@ -148,7 +148,6 @@ warn_unused_ignores = true
 warn_redundant_casts = true
 warn_unused_configs = true
 plugins = ["mypy_django_plugin.main"]
-django_settings_module = "config.settings"
 exclude = ["/migrations/"]
 
 [tool.rye]
@@ -161,4 +160,4 @@ worker = "python manage.py qcluster"
 tailwind = "npx tailwindcss -i leerming/static/css/input.css -o leerming/static/css/tailwind.css --watch"
 
 [tool.django-stubs]
-django_settings_module = "config.settings"
+# django_settings_module = "config.settings"
