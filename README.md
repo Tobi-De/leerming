@@ -21,7 +21,7 @@ For a more detailed explanation of the Leitner box method, check out [Wikipedia]
 
 Certainly, for a technical audience, here's a more detailed and technical version of the sections:
 
-## Leerming Leitner Box Algorithm Implementation
+## Leitner Box Algorithm Implementation
 
 - Flashcards are organized into `NUM_LEVELS` distinct levels. Each card starts at Level 1. The transition between levels is based on performance during reviews.
 
