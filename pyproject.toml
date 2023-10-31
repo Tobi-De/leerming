@@ -61,6 +61,7 @@ dependencies = [
   "unstructured>=0.10.24",
   "whitenoise",
   "youtube_transcript_api>=0.6.1",
+  "mypy_django_plugin",
 ]
 
 [build-system]
@@ -151,6 +152,7 @@ warn_unused_ignores = true
 warn_redundant_casts = true
 warn_unused_configs = true
 plugins = ["mypy_django_plugin.main"]
+django_settings_module = "config.settings"
 exclude = ["/migrations/"]
 
 [tool.rye]
