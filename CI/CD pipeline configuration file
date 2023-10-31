@@ -1,0 +1,7 @@
+steps:
+  - name: Install dependencies
+    command: pip install -r requirements.txt
+  - name: Install mypy_django_plugin
+    command: pip install mypy_django_plugin
+  - name: Run trunk check
+    command: trunk check --fix --print-failures {file_path}
