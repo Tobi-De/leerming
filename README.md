@@ -37,13 +37,13 @@ Leerming can currently generate flashcards from web pages, YouTube videos, PDF f
 
 1. **Text Extraction:** Uploaded documents, regardless of their original format, undergo automated text extraction, transforming the content into a common text format.
 
-2. **Text Segmentation and Storage:** Extracted text is further divided into manageable chunks, which are then embedded and stored in the database using pgvector. This step is executed by a dedicated worker process.
+2. **Text Segmentation and Storage:** The extracted text is divided into smaller, manageable chunks. For each chunk, we generate embeddings using OpenAI's models. These embeddings, along with the original text content, are then stored in a PostgreSQL database equipped with pgvector. This step is executed by a dedicated worker process.
 
 3. **Key Question as Focal Point:** Users provide a key question that serve as a central topic for generating flashcards. Additionally, users select one of their uploaded documents.
 
 4. **Chunk Matching with L2Distance:** Leerming identifies document chunks that are closest to the user's key question using L2Distance, ensuring the relevance of the generated flashcards.
 
-5. **Prompt Generation with Language Models (LLM):** Using the key question and the identified document chunks, Leerming generates an LLM prompt. This prompt is then sent to Language Models (LLM) for card creation.
+5. **Prompt Generation with Language Models (LLM):** Using the key question and the identified document chunks, Leerming generates an LLM prompt. This prompt is then sent to Language Models (LLM) to generate flashcards.
 
 ## Local Development Setup
 
