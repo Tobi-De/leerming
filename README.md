@@ -23,9 +23,9 @@ Certainly, for a technical audience, here's a more detailed and technical versio
 
 ## Leerming Leitner Box Algorithm Implementation
 
-- Flashcards are organized into seven distinct levels. Each card starts at Level 1. The transition between levels is based on performance during reviews.
+- Flashcards are organized into `NUM_LEVELS` distinct levels. Each card starts at Level 1. The transition between levels is based on performance during reviews.
 
-- Each level corresponds to a specific number of days between reviews. For example, Level 1 cards are reviewed daily, while Level 2 cards are reviewed every two days. The exact mapping can be found in the codebase [here](https://github.com/Tobi-De/leerming/blob/f558b7257676f49b352176e7c64b20bd2ffa9d13/leerming/flashcards/models.py#L33).
+- Each level corresponds to a specific number of days between reviews as defined by `LEVEL_MAPPING`. For example, Level 1 cards are reviewed daily, while Level 2 cards are reviewed every two days. The exact mapping can be found in the codebase [here](https://github.com/Tobi-De/leerming/blob/f558b7257676f49b352176e7c64b20bd2ffa9d13/leerming/flashcards/models.py#L33).
 
 - During a review, when a card is answered correctly, it moves up to the next level. Once a card reaches Level 7, it is marked as mastered.
 
