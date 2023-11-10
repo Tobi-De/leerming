@@ -3,6 +3,12 @@ from django.contrib import admin
 from .models import Profile
 
 
+@admin.action(description="Register selected profiles for next review")
+def register_for_next_review(modeladmin, request, queryset):
+    for profile in queryset:
+        profile.register_for_next_review()
+
+
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = (
@@ -23,3 +29,4 @@ class ProfileAdmin(admin.ModelAdmin):
         "user",
         "email_notifications_enabled",
     )
+    actions = [register_for_next_review]
