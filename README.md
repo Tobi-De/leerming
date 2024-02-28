@@ -20,8 +20,6 @@ The Leitner box method is a simple yet effective technique for learning and reta
 
 For a more detailed explanation of the Leitner box method, check out [Wikipedia](https://en.wikipedia.org/wiki/Leitner_system).
 
-Certainly, for a technical audience, here's a more detailed and technical version of the sections:
-
 ## Leitner Box Algorithm Implementation
 
 - Flashcards are organized into seven distinct levels. Each card starts at Level 1. The transition between levels is based on performance during reviews.
