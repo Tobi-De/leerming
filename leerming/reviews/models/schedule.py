@@ -63,7 +63,7 @@ class ScheduleManager(TimeStampedModel):
         date = timezone.now().date()
 
         reviewers_to_notify = []
-        for reviewer in self.reviewers.select_related("profile").filter(email_notifications_enabled=True):
+        for reviewer in self.reviewers.select_related("profile").all():
             last_review_was_today = (
                 Review.get_last_review_date(reviewer=reviewer) == date
             )
